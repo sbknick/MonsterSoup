@@ -1,18 +1,27 @@
-import { combineReducers } from 'redux';
-import { CounterReducer, CounterState } from './reducers';
-import * as Redux from 'redux';
-
-// const rootReducer = combineReducers({
-//   CounterReducer
+// import { combineReducers } from 'redux';
+// import { CounterReducer, CounterState } from './reducers';
+// import * as Redux from 'redux';
+//
+// // const rootReducer = combineReducers({
+// //   CounterReducer
+// // });
+//
+// export interface RootState {
+//   counterState: CounterState;
+// };
+//
+//
+// export const rootReducer = Redux.combineReducers<RootState>({
+//   ['counterReducer']: CounterReducer
 // });
+//
+// // export default rootReducer;
 
-export interface RootState {
-  counterState: CounterState;
-};
+import * as Redux from 'redux';
+import HelloReducer from '../reducers/HelloReducer';
 
-
-export const rootReducer = Redux.combineReducers<RootState>({
-  ['counterReducer']: CounterReducer
+const rootReducer = Redux.combineReducers({
+  HelloReducer
 });
 
-// export default rootReducer;
+export default rootReducer;

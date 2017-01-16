@@ -1,16 +1,7 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { fromJS } from 'immutable';
-import { HelloState } from '../index';
-
-interface HelloProps
-{
-  compiler: string;
-  framework: string;
-
-  count: number;
-  increment: () => void;
-}
+// import { fromJS } from 'immutable';
+import { HelloState } from '../store/Store';
 
 interface HelloStateProps
 {
@@ -24,20 +15,30 @@ interface HelloDispatchProps
   increment: () => void;
 }
 
-function mapStateToProps(state: any): HelloStateProps
+interface HelloProps extends HelloStateProps, HelloDispatchProps
 {
-  const { compiler, framework, count } = state;
+  // compiler: string;
+  // framework: string;
+  //
+  // count: number;
+  // increment: () => void;
+}
+
+function mapStateToProps(globalState: any): HelloStateProps
+{
+  // const { compiler, framework, count } = state.get('helloState');
+  let state = globalState.helloState;
 
   return {
-    compiler: state.get('compiler'),
-    framework: state.get('framework'),
-    count: state.get('count')
+    compiler: state.compiler,
+    framework: state.framework,
+    count: state.count
   };
 }
 
 function mapDispatchToProps(dispatch: any): HelloDispatchProps
 {
-  var incr = () => dispatch({ type: 'INCREMENT'});
+  var incr = (): void => dispatch({ type: 'INCREMENT'});
 
   return { increment: incr };
 

@@ -1,15 +1,19 @@
-import { createStore, compose } from 'redux';
-import { fromJS } from 'immutable';
+// import { createStore, compose } from 'redux';
+import * as Redux from 'redux';
+// import { fromJS } from 'immutable';
+
+import * as Store from '../store/Store';
 
 // import { RootState } from '../reducers.index';
 
-import { RootState, rootReducer } from '../reducers/index';
+import rootReducer from '../reducers/index';
+import HelloReducer from '../reducers/HelloReducer';
 
-function configureStore(initialState: RootState)
+function configureStore()
 {
-  const store = createStore<RootState>(
-    rootReducer,
-    initialState
+  const store = Redux.createStore(
+    HelloReducer,
+    Store.DEFAULT_GLOBAL_STATE
   );
 
 //_enableHotLoader(store);

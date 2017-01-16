@@ -67,14 +67,3 @@ export function CounterReducer(state: CounterState = INITIAL_STATE, action: Coun
       return state;
   }
 }
-// function mainReducer(state = INITIAL_STATE, action: CounterAction = OtherAction)
-// {
-//   switch (action.type) {
-//     case Const.INCREMENT_COUNTER:
-//       //return state.update('count', (value) => value + 1);
-//       return state.update({value: state.value + action.by});
-//
-//     default:
-//       return state;
-//   }
-// }
