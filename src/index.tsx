@@ -7,12 +7,19 @@ import configureStore from './store/configure-store';
 
 // components
 import Hello from './components/Hello';
+import MonsterStats from './components/MonsterStats';
 
 const store = configureStore();
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Hello />
-  </Provider>,
+  (
+    <div>
+      <Provider store={store}>
+        <Hello />
+      </Provider>
+
+      <MonsterStats monsterName="Test Monster" />
+    </div>
+  ),
   document.getElementById("example")
 );

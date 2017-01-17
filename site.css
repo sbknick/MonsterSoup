@@ -1,0 +1,23 @@
+a { text-decoration: none; }
+
+.monster-stats fieldset
+{
+  border-radius: 6px;
+  background-color: lightgrey;
+}
+
+.monster-stats .attribute
+{
+  display: inline-block;
+  margin-left: 20px
+}
+
+.monster-stats .attribute label
+{
+  display: block;
+}
+
+.monster-stats .attribute input
+{
+  width: 4em;
+}
