@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-// import { fromJS } from 'immutable';
-import { HelloState } from '../store/Store';
+import { HelloState } from '../reducers/HelloReducer';
 
 interface HelloStateProps
 {
@@ -15,36 +14,22 @@ interface HelloDispatchProps
   increment: () => void;
 }
 
-interface HelloProps extends HelloStateProps, HelloDispatchProps
-{
-  // compiler: string;
-  // framework: string;
-  //
-  // count: number;
-  // increment: () => void;
-}
+type HelloProps = HelloStateProps & HelloDispatchProps;
 
-function mapStateToProps(globalState: any): HelloStateProps
+function mapStateToProps(state: HelloState): HelloStateProps
 {
-  // const { compiler, framework, count } = state.get('helloState');
-  let state = globalState.helloState;
+  const { compiler, framework, count } = state;
 
   return {
-    compiler: state.compiler,
-    framework: state.framework,
-    count: state.count
+    compiler: compiler,
+    framework: framework,
+    count: count
   };
 }
 
 function mapDispatchToProps(dispatch: any): HelloDispatchProps
 {
-  var incr = (): void => dispatch({ type: 'INCREMENT'});
-
-  return { increment: incr };
-
-  // return {
-  //   increment: (): void => dispatch({ type: 'INCREMENT' })
-  // };
+  return { increment: () => dispatch({type: 'INCREMENT'}) };
 }
 
 function mergeProps(state: HelloStateProps, dispatch: HelloDispatchProps): HelloProps
@@ -60,16 +45,16 @@ function mergeProps(state: HelloStateProps, dispatch: HelloDispatchProps): Hello
 class Hello extends React.Component<HelloProps, void>
 {
   render() {
+    const { compiler, framework, count, increment } = this.props;
+
     return (
       <span>
-        <h1>Hello from {this.props.compiler} and {this.props.framework}!</h1>
-        <input type="button" onClick={this.props.increment} value="+1" />
-        <p>{this.props.count}</p>
+        <h1>Hello from {compiler} and {framework}!</h1>
+        <input type="button" onClick={increment} value="+1" />
+        <p>{count}</p>
       </span>
     );
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Hello);
-
-//export const Hello = (props: HelloProps) => <h1>Hello from {props.compiler} and {props.framework}!</h1>;

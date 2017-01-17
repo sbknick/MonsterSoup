@@ -1,5 +1,3 @@
-// import { fromJS } from 'immutable';
-import * as Immutable from 'immutable';
 import * as Const from './constants';
 
 
@@ -9,8 +7,7 @@ type IncrementCounterAction = {
 };
 export function IncrementCounterAction(by: number): IncrementCounterAction
 {
-  return Immutable.fromJS(
-  {
+  return ({
     type: Const.INCREMENT_COUNTER,
     by: by
   });
@@ -22,8 +19,7 @@ type DecrementCounterAction = {
 };
 export function DecrementCounterAction(by: number): DecrementCounterAction
 {
-  return Immutable.fromJS(
-  {
+  return ({
     type: Const.DECREMENT_COUNTER,
     by: by
   });
