@@ -1,8 +1,14 @@
 import * as Redux from 'redux';
-import HelloReducer from '../reducers/HelloReducer';
+import { HelloReducer, HelloState } from '../reducers/HelloReducer';
 
-const rootReducer = Redux.combineReducers({
+
+export const rootReducer = Redux.combineReducers({
   HelloReducer
 });
+
+export interface HelloReducerState
+{
+  HelloReducer: HelloState;
+}
 
 export default rootReducer;

@@ -1,0 +1,8 @@
+[
+  {
+    name: "Leather",
+    value: 1,
+    dexCap: -1,
+    disadvantageOnStealth: false
+  }
+]

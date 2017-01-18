@@ -5,7 +5,8 @@ interface AttributeProps
 {
   label: string,
   value: number,
-  modifyAttribute: (label:string, value: number) => void;
+  modifyAttribute: (label: string, value: number) => void;
+  setAttribute: (label: string, value: number) => void;
 }
 
 class Attribute extends React.Component<AttributeProps, {}>
@@ -13,7 +14,7 @@ class Attribute extends React.Component<AttributeProps, {}>
     constructor(props: AttributeProps)
     {
       super(props);
-      this.valueChanged = this.valueChanged.bind(this);
+      // this.valueChanged = this.valueChanged.bind(this);
     }
 
     Mod(value: number): string | number
@@ -22,6 +23,7 @@ class Attribute extends React.Component<AttributeProps, {}>
       return result < 0 ? result : "+" + result;
     }
 
+    // handleClick(e: React.MouseEvent<MSPointerEvent>, value: number)
     handleClick(e: any, value: number)
     {
       e.preventDefault();
@@ -30,7 +32,13 @@ class Attribute extends React.Component<AttributeProps, {}>
 
     valueChanged(e: any)
     {
-      this.props.modifyAttribute(this.props.label, 1);
+      let f = e;
+      // this.props.setAttribute(this.props.label, e);
+    }
+
+    onChanged(e: React.FormEvent<HTMLInputElement>)
+    {
+      let f = e;
     }
 
     render() {
@@ -41,8 +49,8 @@ class Attribute extends React.Component<AttributeProps, {}>
           <label>{label}</label>
           <a href="" onClick={e => this.handleClick(e, 1)}>+</a>
           <span>{value} ({this.Mod(value)})</span>
-          <input type="number" min="1" max="40" value={value} onChange={this.valueChanged} />
-          <a href="" onClick={e => this.handleClick(e, -1)}>-</a>
+          <input type="number" min="1" max="40" inputMode="numeric" pattern="[0-9]{1,2}" value={value} onChange={this.onChanged} onBlur={this.valueChanged} />
+          &nbsp;<a href="" onClick={e => this.handleClick(e, -1)}>-</a>
         </div>
       );
     }

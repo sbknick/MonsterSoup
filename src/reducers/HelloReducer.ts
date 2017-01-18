@@ -1,4 +1,5 @@
 import * as Redux from 'redux';
+import * as Actions from '../actions/HelloActions';
 
 export interface HelloState
 {
@@ -13,18 +14,24 @@ const DEFAULT_STATE: HelloState = {
   count: -2
 };
 
-type IncrementHelloAction = {
-  type: "INCREMENT"
-}
+// type IncrementHelloAction = {
+//   type: "INCREMENT"
+// }
 
-type HelloAction = IncrementHelloAction;
+// type HelloAction = IncrementHelloAction;
 
-const HelloReducer: Redux.Reducer<HelloState> = (state: HelloState = DEFAULT_STATE, action: HelloAction) =>
+export const HelloReducer: Redux.Reducer<HelloState> = (state: HelloState  = DEFAULT_STATE, action: Actions.HelloAction) =>
 {
-  if (action.type === "INCREMENT")
+  switch (action.type)
   {
-    return Object.assign({}, state, {count: state.count + 1});
+    case Actions.INCREMENT:
+      let incr = action as Actions.IncrementAction;
+      return Object.assign({}, state, {count: state.count + incr.value});
+
+    case Actions.DECREMENT:
+      return Object.assign({}, state, {count: state.count - 1});
   }
+
 
   return state;
 };

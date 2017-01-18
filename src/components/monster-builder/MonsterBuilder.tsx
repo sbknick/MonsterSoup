@@ -2,34 +2,47 @@ import * as React from 'react';
 // import { connect } from 'react-redux';
 
 import Attribute from './Attribute';
+import NumberInput from '../common/NumberInput';
 
 interface MonsterStatsProps
 {
     monsterName: string,
 }
 
+interface Attributes
+{
+  Str: number;
+  Dex: number;
+  Con: number;
+  Int: number;
+  Wis: number;
+  Cha: number;
+}
+
 interface MonsterStatsState
 {
-  Str: number,
-  Dex: number,
-  Con: number,
-  Int: number,
-  Wis: number,
-  Cha: number,
+  Str: number;
+  Dex: number;
+  Con: number;
+  Int: number;
+  Wis: number;
+  Cha: number;
+  Attributes: Attributes;
 }
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
   Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10,
-  // Attributes: {Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10,},
+  Attributes: {Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10,},
 };
 
-class MonsterBuilder extends React.Component<MonsterStatsProps, any>
+class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsState>
 {
   constructor(props: MonsterStatsProps) {
     super(props);
     this.state = DEFAULT_MONSTER_STATS_STATE;
 
     this.ModifyAttribute = this.ModifyAttribute.bind(this);
+    this.SetAttribute = this.SetAttribute.bind(this);
   }
 
   Mod(value: number): string | number
@@ -40,23 +53,41 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, any>
 
   ModifyAttribute(attr: string, value: number)
   {
-    switch(attr)
-    {
-      case "Str": return this.setState({ Str: this.state.Str + value });
-      case "Dex": return this.setState({ Dex: this.state.Dex + value });
-      case "Con": return this.setState({ Con: this.state.Con + value });
-      case "Int": return this.setState({ Int: this.state.Int + value });
-      case "Wis": return this.setState({ Wis: this.state.Wis + value });
-      case "Cha": return this.setState({ Cha: this.state.Cha + value });
-    }
+    const Attr = this.state.Attributes as any;
+    // switch(attr)
+    // {
+    //   // case "Str": return this.setState({Attributes: { Str: Attr.Str + value }});
+    //   // case "Str": return this.setState((s: MonsterStatsState, p: any) => ({Attributes: { Str: Attr.Str + value }}));
+    //   // case "Dex": return this.setState({Attributes: { Dex: Attr.Dex + value }});
+    //   // case "Con": return this.setState({Attributes: { Con: Attr.Con + value }});
+    //   // case "Int": return this.setState({Attributes: { Int: Attr.Int + value }});
+    //   // case "Wis": return this.setState({Attributes: { Wis: Attr.Wis + value }});
+    //   // case "Cha": return this.setState({Attributes: { Cha: Attr.Cha + value }});
+    // }
+    let newValue = Attr[attr] + value;
+
+    Attr[attr] = Math.min(Math.max(newValue, 1), 40);
+
+    this.setState({Attributes: Attr} as MonsterStatsState);
+
+    this.setState({Str: value} as MonsterStatsState)
+  }
+
+  SetAttribute(attr: string, value: number)
+  {
+    const Attr = this.state.Attributes as any;
+
+    Attr[attr] = value;
+    this.setState({Attributes: Attr} as MonsterStatsState);
   }
 
   render() {
     const { monsterName } = this.props;
-    const { Str, Dex, Con, Int, Wis, Cha } = this.state as MonsterStatsState;
+    const { Str, Dex, Con, Int, Wis, Cha } = (this.state as MonsterStatsState).Attributes;
+    const Attr = this.state.Attributes as any;
 
-    let attributes = Object.keys(this.state).map(key =>
-      <Attribute label={key} value={this.state[key]} modifyAttribute={this.ModifyAttribute} />
+    let attributes = Object.keys(Attr).map(key =>
+      <Attribute label={key} value={Attr[key]} modifyAttribute={this.ModifyAttribute} setAttribute={this.SetAttribute} />
     );
 
     return (
@@ -86,9 +117,12 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, any>
             </div>
             <div>
               <h4>Hit Dice</h4>
+              {this.state.Str}
             </div>
             <div>
               <label>Defensive CR</label>
+
+              <NumberInput value={Str} />
             </div>
         </fieldset>
       </div>
