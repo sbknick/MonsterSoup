@@ -1,15 +1,58 @@
+/*body { font-family: "Lucida Console", "Courier New", monospace; }*/
+body {
+    background-color: #F9f9f9 !important;
+    margin: 6px;
+}
+
+h1, h2, h3, h4, legend { font-family: 'Libre Baskerville', 'Lora', 'Calisto MT',
+                   'Bookman Old Style', Bookman, 'Goudy Old Style',
+                   Garamond, 'Hoefler Text', 'Bitstream Charter',
+                   Georgia, serif}
+
+
 a { text-decoration: none; }
 
+.button-xsmall {
+    font-size: 50%;
+}
+
+input.small-input {
+    width: 2em;
+    text-align: center;
+}
+
+a.attr {
+
+}
+
+.up-down a:hover {
+    color: green;
+}
+
+.up-down .fa-sort-down {
+    position: absolute;
+}
+
+.up-down .fa-sort-up {
+    position: absolute;
+    /*line-height: 30%;*/
+}
+
+/************ MonsterStats specific ************/
 .monster-stats fieldset
 {
   border-radius: 6px;
-  background-color: lightgrey;
+  background-color: #eee;
 }
 
+/***** Stat Attribute blocks *****/
 .monster-stats .attribute
 {
   display: inline-block;
-  margin-left: 20px
+  margin-right: 20px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px;
 }
 
 .monster-stats .attribute label
@@ -19,5 +62,12 @@ a { text-decoration: none; }
 
 .monster-stats .attribute input
 {
-  width: 4em;
+  width: 2em;
+  text-align: center;
+}
+
+.monster-states .attribute span.report
+{
+    display: block;
+    clear: both;
 }

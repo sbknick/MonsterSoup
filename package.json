@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "webpack",
+    "webpack": "webpack && echo 'Build Completed at ' && time /t",
     "build": "webpack -d --config webpack.config.js --colors",
     "build-prod": "SET NODE_ENV=production&&webpack -p --config webpack.config.js --colors"
   },
@@ -20,6 +20,7 @@
     "@types/redux": "^3.6.0",
     "awesome-typescript-loader": "^3.0.0-beta.18",
     "immutable": "^3.8.1",
+    "print-time": "0.0.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
