@@ -12,6 +12,10 @@ h1, h2, h3, h4, legend { font-family: 'Libre Baskerville', 'Lora', 'Calisto MT',
 
 a { text-decoration: none; }
 
+a:hover {
+    color: green;
+}
+
 .button-xsmall {
     font-size: 50%;
 }
@@ -25,18 +29,50 @@ a.attr {
 
 }
 
-.up-down a:hover {
+.defensive-cr {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center | space-between | space-around;
+    align-content: stretch;
+}
+
+.defensive-cr > * {
+    /*width: 200px;*/
+    flex-grow: 1;
+}
+
+.defensive-cr > *:not(:first-child){
+  border-left:1px solid #000;
+  padding-left: 20px;
+  margin-left: -20px;
+}
+
+fieldset fieldset {
+    margin-top: 20px;
+}
+
+legend {
+    padding: 0 7px 0 7px;
+}
+
+/*.defensive-cr > * {
+    align-self: flex-start;
+}*/
+
+/*.up-down a:hover {
     color: green;
+    color: -webkit-hover;
+}*/
+
+/*.up-down .fa-caret-down {
+    position: absolute;
+    top: 0.25em;
 }
 
-.up-down .fa-sort-down {
+.up-down .fa-caret-up {
     position: absolute;
-}
-
-.up-down .fa-sort-up {
-    position: absolute;
-    /*line-height: 30%;*/
-}
+    top: -0.25em;
+}*/
 
 /************ MonsterStats specific ************/
 .monster-stats fieldset
