@@ -30,6 +30,29 @@ interface Defenses
     BaseAC: number;
 }
 
+interface Offenses
+{
+    PrimaryStat: string;
+    PrimarySpellStat: string;
+    AttackBonus: number;
+    SaveDCBonus: number;
+    MultiattackCount: number;
+    Attacks: Attack[];
+}
+
+interface Attack
+{
+    Name: string;
+    Reach?: number;
+    RangeAccurate?: number;
+    RangeMax?: number;
+    DamageDiceCount?: number;
+    DamageDieSize?: number;
+    Description: string;
+    DamageBonus?: number;
+}
+
+
 const STANDARD_ARMOR: "STANDARD_ARMOR" = "STANDARD_ARMOR";
 const NATURAL_ARMOR: "NATURAL_ARMOR" = "NATURAL_ARMOR";
 const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
@@ -38,11 +61,23 @@ interface MonsterStatsState
 {
     Attributes: Attributes;
     Defenses: Defenses;
+    Offenses: Offenses;
+    Proficiency: number;
 }
 
+const ATTRIBUTES: Attributes = {Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10};
+const DEFENSES: Defenses = {HitDieSize: 8, HitDiceCount: 2, ACFormulaType: STANDARD_ARMOR, BaseAC: 10};
+const ATTACKS: Attack[] = [
+    {Name: "Bite", Reach: 5, DamageDiceCount: 2, DamageDieSize: 6, DamageBonus: 2, Description: "Nomnomnom."}
+];
+const OFFENSES: Offenses = {PrimaryStat: "Str", PrimarySpellStat: "Int", AttackBonus: 0, SaveDCBonus: 0, MultiattackCount: 1, Attacks: ATTACKS};
+
+
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
-    Attributes: {Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10,},
-    Defenses: {HitDieSize: 8, HitDiceCount: 2, ACFormulaType: STANDARD_ARMOR, BaseAC: 10}
+    Attributes: ATTRIBUTES,
+    Defenses: DEFENSES,
+    Offenses: OFFENSES,
+    Proficiency: 2
 };
 
 class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsState>
@@ -58,9 +93,16 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.ModifyHitDiceCount = this.ModifyHitDiceCount.bind(this);
         this.ModifyHitDieSize = this.ModifyHitDieSize.bind(this);
         this.handleChangeACFormulaType = this.handleChangeACFormulaType.bind(this);
+        this.handleChangePrimaryStat = this.handleChangePrimaryStat.bind(this);
+        this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
     }
 
 
+    GetMod(attr: string): number
+    {
+        var value = (this.state.Attributes as any)[attr];
+        return this.Mod(value);
+    }
 
     Mod(value: number): number
     {
@@ -83,6 +125,11 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
         var sum = (averageRoll + conMod) * HitDiceCount;
         return sum;
+    }
+
+    CalcAverageDamagePerRound(): number
+    {
+        return 12;
     }
 
     ModifyAttribute(attr: string, value: number)
@@ -109,9 +156,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     SetAttribute(attr: string, value: number)
     {
         const Attr = this.state.Attributes as any;
-
         Attr[attr] = value;
-
         this.setState({Attributes: Attr} as MonsterStatsState);
     }
 
@@ -128,28 +173,36 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     ModifyHitDiceCount(e: any)
     {
         const def = this.state.Defenses;
-
         def.HitDiceCount = e.target.value;
-
         this.setState({Defenses: def} as MonsterStatsState);
     }
 
     ModifyHitDieSize(e: any)
     {
         const def = this.state.Defenses;
-
         def.HitDieSize = e.target.value;
-
         this.setState({Defenses: def} as MonsterStatsState);
     }
 
     handleChangeACFormulaType(e: any)
     {
         const def = this.state.Defenses;
-
         def.ACFormulaType = e.target.value;
-
         this.setState({Defenses: def} as MonsterStatsState);
+    }
+
+    handleChangePrimaryStat(e: any)
+    {
+        const off = this.state.Offenses;
+        off.PrimaryStat = e.target.value;
+        this.setState({Offenses: off} as MonsterStatsState);
+    }
+
+    handleChangePrimarySpellStat(e: any)
+    {
+        const off = this.state.Offenses;
+        off.PrimarySpellStat = e.target.value;
+        this.setState({Offenses: off} as MonsterStatsState);
     }
 
     render()
@@ -194,16 +247,31 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                         <h4>Attributes</h4>
                         {attributes}
                     </div>
-                    <fieldset>
+                    <div>
+                        <h4>Proficiency Bonus</h4>
+                        +{this.state.Proficiency}
+                    </div>
+                    <fieldset className="defensive-cr">
                         <legend>Defensive CR</legend>
-                        <div className="defensive-cr">
+                        <div className="container">
                             <div className="defensive-cr-details">
                                 <div>
                                     <h4>Hit Dice <UpDownLinks onUpClicked={e => {console.log("Up Clicked")}} onDownClicked={e => {console.log("Down Clicked")}} /></h4>
-                                    <div className="hit-dice-box">
-                                        <NumberInput min={1} max={40} value={HitDiceCount} onBlur={this.ModifyHitDiceCount} />
-                                        d
-                                        <NumberInput min={1} max={12} value={HitDieSize} onBlur={this.ModifyHitDieSize} />
+                                    <div>
+                                        <label title="The monster's Size will determine the default size of the hit die">Size</label>
+                                        <select defaultValue="Medium d8">
+                                            <option>Tiny d4</option>
+                                            <option>Small d6</option>
+                                            <option>Medium d8</option>
+                                            <option>Large d10</option>
+                                            <option>Huge d12</option>
+                                            <option>Gargantuan d20</option>
+                                        </select>
+                                        <div className="hit-dice-box">
+                                            <NumberInput min={1} max={40} value={HitDiceCount} onBlur={this.ModifyHitDiceCount} />
+                                            d
+                                            <NumberInput min={1} max={12} value={HitDieSize} onBlur={this.ModifyHitDieSize} />
+                                        </div>
                                     </div>
                                 </div>
                                 <div>
@@ -257,7 +325,83 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     </fieldset>
                     <fieldset className="offensive-cr">
                         <legend>Offensive CR</legend>
-                        <UpDownLinks size={2} onUpClicked={e => {console.log("Up Clicked")}} onDownClicked={e => {console.log("Down Clicked")}}  />
+                        <div className="container">
+                            <div className="offensive-cr-primarystats">
+                                <div>
+                                    <label>Primary Attack Stat</label>
+                                    <span>
+                                        <select value={this.state.Offenses.PrimaryStat} onChange={this.handleChangePrimaryStat}>
+                                            <option value={"Str"}>Str</option>
+                                            <option value={"Dex"}>Dex</option>
+                                            <option value={"Con"}>Con</option>
+                                            <option value={"Int"}>Int</option>
+                                            <option value={"Wis"}>Wis</option>
+                                            <option value={"Cha"}>Cha</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div>
+                                    <label>Primary Spellcasting Stat</label>
+                                    <span>
+                                        <select value={this.state.Offenses.PrimarySpellStat} onChange={this.handleChangePrimarySpellStat}>
+                                            <option value={"Str"}>Str</option>
+                                            <option value={"Dex"}>Dex</option>
+                                            <option value={"Con"}>Con</option>
+                                            <option value={"Int"}>Int</option>
+                                            <option value={"Wis"}>Wis</option>
+                                            <option value={"Cha"}>Cha</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="offensive-cr-tohit">
+                                <div>
+                                    <h4>Attack Bonus</h4>
+                                    <span>
+                                        <label>Calc!</label>
+                                        <div>
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                Proficiency<br />+{this.state.Proficiency}
+                                            </div>
+                                            <b>+</b>
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                {this.state.Offenses.PrimaryStat}<br />+{this.GetMod(this.state.Offenses.PrimaryStat)}
+                                            </div>
+                                            <b>=</b>
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                Total<br />+{this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)}
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div>
+                                    <h4>Save DC</h4>
+                                    <div>
+                                        <label>Calc!</label>
+                                        <div>
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                Proficiency<br />+{this.state.Proficiency}
+                                            </div>
+                                            <b>+</b>
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                {this.state.Offenses.PrimarySpellStat}<br />+{this.GetMod(this.state.Offenses.PrimarySpellStat)}
+                                            </div>
+                                            <b>=</b>
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                Total<br />+{this.state.Proficiency + this.GetMod(this.state.Offenses.PrimarySpellStat)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="offensive-cr-damageperround">
+                                <h4>Damage Per Round</h4>
+                                <div>
+                                    <label>Average DPR</label>
+                                    <div>{this.CalcAverageDamagePerRound()}</div>
+                                </div>
+                            </div>
+                        </div>
                     </fieldset>
                 </fieldset>
             </div>

@@ -29,22 +29,30 @@ a.attr {
 
 }
 
-.defensive-cr {
+.defensive-cr .container, .offensive-cr .container {
     display: flex;
     align-items: flex-start;
     justify-content: center | space-between | space-around;
     align-content: stretch;
 }
 
-.defensive-cr > * {
+.defensive-cr .container > *, .offensive-cr .container > * {
     /*width: 200px;*/
     flex-grow: 1;
 }
 
-.defensive-cr > *:not(:first-child){
+.defensive-cr .container > *:not(:first-child),
+.offensive-cr .container > *:not(:first-child) {
   border-left:1px solid #000;
   padding-left: 20px;
   margin-left: -20px;
+}
+
+.defensive-cr .container > *:not(:last-child),
+.offensive-cr .container > *:not(:last-child) {
+    border-right: 1px solid #000;
+    padding-right: -19px;
+    margin-right: 19px;
 }
 
 fieldset fieldset {
