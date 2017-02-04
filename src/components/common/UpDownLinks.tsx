@@ -13,7 +13,7 @@ class UpDownLinks extends React.Component<Props, {}>
         let arrowParentStyle = {
             position: "relative",
             // top: "2",
-            "margin-left": "8px"
+            marginLeft: "8px"
         };
 
         let upArrowStyle = {

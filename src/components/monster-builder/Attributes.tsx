@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+import { GlobalState } from '../../reducers';
+import { AttributesState } from '../../reducers/MonsterBuilder.Attributes';
+import * as Actions from '../../actions/MonsterBuilder.AttributesActions';
 import NumberInput from '../common/NumberInput';
 
 interface AttributeProps
@@ -37,11 +40,6 @@ class Attribute extends React.Component<AttributeProps, {}>
         this.props.setAttribute(this.props.label, parseInt(e.target.value));
     }
 
-    onChanged(e: React.FormEvent<HTMLInputElement>)
-    {
-        let f = e;
-    }
-
     render() {
         const { label, value } = this.props;
 
@@ -67,4 +65,55 @@ class Attribute extends React.Component<AttributeProps, {}>
     }
 }
 
-export default Attribute;
+interface AttributesSet
+{
+    Str: number;
+    Dex: number;
+    Con: number;
+    Int: number;
+    Wis: number;
+    Cha: number;
+}
+
+interface AttributesProps
+{
+    Attributes: AttributesSet;
+
+    ModifyAttribute: (attr: string, value: number) => void;
+    SetAttribute: (attr: string, value: number) => void;
+}
+
+function mapStateToProps(state: GlobalState): AttributesProps
+{
+    return {
+        Attributes: state.monsterBuilder.attributes
+    } as AttributesProps;
+}
+
+function mapDispatchToProps(dispatch: any): AttributesProps
+{
+    return {
+        ModifyAttribute: (a, v) => dispatch(Actions.IncrementAttribute(a, v)),
+        SetAttribute: (a, v) => dispatch(Actions.SetAttribute(a, v))
+    } as AttributesProps;
+}
+
+class Attributes extends React.Component<AttributesProps, void>
+{
+    render()
+    {
+        const attr = this.props.Attributes as any;
+        let attributes = Object.keys(attr).map(key =>
+            <Attribute key={key} label={key} value={attr[key]} modifyAttribute={this.props.ModifyAttribute} setAttribute={this.props.SetAttribute} />
+        );
+
+        return (
+            <div className="attributes">
+                <h4>Attributes</h4>
+                {attributes}
+            </div>
+        )
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Attributes);

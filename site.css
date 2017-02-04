@@ -1,16 +1,20 @@
 /*body { font-family: "Lucida Console", "Courier New", monospace; }*/
+
 body {
     background-color: #F9f9f9 !important;
     margin: 6px;
+    margin-top: 60px;
 }
 
-h1, h2, h3, h4, legend { font-family: 'Libre Baskerville', 'Lora', 'Calisto MT',
-                   'Bookman Old Style', Bookman, 'Goudy Old Style',
-                   Garamond, 'Hoefler Text', 'Bitstream Charter',
-                   Georgia, serif}
+h1, h2, h3, h4, legend {
+    font-family: 'Libre Baskerville', 'Lora', 'Calisto MT', 'Bookman Old Style',
+                 Bookman, 'Goudy Old Style', Garamond, 'Hoefler Text',
+                 'Bitstream Charter', Georgia, serif
+}
 
-
-a { text-decoration: none; }
+a {
+    text-decoration: none;
+}
 
 .button-xsmall {
     font-size: 50%;
@@ -21,9 +25,23 @@ input.small-input {
     text-align: center;
 }
 
-a.attr {
-
+.navigation {
+    /*position: relative;;
+    top: 0;
+    left: 0;*/
+    padding: 0 .5em 0 .5em;
+    box-shadow: 0 0 1.5em #867453;
+    margin-bottom: 1.5em
 }
+
+.navigation .pure-menu-heading {
+    font-family: MrJeeves;
+    font-size: 1cm;
+    font-weight: 800;
+}
+
+
+/*********** UpDown Component ************/
 
 .up-down a:hover {
     color: green;
@@ -38,36 +56,35 @@ a.attr {
     /*line-height: 30%;*/
 }
 
+
 /************ MonsterStats specific ************/
-.monster-stats fieldset
-{
-  border-radius: 6px;
-  background-color: #eee;
+
+.monster-stats fieldset {
+    border-radius: 6px;
+    background-color: #eee;
 }
+
 
 /***** Stat Attribute blocks *****/
-.monster-stats .attribute
-{
-  display: inline-block;
-  margin-right: 20px;
-  text-align: center;
-  border-radius: 6px;
-  border: 1px;
+
+.monster-stats .attribute {
+    display: inline-block;
+    margin-right: 20px;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px;
 }
 
-.monster-stats .attribute label
-{
-  display: block;
+.monster-stats .attribute label {
+    display: block;
 }
 
-.monster-stats .attribute input
-{
-  width: 2em;
-  text-align: center;
+.monster-stats .attribute input {
+    width: 2em;
+    text-align: center;
 }
 
-.monster-states .attribute span.report
-{
+.monster-states .attribute span.report {
     display: block;
     clear: both;
 }

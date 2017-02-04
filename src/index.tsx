@@ -6,20 +6,19 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configure-store';
 
 // components
-import Hello from './components/Hello';
-import MonsterStats from './components/MonsterStats';
+import Nav from './components/Nav';
+import MonsterBuilder from './components/monster-builder/MonsterBuilder';
 
 const store = configureStore();
 
 ReactDOM.render(
-  (
-    <div>
-      <Provider store={store}>
-        <Hello />
-      </Provider>
-
-      <MonsterStats monsterName="Test Monster" />
-    </div>
-  ),
-  document.getElementById("example")
+    (
+        <Provider store={store}>
+            <div>
+                <Nav />
+                <MonsterBuilder monsterName="Test Monster" />
+            </div>
+        </Provider>
+    ),
+    document.getElementById("example")
 );

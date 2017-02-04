@@ -1,14 +1,13 @@
 import * as Redux from 'redux';
-import { HelloReducer, HelloState } from '../reducers/HelloReducer';
-
+import monsterBuilderReducer, { MonsterBuilderState } from './monster-builder';
 
 export const rootReducer = Redux.combineReducers({
-  HelloReducer
+  monsterBuilder: monsterBuilderReducer
 });
 
-export interface HelloReducerState
+export interface GlobalState
 {
-  HelloReducer: HelloState;
+  monsterBuilder: MonsterBuilderState;
 }
 
 export default rootReducer;

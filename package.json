@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack && echo 'Build Completed at ' && time /t",
+    "watch": "webpack --watch",
+
     "build": "webpack -d --config webpack.config.js --colors",
     "build-prod": "SET NODE_ENV=production&&webpack -p --config webpack.config.js --colors"
   },
