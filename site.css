@@ -63,6 +63,16 @@ legend {
     padding: 0 7px 0 7px;
 }
 
+@keyframes yellowfade {
+    from { background: yellow; }
+    to { background: transparent; }
+}
+
+.highlight-change {
+    animation: yellowfade 1s;
+    transition: 1s;
+}
+
 /*.defensive-cr > * {
     align-self: flex-start;
 }*/

@@ -63,6 +63,7 @@ interface MonsterStatsState
     Defenses: Defenses;
     Offenses: Offenses;
     Proficiency: number;
+    isProficiencyChanged: boolean;
 }
 
 const ATTRIBUTES: Attributes = {Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10};
@@ -77,7 +78,8 @@ const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
     Attributes: ATTRIBUTES,
     Defenses: DEFENSES,
     Offenses: OFFENSES,
-    Proficiency: 2
+    Proficiency: 2,
+    isProficiencyChanged: false,
 };
 
 class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsState>
@@ -205,6 +207,40 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.setState({Offenses: off} as MonsterStatsState);
     }
 
+    handleModifyProficiency(value: number)
+    {
+        var newValue = this.state.Proficiency + value;
+        newValue = Math.max(2, newValue);
+        newValue = Math.min(10, newValue);
+        this.setState({Proficiency: newValue, isProficiencyChanged: true} as MonsterStatsState);
+    }
+
+    HighlightsChanges(): any
+    {
+        if (this.state.isProficiencyChanged)
+        {
+            return "highlight-change";
+        }
+
+        return "";
+    }
+
+    componentDidUpdate()
+    {
+        if (this.state.isProficiencyChanged)
+        {
+            this.setState({isProficiencyChanged: false} as MonsterStatsState);
+        }
+    }
+
+    shouldComponentUpdate(nextProps: MonsterStatsProps, nextState: MonsterStatsState): boolean
+    {
+        if (this.state.isProficiencyChanged && !nextState.isProficiencyChanged)
+            return false;
+
+        return true;
+    }
+
     render()
     {
         const { monsterName } = this.props;
@@ -250,7 +286,16 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     <div>
                         <h4>Proficiency Bonus</h4>
                         +{this.state.Proficiency}
+                        <UpDownLinks onUpClicked={e => this.handleModifyProficiency(1)} onDownClicked={e => this.handleModifyProficiency(-1)} />
                     </div>
+                    <fieldset className="defensive-cr">
+                        <legend>Traits</legend>
+                        <div className="add-trait">
+                            <a href=""> </a>
+                        </div>
+                        <div className="container">
+                        </div>
+                    </fieldset>
                     <fieldset className="defensive-cr">
                         <legend>Defensive CR</legend>
                         <div className="container">
@@ -360,7 +405,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                     <span>
                                         <label>Calc!</label>
                                         <div>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
                                                 Proficiency<br />+{this.state.Proficiency}
                                             </div>
                                             <b>+</b>
@@ -368,7 +413,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                                 {this.state.Offenses.PrimaryStat}<br />+{this.GetMod(this.state.Offenses.PrimaryStat)}
                                             </div>
                                             <b>=</b>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
                                                 Total<br />+{this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)}
                                             </div>
                                         </div>
@@ -379,7 +424,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                     <div>
                                         <label>Calc!</label>
                                         <div>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
                                                 Proficiency<br />+{this.state.Proficiency}
                                             </div>
                                             <b>+</b>
@@ -387,7 +432,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                                 {this.state.Offenses.PrimarySpellStat}<br />+{this.GetMod(this.state.Offenses.PrimarySpellStat)}
                                             </div>
                                             <b>=</b>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
                                                 Total<br />+{this.state.Proficiency + this.GetMod(this.state.Offenses.PrimarySpellStat)}
                                             </div>
                                         </div>
