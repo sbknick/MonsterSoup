@@ -29,7 +29,7 @@ interface NumberInputState
     value: number;
 }
 
-class NumberInput extends React.Component<NumberInputProps, NumberInputState>
+export class NumberInput extends React.Component<NumberInputProps, NumberInputState>
 {
     constructor(props: NumberInputProps = DEFAULT_PROPS)
     {

@@ -12,7 +12,7 @@ interface State
     size: number;
 }
 
-class UpDownLinks extends React.Component<Props, State>
+export class UpDownLinks extends React.Component<Props, State>
 {
     constructor(props: Props)
     {

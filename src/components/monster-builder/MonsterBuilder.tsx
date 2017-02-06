@@ -1,9 +1,8 @@
 import * as React from 'react';
 // import { connect } from 'react-redux';
 
-import Attribute from './Attribute';
-import NumberInput from '../common/NumberInput';
-import UpDownLinks from '../common/UpDownLinks';
+import { Attribute } from '.';
+import { HighlightOnChange, NumberInput, UpDownLinks } from '../common';
 
 interface MonsterStatsProps
 {
@@ -212,33 +211,9 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         var newValue = this.state.Proficiency + value;
         newValue = Math.max(2, newValue);
         newValue = Math.min(10, newValue);
-        this.setState({Proficiency: newValue, isProficiencyChanged: true} as MonsterStatsState);
-    }
 
-    HighlightsChanges(): any
-    {
-        if (this.state.isProficiencyChanged)
-        {
-            return "highlight-change";
-        }
-
-        return "";
-    }
-
-    componentDidUpdate()
-    {
-        if (this.state.isProficiencyChanged)
-        {
-            this.setState({isProficiencyChanged: false} as MonsterStatsState);
-        }
-    }
-
-    shouldComponentUpdate(nextProps: MonsterStatsProps, nextState: MonsterStatsState): boolean
-    {
-        if (this.state.isProficiencyChanged && !nextState.isProficiencyChanged)
-            return false;
-
-        return true;
+        if (newValue != this.state.Proficiency)
+            this.setState({Proficiency: newValue, isProficiencyChanged: true} as MonsterStatsState);
     }
 
     render()
@@ -283,9 +258,11 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                         <h4>Attributes</h4>
                         {attributes}
                     </div>
-                    <div>
+                    <div className="inline-child-divs">
                         <h4>Proficiency Bonus</h4>
-                        +{this.state.Proficiency}
+                        <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
+                            +
+                        </HighlightOnChange>
                         <UpDownLinks onUpClicked={e => this.handleModifyProficiency(1)} onDownClicked={e => this.handleModifyProficiency(-1)} />
                     </div>
                     <fieldset className="defensive-cr">
@@ -405,16 +382,25 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                     <span>
                                         <label>Calc!</label>
                                         <div>
-                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
-                                                Proficiency<br />+{this.state.Proficiency}
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                Proficiency<br />
+                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
+                                                    +
+                                                </HighlightOnChange>
                                             </div>
                                             <b>+</b>
                                             <div style={{display: "inline-block", textAlign: "center"}}>
-                                                {this.state.Offenses.PrimaryStat}<br />+{this.GetMod(this.state.Offenses.PrimaryStat)}
+                                                {this.state.Offenses.PrimaryStat}<br />
+                                                <HighlightOnChange Duration={0.5} Value={this.GetMod(this.state.Offenses.PrimaryStat)}>
+                                                    +
+                                                </HighlightOnChange>
                                             </div>
                                             <b>=</b>
-                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
-                                                Total<br />+{this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)}
+                                            <div style={{display: "inline-block", textAlign: "center"}}>
+                                                Total<br />
+                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)}>
+                                                    +
+                                                </HighlightOnChange>
                                             </div>
                                         </div>
                                     </span>
@@ -423,17 +409,28 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                     <h4>Save DC</h4>
                                     <div>
                                         <label>Calc!</label>
-                                        <div>
-                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
-                                                Proficiency<br />+{this.state.Proficiency}
+                                        <div className="inline-children center-align-children">
+                                        {/* <div style={{display: "inline-block", textAlign: "center"}}> */}
+                                            <div>
+                                                Proficiency<br />
+                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
+                                                    +
+                                                </HighlightOnChange>
                                             </div>
                                             <b>+</b>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
-                                                {this.state.Offenses.PrimarySpellStat}<br />+{this.GetMod(this.state.Offenses.PrimarySpellStat)}
+                                            <div>
+                                                <HighlightOnChange Duration={0.5} Value={this.state.Offenses.PrimarySpellStat} />
+                                                <br />
+                                                <HighlightOnChange Duration={0.5} Value={this.GetMod(this.state.Offenses.PrimarySpellStat)}>
+                                                    +
+                                                </HighlightOnChange>
                                             </div>
                                             <b>=</b>
-                                            <div style={{display: "inline-block", textAlign: "center"}} className={this.HighlightsChanges()}>
-                                                Total<br />+{this.state.Proficiency + this.GetMod(this.state.Offenses.PrimarySpellStat)}
+                                            <div>
+                                                Total<br />
+                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimarySpellStat)}>
+                                                    +
+                                                </HighlightOnChange>
                                             </div>
                                         </div>
                                     </div>

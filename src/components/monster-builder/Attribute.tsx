@@ -11,7 +11,7 @@ interface AttributeProps
     setAttribute: (label: string, value: number) => void;
 }
 
-class Attribute extends React.Component<AttributeProps, {}>
+export class Attribute extends React.Component<AttributeProps, {}>
 {
     constructor(props: AttributeProps)
     {

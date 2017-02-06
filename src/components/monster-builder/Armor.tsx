@@ -30,7 +30,7 @@ const ArmorOptions: ArmorOption[] = [
 ];
 
 
-class Armor extends React.Component<ArmorProps, {}>
+export class Armor extends React.Component<ArmorProps, {}>
 {
   constructor(props: ArmorProps)
   {
