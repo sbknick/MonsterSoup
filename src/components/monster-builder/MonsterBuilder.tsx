@@ -2,7 +2,7 @@ import * as React from 'react';
 // import { connect } from 'react-redux';
 
 import { Attribute } from '.';
-import { HighlightOnChange, NumberInput, UpDownLinks } from '../common';
+import { HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
 
 interface MonsterStatsProps
 {
@@ -334,10 +334,9 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                 </div>
                             </div>
                             <div className="defensive-cr-outcome">
-                                <div>
-                                    <h4>Defensive CR Rating</h4>
-                                    <span>3</span>
-                                </div>
+                                <LabelledItem label="Defensive CR Rating" labelType="h4">
+                                    3
+                                </LabelledItem>
                                 <div>
                                     <h4>AutoScale!</h4>
                                     <UpDownLinks size={2} onUpClicked={e => console.log('up clicked')} onDownClicked={e => console.log('down clicked')} />
@@ -349,62 +348,42 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                         <legend>Offensive CR</legend>
                         <div className="container">
                             <div className="offensive-cr-primarystats">
-                                <div>
-                                    <label>Primary Attack Stat</label>
-                                    <span>
-                                        <select value={this.state.Offenses.PrimaryStat} onChange={this.handleChangePrimaryStat}>
-                                            <option value={"Str"}>Str</option>
-                                            <option value={"Dex"}>Dex</option>
-                                            <option value={"Con"}>Con</option>
-                                            <option value={"Int"}>Int</option>
-                                            <option value={"Wis"}>Wis</option>
-                                            <option value={"Cha"}>Cha</option>
-                                        </select>
-                                    </span>
-                                </div>
-                                <div>
-                                    <label>Primary Spellcasting Stat</label>
-                                    <span>
-                                        <select value={this.state.Offenses.PrimarySpellStat} onChange={this.handleChangePrimarySpellStat}>
-                                            <option value={"Str"}>Str</option>
-                                            <option value={"Dex"}>Dex</option>
-                                            <option value={"Con"}>Con</option>
-                                            <option value={"Int"}>Int</option>
-                                            <option value={"Wis"}>Wis</option>
-                                            <option value={"Cha"}>Cha</option>
-                                        </select>
-                                    </span>
-                                </div>
+                                <LabelledItem label="Primary Attack Stat">
+                                    <SelectList options={["Str", "Dex", "Con", "Int", "Wis", "Cha"]}
+                                                value={this.state.Offenses.PrimaryStat}
+                                                onChange={this.handleChangePrimaryStat}/>
+                                </LabelledItem>
+                                <LabelledItem label="Primary Spellcasting Stat">
+                                    <SelectList options={["Str", "Dex", "Con", "Int", "Wis", "Cha"]}
+                                                value={this.state.Offenses.PrimarySpellStat}
+                                                onChange={this.handleChangePrimarySpellStat} />
+                                </LabelledItem>
                             </div>
                             <div className="offensive-cr-tohit">
-                                <div>
-                                    <h4>Attack Bonus</h4>
-                                    <span>
-                                        <label>Calc!</label>
-                                        <div>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
-                                                Proficiency<br />
-                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
-                                                    +
-                                                </HighlightOnChange>
-                                            </div>
-                                            <b>+</b>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
-                                                {this.state.Offenses.PrimaryStat}<br />
-                                                <HighlightOnChange Duration={0.5} Value={this.GetMod(this.state.Offenses.PrimaryStat)}>
-                                                    +
-                                                </HighlightOnChange>
-                                            </div>
-                                            <b>=</b>
-                                            <div style={{display: "inline-block", textAlign: "center"}}>
-                                                Total<br />
-                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)}>
-                                                    +
-                                                </HighlightOnChange>
-                                            </div>
+                                <LabelledItem label="Attack Bonus" labelType="h4" contentContainer="none">
+                                    <LabelledItem label="Calc!">
+                                        <div style={{display: "inline-block", textAlign: "center"}}>
+                                            Proficiency<br />
+                                            <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
+                                                +
+                                            </HighlightOnChange>
                                         </div>
-                                    </span>
-                                </div>
+                                        <b>+</b>
+                                        <div style={{display: "inline-block", textAlign: "center"}}>
+                                            {this.state.Offenses.PrimaryStat}<br />
+                                            <HighlightOnChange Duration={0.5} Value={this.GetMod(this.state.Offenses.PrimaryStat)}>
+                                                +
+                                            </HighlightOnChange>
+                                        </div>
+                                        <b>=</b>
+                                        <div style={{display: "inline-block", textAlign: "center"}}>
+                                            Total<br />
+                                            <HighlightOnChange Duration={0.5} Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)}>
+                                                +
+                                            </HighlightOnChange>
+                                        </div>
+                                    </LabelledItem>
+                                </LabelledItem>
                                 <div>
                                     <h4>Save DC</h4>
                                     <div>
@@ -438,10 +417,9 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                             </div>
                             <div className="offensive-cr-damageperround">
                                 <h4>Damage Per Round</h4>
-                                <div>
-                                    <label>Average DPR</label>
-                                    <div>{this.CalcAverageDamagePerRound()}</div>
-                                </div>
+                                <LabelledItem label="Average DPR">
+                                    {this.CalcAverageDamagePerRound()}
+                                </LabelledItem>
                             </div>
                         </div>
                     </fieldset>
