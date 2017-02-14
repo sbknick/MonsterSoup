@@ -1,9 +1,9 @@
 /*body { font-family: "Lucida Console", "Courier New", monospace; }*/
 
 body {
-    background-color: #F9f9f9 !important;
+    background-color: #F9f9f9;
     margin: 6px;
-    margin-top: 60px;
+    margin-top: 100px;
 }
 
 h1, h2, h3, h4, legend {
@@ -14,6 +14,10 @@ h1, h2, h3, h4, legend {
 
 a {
     text-decoration: none;
+}
+
+a:hover {
+    color: green;
 }
 
 .button-xsmall {
@@ -31,7 +35,8 @@ input.small-input {
     left: 0;*/
     padding: 0 .5em 0 .5em;
     box-shadow: 0 0 1.5em #867453;
-    margin-bottom: 1.5em
+    margin-bottom: 1.5em;
+    background-color: #F9f9f9;
 }
 
 .navigation .pure-menu-heading {
@@ -40,6 +45,12 @@ input.small-input {
     font-weight: 800;
 }
 
+.defensive-cr .container, .offensive-cr .container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center | space-between | space-around;
+    align-content: stretch;
+}
 
 /*********** UpDown Component ************/
 
@@ -47,14 +58,59 @@ input.small-input {
     color: green;
 }
 
-.up-down .fa-sort-down {
-    position: absolute;
+.defensive-cr .container > *, .offensive-cr .container > * {
+    /*width: 200px;*/
+    flex-grow: 1;
 }
 
-.up-down .fa-sort-up {
-    position: absolute;
-    /*line-height: 30%;*/
+.defensive-cr .container > *:not(:first-child),
+.offensive-cr .container > *:not(:first-child) {
+  border-left:1px solid #000;
+  padding-left: 20px;
+  margin-left: -20px;
 }
+
+.defensive-cr .container > *:not(:last-child),
+.offensive-cr .container > *:not(:last-child) {
+    border-right: 1px solid #000;
+    padding-right: -19px;
+    margin-right: 19px;
+}
+
+fieldset fieldset {
+    margin-top: 20px;
+}
+
+legend {
+    padding: 0 7px 0 7px;
+}
+
+.inline-child-divs > div {
+    display: inline-block;
+}
+
+.inline-children > *
+{
+    display: inline-block;
+}
+
+.center-align-children > *
+{
+    text-align: center;
+}
+
+/*** Attempt 1 at fading-highlights ***/
+@keyframes yellowfade {
+    from { background: yellow; }
+    to { background: transparent; }
+}
+
+.highlight-change {
+    animation: yellowfade 1s;
+    transition: 1s;
+}
+
+
 
 
 /************ MonsterStats specific ************/
