@@ -228,6 +228,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                 <fieldset>
                     <legend>{monsterName} Stats</legend>
                     <Attributes />
+                    <HitDice />
 
                     <div className="inline-child-divs">
                         <h4>Proficiency Bonus</h4>
@@ -400,4 +401,5 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     }
 }
 
+// export default connect(mapStateToProps, mapDispatchToProps)(MonsterBuilder);
 export default MonsterBuilder;

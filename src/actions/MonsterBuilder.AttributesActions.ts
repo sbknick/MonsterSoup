@@ -1,5 +1,4 @@
 import * as Redux from 'redux';
-// import { AttributesState } from '../reducers/MonsterBuilder.Attributes';
 
 export const INCREMENT_ATTRIBUTE: "INCREMENT_ATTRIBUTE" = "INCREMENT_ATTRIBUTE";
 export type IncrementAttributeAction = Redux.Action & {

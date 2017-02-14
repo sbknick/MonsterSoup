@@ -1,5 +1,6 @@
 import * as Redux from 'redux';
 // import * as Actions from '../../actions/MonsterBuilder.DefensesActions';
+import * as HitDiceActions from '../../actions/MonsterBuilder.HitDiceActions';
 
 namespace Actions
 {

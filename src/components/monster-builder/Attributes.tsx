@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { GlobalState } from '../../reducers';
-// import { AttributesState } from '../../reducers/MonsterBuilder.Attributes';
 import * as Actions from '../../actions/MonsterBuilder.AttributesActions';
 import NumberInput from '../common/NumberInput';
 

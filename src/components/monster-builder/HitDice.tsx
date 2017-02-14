@@ -1,5 +1,8 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
+import { GlobalState } from '../../reducers';
+import * as Actions from '../../actions/MonsterBuilder.HitDiceActions';
 import NumberInput from '../common/NumberInput';
 import UpDownLinks from '../common/UpDownLinks';
 
@@ -8,8 +11,33 @@ interface Props {
     HitDiceCount: number;
     ConMod: number;
 
-    ModifyHitDieSize: (e: any) => void;
-    ModifyHitDiceCount: (e: any) => void;
+    SetHitDieSize: (e: any) => void;
+    SetHitDiceCount: (e: any) => void;
+}
+
+function GetMod(value: number) : number
+{
+    var result = Math.floor((value / 2) - 5);
+    return result;
+}
+
+function mapStateToProps(state: GlobalState): Props
+{
+    var defenses = state.monsterBuilder.defenses;
+
+    return {
+        HitDieSize: defenses.HitDice[0].HitDieSize,
+        HitDiceCount: defenses.HitDice[0].HitDiceCount,
+        ConMod: GetMod(state.monsterBuilder.attributes.Con),
+    } as Props;
+}
+
+function mapDispatchToProps(dispatch: any): Props
+{
+    return {
+        SetHitDieSize: e => dispatch(Actions.SetHitDieSize(0, e.target.value)),
+        SetHitDiceCount: e => dispatch(Actions.SetHitDiceCount(0, e.target.value))
+    } as Props;
 }
 
 class HitDice extends React.Component<Props, void>
@@ -27,15 +55,15 @@ class HitDice extends React.Component<Props, void>
     render()
     {
         const { HitDiceCount, HitDieSize, ConMod } = this.props;
-        const { ModifyHitDieSize, ModifyHitDiceCount } = this.props;
+        const { SetHitDieSize, SetHitDiceCount } = this.props;
 
         return (
             <div className="hit-dice-box">
-                <h4>Hit Dice <UpDownLinks onUpClicked={e => console.log("Up Clicked in HitDice")} onDownClicked={e => console.log("Down Clicked in HitDice")} /></h4>
+                <h4>Hit Dice</h4>
                 <div>
-                    <NumberInput min={1} max={40} value={HitDiceCount} onBlur={ModifyHitDiceCount} />
+                    <NumberInput min={1} max={40} value={HitDiceCount} onBlur={SetHitDiceCount} />
                     &nbsp;d&nbsp;
-                    <NumberInput min={4} max={12} value={HitDieSize} onBlur={ModifyHitDieSize} />
+                    <NumberInput min={4} max={12} value={HitDieSize} onBlur={SetHitDieSize} />
                 </div>
                 <div>
                     {this.HitDiceAverage()} ({HitDiceCount}d{HitDieSize} + {HitDiceCount * ConMod})
@@ -45,4 +73,4 @@ class HitDice extends React.Component<Props, void>
     }
 }
 
-export default HitDice;
+export default connect(mapStateToProps, mapDispatchToProps)(HitDice);
