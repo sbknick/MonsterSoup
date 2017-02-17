@@ -4,6 +4,8 @@ import * as React from 'react';
 import { HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
 import Attributes from './Attributes';
 import HitDice from './HitDice';
+// import { getDefensiveCR } from '../../data/CRUtil';
+import * as CRUtil from '../../data/CRUtil';
 
 interface MonsterStatsProps
 {
@@ -28,6 +30,8 @@ interface Defenses
     ACFormulaType: string;
 
     BaseAC: number;
+
+    TempAC: number;
 }
 
 interface Offenses
@@ -67,7 +71,7 @@ interface MonsterStatsState
 }
 
 const ATTRIBUTES: Attributes = {Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10};
-const DEFENSES: Defenses = {HitDieSize: 8, HitDiceCount: 2, ACFormulaType: STANDARD_ARMOR, BaseAC: 10};
+const DEFENSES: Defenses = {HitDieSize: 8, HitDiceCount: 2, ACFormulaType: STANDARD_ARMOR, BaseAC: 10, TempAC: 14};
 const ATTACKS: Attack[] = [
     {Name: "Bite", Reach: 5, DamageDiceCount: 2, DamageDieSize: 6, DamageBonus: 2, Description: "Nomnomnom."}
 ];
@@ -94,6 +98,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.handleChangeACFormulaType = this.handleChangeACFormulaType.bind(this);
         this.handleChangePrimaryStat = this.handleChangePrimaryStat.bind(this);
         this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
+        this.setTempAC = this.setTempAC.bind(this);
     }
 
 
@@ -214,6 +219,13 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
             this.setState({Proficiency: newValue, isProficiencyChanged: true} as MonsterStatsState);
     }
 
+    setTempAC(value: number)
+    {
+        let def = this.state.Defenses;
+        def.TempAC = value;
+        this.setState({Defenses: def} as MonsterStatsState);
+    }
+
     render()
     {
         const { monsterName } = this.props;
@@ -237,6 +249,21 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                         </HighlightOnChange>
                         <UpDownLinks onUpClicked={e => this.handleModifyProficiency(1)} onDownClicked={e => this.handleModifyProficiency(-1)} />
                     </div>
+                    <fieldset className="saving-throws">
+                        <legend>Saving Throws</legend>
+                        <div className="container">
+                            <div>
+                                <label>Str</label>
+                                <input type="checkbox" />
+                                <div>{this.GetMod("Str")}</div>
+                            </div>
+                            <div>
+                                <label>Dex</label>
+                                <input type="checkbox" />
+                                <div>{this.GetMod("Dex")}</div>
+                            </div>
+                        </div>
+                    </fieldset>
                     <fieldset className="defensive-cr">
                         <legend>Traits</legend>
                         <div className="add-trait">
@@ -296,18 +323,27 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                             <div className="defensive-cr-calculations">
                                 <div>
                                     <h4>HP Average</h4>
-                                    <span>
-                                        {this.HitDiceAverage()} ({HitDiceCount}d{HitDieSize} + {HitDiceCount * ConMod})
-                                    </span>
+                                    <div>
+                                        <div>{this.HitDiceAverage()} ({HitDiceCount}d{HitDieSize} + {HitDiceCount * ConMod})</div>
+                                        <LabelledItem label="CR for Average HP">
+                                            {CRUtil.getCRForHP(this.HitDiceAverage())}
+                                        </LabelledItem>
+                                        <LabelledItem label="Expected AC for Average HP">
+                                            {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(this.HitDiceAverage()))}
+                                        </LabelledItem>
+                                    </div>
                                 </div>
                                 <div>
                                     <h4>Effective AC</h4>
-                                    <span>14</span>
+                                    <NumberInput value={this.state.Defenses.TempAC} onChange={e => this.setTempAC(e.target.value)} />
+                                    <LabelledItem label="CR Range for Effective AC">
+                                        {JSON.stringify(CRUtil.getCRRangeForAC(this.state.Defenses.TempAC))}
+                                    </LabelledItem>
                                 </div>
                             </div>
                             <div className="defensive-cr-outcome">
                                 <LabelledItem label="Defensive CR Rating" labelType="h4">
-                                    3
+                                    {CRUtil.getDefensiveCR(this.HitDiceAverage(), this.state.Defenses.TempAC)}
                                 </LabelledItem>
                                 <div>
                                     <h4>AutoScale!</h4>
