@@ -12,6 +12,8 @@ interface State
     size: number;
 }
 
+type EventHandler = (e: any) => void;
+
 export class UpDownLinks extends React.Component<Props, State>
 {
     constructor(props: Props)
@@ -26,7 +28,7 @@ export class UpDownLinks extends React.Component<Props, State>
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(action: (e: any) => void): (e: any) => void
+    handleClick(action: EventHandler): EventHandler
     {
         return e => {
             e.preventDefault && e.preventDefault();

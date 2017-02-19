@@ -6,6 +6,39 @@ import * as Actions from '../../actions/MonsterBuilder.HitDiceActions';
 import NumberInput from '../common/NumberInput';
 import UpDownLinks from '../common/UpDownLinks';
 
+class HitDice extends React.Component<Props, void>
+{
+    HitDiceAverage(): number
+    {
+        const { HitDieSize, HitDiceCount, ConMod } = this.props;
+
+        let averageRoll = Math.floor(HitDieSize / 2);
+
+        var sum = (averageRoll + ConMod) * HitDiceCount;
+        return sum;
+    }
+
+    render()
+    {
+        const { HitDiceCount, HitDieSize, ConMod } = this.props;
+        const { SetHitDieSize, SetHitDiceCount } = this.props;
+
+        return (
+            <div className="hit-dice-box">
+                <h4>Hit Dice</h4>
+                <div>
+                    <NumberInput min={1} max={40} value={HitDiceCount} onBlur={SetHitDiceCount} />
+                    &nbsp;d&nbsp;
+                    <NumberInput min={4} max={12} value={HitDieSize} onBlur={SetHitDieSize} />
+                </div>
+                <div>
+                    {this.HitDiceAverage()} ({HitDiceCount}d{HitDieSize} + {HitDiceCount * ConMod})
+                </div>
+            </div>
+        );
+    }
+}
+
 interface Props {
     HitDieSize: number;
     HitDiceCount: number;
@@ -38,39 +71,6 @@ function mapDispatchToProps(dispatch: any): Props
         SetHitDieSize: e => dispatch(Actions.SetHitDieSize(0, e.target.value)),
         SetHitDiceCount: e => dispatch(Actions.SetHitDiceCount(0, e.target.value))
     } as Props;
-}
-
-class HitDice extends React.Component<Props, void>
-{
-    HitDiceAverage(): number
-    {
-        const { HitDieSize, HitDiceCount, ConMod } = this.props;
-
-        let averageRoll = Math.floor(HitDieSize / 2);
-
-        var sum = (averageRoll + ConMod) * HitDiceCount;
-        return sum;
-    }
-
-    render()
-    {
-        const { HitDiceCount, HitDieSize, ConMod } = this.props;
-        const { SetHitDieSize, SetHitDiceCount } = this.props;
-
-        return (
-            <div className="hit-dice-box">
-                <h4>Hit Dice</h4>
-                <div>
-                    <NumberInput min={1} max={40} value={HitDiceCount} onBlur={SetHitDiceCount} />
-                    &nbsp;d&nbsp;
-                    <NumberInput min={4} max={12} value={HitDieSize} onBlur={SetHitDieSize} />
-                </div>
-                <div>
-                    {this.HitDiceAverage()} ({HitDiceCount}d{HitDieSize} + {HitDiceCount * ConMod})
-                </div>
-            </div>
-        );
-    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HitDice);

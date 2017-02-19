@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import { connect } from 'react-redux';
 
-import { HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
+import { HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
 import Attributes from './Attributes';
 import HitDice from './HitDice';
 // import { getDefensiveCR } from '../../data/CRUtil';
@@ -42,6 +42,8 @@ interface Offenses
     SaveDCBonus: number;
     MultiattackCount: number;
     Attacks: Attack[];
+
+    AverageDPR: number;
 }
 
 interface Attack
@@ -75,7 +77,7 @@ const DEFENSES: Defenses = {HitDieSize: 8, HitDiceCount: 2, ACFormulaType: STAND
 const ATTACKS: Attack[] = [
     {Name: "Bite", Reach: 5, DamageDiceCount: 2, DamageDieSize: 6, DamageBonus: 2, Description: "Nomnomnom."}
 ];
-const OFFENSES: Offenses = {PrimaryStat: "Str", PrimarySpellStat: "Int", AttackBonus: 0, SaveDCBonus: 0, MultiattackCount: 1, Attacks: ATTACKS};
+const OFFENSES: Offenses = {PrimaryStat: "Str", PrimarySpellStat: "Int", AttackBonus: 0, SaveDCBonus: 0, MultiattackCount: 1, Attacks: ATTACKS, AverageDPR: 12};
 
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
@@ -99,6 +101,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.handleChangePrimaryStat = this.handleChangePrimaryStat.bind(this);
         this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
         this.setTempAC = this.setTempAC.bind(this);
+        this.setTempAverageDPR = this.setTempAverageDPR.bind(this);
     }
 
 
@@ -133,7 +136,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
     CalcAverageDamagePerRound(): number
     {
-        return 12;
+        return this.state.Offenses.AverageDPR;
     }
 
     ModifyAttribute(attr: string, value: number)
@@ -226,6 +229,13 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.setState({Defenses: def} as MonsterStatsState);
     }
 
+    setTempAverageDPR(value: number)
+    {
+        let off = this.state.Offenses;
+        off.AverageDPR = value;
+        this.setState({Offenses: off} as MonsterStatsState);
+    }
+
     render()
     {
         const { monsterName } = this.props;
@@ -241,27 +251,60 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     <legend>{monsterName} Stats</legend>
                     <Attributes />
                     <HitDice />
-
+                    <hr />
+                    <hr />
+                    <div className="inline-child-divs">
+                        <LabelledItem label="Str">
+                            <NumberInput value={this.state.Attributes.Str} onChange={e => this.SetAttribute("Str", e.target.value)} />
+                        </LabelledItem>
+                        <LabelledItem label="Dex">
+                            <NumberInput value={this.state.Attributes.Dex} onChange={e => this.SetAttribute("Dex", e.target.value)} />
+                        </LabelledItem>
+                        <LabelledItem label="Con">
+                            <NumberInput value={this.state.Attributes.Con} onChange={e => this.SetAttribute("Con", e.target.value)} />
+                        </LabelledItem>
+                        <LabelledItem label="Int">
+                            <NumberInput value={this.state.Attributes.Int} onChange={e => this.SetAttribute("Int", e.target.value)} />
+                        </LabelledItem>
+                        <LabelledItem label="Wis">
+                            <NumberInput value={this.state.Attributes.Wis} onChange={e => this.SetAttribute("Wis", e.target.value)} />
+                        </LabelledItem>
+                        <LabelledItem label="Cha">
+                            <NumberInput value={this.state.Attributes.Cha} onChange={e => this.SetAttribute("Cha", e.target.value)} />
+                        </LabelledItem>
+                    </div>
                     <div className="inline-child-divs">
                         <h4>Proficiency Bonus</h4>
-                        <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
-                            +
-                        </HighlightOnChange>
+                        <HighlightBonusOnChange Value={this.state.Proficiency} />
                         <UpDownLinks onUpClicked={e => this.handleModifyProficiency(1)} onDownClicked={e => this.handleModifyProficiency(-1)} />
                     </div>
                     <fieldset className="saving-throws">
                         <legend>Saving Throws</legend>
-                        <div className="container">
-                            <div>
-                                <label>Str</label>
+                        <div className="inline-child-divs">
+                            <LabelledItem label="Str">
                                 <input type="checkbox" />
                                 <div>{this.GetMod("Str")}</div>
-                            </div>
-                            <div>
-                                <label>Dex</label>
+                            </LabelledItem>
+                            <LabelledItem label="Dex">
                                 <input type="checkbox" />
                                 <div>{this.GetMod("Dex")}</div>
-                            </div>
+                            </LabelledItem>
+                            <LabelledItem label="Con">
+                                <input type="checkbox" />
+                                <div>{this.GetMod("Con")}</div>
+                            </LabelledItem>
+                            <LabelledItem label="Int">
+                                <input type="checkbox" />
+                                <div>{this.GetMod("Int")}</div>
+                            </LabelledItem>
+                            <LabelledItem label="Wis">
+                                <input type="checkbox" />
+                                <div>{this.GetMod("Wis")}</div>
+                            </LabelledItem>
+                            <LabelledItem label="Cha">
+                                <input type="checkbox" />
+                                <div>{this.GetMod("Cha")}</div>
+                            </LabelledItem>
                         </div>
                     </fieldset>
                     <fieldset className="defensive-cr">
@@ -291,7 +334,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                         <div className="hit-dice-box">
                                             <NumberInput min={1} max={40} value={HitDiceCount} onBlur={this.ModifyHitDiceCount} />
                                             d
-                                            <NumberInput min={1} max={12} value={HitDieSize} onBlur={this.ModifyHitDieSize} />
+                                            <NumberInput min={1} max={20} value={HitDieSize} onBlur={this.ModifyHitDieSize} />
                                         </div>
                                     </div>
                                 </div>
@@ -372,24 +415,22 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                     <LabelledItem label="Calc!">
                                         <div style={{display: "inline-block", textAlign: "center"}}>
                                             Proficiency<br />
-                                            <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
-                                                +
-                                            </HighlightOnChange>
+                                            <HighlightBonusOnChange Value={this.state.Proficiency} />
                                         </div>
                                         <b>+</b>
                                         <div style={{display: "inline-block", textAlign: "center"}}>
                                             {this.state.Offenses.PrimaryStat}<br />
-                                            <HighlightOnChange Duration={0.5} Value={this.GetMod(this.state.Offenses.PrimaryStat)}>
-                                                +
-                                            </HighlightOnChange>
+                                            <HighlightBonusOnChange Value={this.GetMod(this.state.Offenses.PrimaryStat)} />
                                         </div>
                                         <b>=</b>
                                         <div style={{display: "inline-block", textAlign: "center"}}>
                                             Total<br />
-                                            <HighlightOnChange Duration={0.5} Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)}>
-                                                +
-                                            </HighlightOnChange>
+                                            <HighlightBonusOnChange Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)} />
                                         </div>
+                                    </LabelledItem>
+                                    <br />
+                                    <LabelledItem label="Expected CR Range for Effective AD">
+                                        {JSON.stringify(CRUtil.getCRRangeForAB(this.state.Proficiency + this.GetMod(this.state.Offenses.PrimaryStat)))}
                                     </LabelledItem>
                                 </LabelledItem>
                                 <div>
@@ -400,33 +441,54 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                         {/* <div style={{display: "inline-block", textAlign: "center"}}> */}
                                             <div>
                                                 Proficiency<br />
-                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency}>
-                                                    +
-                                                </HighlightOnChange>
+                                                <HighlightBonusOnChange Value={this.state.Proficiency} />
                                             </div>
                                             <b>+</b>
                                             <div>
-                                                <HighlightOnChange Duration={0.5} Value={this.state.Offenses.PrimarySpellStat} />
+                                                <HighlightOnChange Value={this.state.Offenses.PrimarySpellStat} />
                                                 <br />
-                                                <HighlightOnChange Duration={0.5} Value={this.GetMod(this.state.Offenses.PrimarySpellStat)}>
-                                                    +
-                                                </HighlightOnChange>
+                                                <HighlightBonusOnChange Value={this.GetMod(this.state.Offenses.PrimarySpellStat)} />
                                             </div>
                                             <b>=</b>
                                             <div>
                                                 Total<br />
-                                                <HighlightOnChange Duration={0.5} Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimarySpellStat)}>
-                                                    +
-                                                </HighlightOnChange>
+                                                <HighlightBonusOnChange Value={this.state.Proficiency + this.GetMod(this.state.Offenses.PrimarySpellStat)} />
                                             </div>
                                         </div>
                                     </div>
+                                    <br />
+                                    <LabelledItem label="Expected CR Range for Effective Save DC">
+                                        {JSON.stringify(CRUtil.getCRRangeForAB(this.state.Proficiency + this.GetMod(this.state.Offenses.PrimarySpellStat)))}
+                                    </LabelledItem>
+                                </div>
+                            </div>
+                            <div>
+                                <h4>Attacks</h4>
+                                <div>
+                                    lalalaa
                                 </div>
                             </div>
                             <div className="offensive-cr-damageperround">
                                 <h4>Damage Per Round</h4>
                                 <LabelledItem label="Average DPR">
                                     {this.CalcAverageDamagePerRound()}
+                                </LabelledItem>
+                                <NumberInput value={this.state.Offenses.AverageDPR} onChange={e => this.setTempAverageDPR(e.target.value)} />
+                            </div>
+                            <div>
+                                <h4>Offensive CR</h4>
+                                <LabelledItem label="Expected CR from DPR">
+                                    {CRUtil.getCRForDPR(this.CalcAverageDamagePerRound())}
+                                </LabelledItem>
+                                <br />
+                                <LabelledItem label="Expected Attack Bonus / Save DC for Expected CR">
+                                    <LabelledItem label="Attack Bonus">
+                                        {CRUtil.getExpectedABForCR(CRUtil.getCRForDPR(this.CalcAverageDamagePerRound()))}
+                                    </LabelledItem>
+                                    <br />
+                                    <LabelledItem label="Save DC">
+                                        {CRUtil.getExpectedDCForCR(CRUtil.getCRForDPR(this.CalcAverageDamagePerRound()))}
+                                    </LabelledItem>
                                 </LabelledItem>
                             </div>
                         </div>
