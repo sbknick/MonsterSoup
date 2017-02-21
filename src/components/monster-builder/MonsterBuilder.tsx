@@ -1,11 +1,13 @@
 import * as React from 'react';
 // import { connect } from 'react-redux';
 
-import { HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
+import * as CRUtil from '../../util/CRUtil';
+import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
 import Attributes from './Attributes';
 import HitDice from './HitDice';
-// import { getDefensiveCR } from '../../data/CRUtil';
-import * as CRUtil from '../../data/CRUtil';
+import TraitSplat from './TraitSplat';
+
+import { Trait } from '../../redux/reducers/traits.reducer';
 
 interface MonsterStatsProps
 {
@@ -66,9 +68,11 @@ const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
 interface MonsterStatsState
 {
     Attributes: Attributes;
+    Traits: Trait[];
     Defenses: Defenses;
     Offenses: Offenses;
     Proficiency: number;
+
     isProficiencyChanged: boolean;
 }
 
@@ -77,11 +81,17 @@ const DEFENSES: Defenses = {HitDieSize: 8, HitDiceCount: 2, ACFormulaType: STAND
 const ATTACKS: Attack[] = [
     {Name: "Bite", Reach: 5, DamageDiceCount: 2, DamageDieSize: 6, DamageBonus: 2, Description: "Nomnomnom."}
 ];
-const OFFENSES: Offenses = {PrimaryStat: "Str", PrimarySpellStat: "Int", AttackBonus: 0, SaveDCBonus: 0, MultiattackCount: 1, Attacks: ATTACKS, AverageDPR: 12};
+const OFFENSES: Offenses = {PrimaryStat: "Str", PrimarySpellStat: "Int", AttackBonus: 6, SaveDCBonus: 0, MultiattackCount: 1, Attacks: ATTACKS, AverageDPR: 12};
 
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
     Attributes: ATTRIBUTES,
+    Traits: [{
+            Id: 7,
+            Name: "Avoidance",
+            Desc: "If the {monsterShortName} is subjected to an effect that allows it to make a saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails.",
+            EffectiveACModifier: 1
+    }],
     Defenses: DEFENSES,
     Offenses: OFFENSES,
     Proficiency: 2,
@@ -249,10 +259,10 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
             <div className="monster-stats">
                 <fieldset>
                     <legend>{monsterName} Stats</legend>
-                    <Attributes />
-                    <HitDice />
-                    <hr />
-                    <hr />
+                    <Fieldset legend={"Redux'd Site"}>
+                        <Attributes />
+                        <HitDice />
+                    </Fieldset>
                     <div className="inline-child-divs">
                         <LabelledItem label="Str">
                             <NumberInput value={this.state.Attributes.Str} onChange={e => this.SetAttribute("Str", e.target.value)} />
@@ -307,16 +317,15 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                             </LabelledItem>
                         </div>
                     </fieldset>
-                    <fieldset className="defensive-cr">
-                        <legend>Traits</legend>
+                    <Fieldset legend="Traits" className="defensive-cr" collapsed={true} displayOnCollapse={"(" + this.state.Traits.length + ")"}>
+                        {this.Traits()}
                         <div className="add-trait">
-                            <a href=""> </a>
+                            <a href=""><i className="fa fa-plus"></i></a>
                         </div>
                         <div className="container">
                         </div>
-                    </fieldset>
-                    <fieldset className="defensive-cr">
-                        <legend>Defensive CR</legend>
+                    </Fieldset>
+                    <Fieldset legend="Defensive CR" className="defensive-cr" displayOnCollapse={this.DefensiveCRSummary()}>
                         <div className="container">
                             <div className="defensive-cr-details">
                                 <div>
@@ -394,9 +403,8 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                 </div>
                             </div>
                         </div>
-                    </fieldset>
-                    <fieldset className="offensive-cr">
-                        <legend>Offensive CR</legend>
+                    </Fieldset>
+                    <Fieldset legend="Offensive CR" className="offensive-cr" displayOnCollapse={this.OffensiveCRSummary()}>
                         <div className="container">
                             <div className="offensive-cr-primarystats">
                                 <LabelledItem label="Primary Attack Stat">
@@ -492,9 +500,91 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                 </LabelledItem>
                             </div>
                         </div>
-                    </fieldset>
+                    </Fieldset>
+                    <Fieldset legend="Total CR" displayOnCollapse={this.TotalCRSummary()}>
+                        {this.TotalCRSummary()}
+                    </Fieldset>
                 </fieldset>
             </div>
+        );
+    }
+
+    EffectiveACBoostFromTraits() : number
+    {
+        var effectiveACModifier = 0;
+        this.state.Traits.reduce((acc, tr) =>
+        {
+            if (tr.EffectiveACModifier != null)
+                acc += tr.EffectiveACModifier;
+            return acc;
+        }, effectiveACModifier);
+        return effectiveACModifier;
+    }
+
+    DefensiveCRSummary()
+    {
+        var effectiveACModifier = this.EffectiveACBoostFromTraits();
+
+        return (
+            <div style={{fontSize: ".8em"}}>
+                <i>  -HP:</i> <b>{this.HitDiceAverage()}</b> (CR {CRUtil.getCRForHP(this.HitDiceAverage())})
+                <i>  -AC:</i> <b>{this.state.Defenses.TempAC}</b>
+                {effectiveACModifier != 0 && ("+" + effectiveACModifier + " Effective from Traits")}
+                <i>  -CR:</i> <b>{CRUtil.getDefensiveCR(this.HitDiceAverage(), this.state.Defenses.TempAC)}</b>
+                {
+
+                }
+            </div>
+        );
+    }
+
+    EffectiveABBoostFromTraits() : number
+    {
+        var effectiveABModifier = 0;
+        this.state.Traits.reduce((acc, tr) =>
+        {
+            if (tr.EffectiveABModifier != null)
+                acc += tr.EffectiveABModifier;
+            return acc;
+        }, effectiveABModifier);
+        return effectiveABModifier;
+    }
+
+    OffensiveCRSummary()
+    {
+        var effectiveABModifier = this.EffectiveABBoostFromTraits();
+
+        return (
+            <div style={{fontSize: ".8em"}}>
+                <i>  -DPR:</i> <b>{this.CalcAverageDamagePerRound()}</b> (CR {CRUtil.getCRForDPR(this.CalcAverageDamagePerRound())})
+                <i>  -AB:</i> <b>{this.state.Offenses.AttackBonus}</b>
+                {effectiveABModifier != 0 && ("+" + effectiveABModifier + " Effective from Traits")}
+                <i>  -CR:</i> <b>{CRUtil.getOffensiveCR(this.CalcAverageDamagePerRound(), this.state.Offenses.AttackBonus)}</b>
+                {
+
+                }
+            </div>
+        );
+    }
+
+    TotalCRSummary()
+    {
+        var offCR = CRUtil.getOffensiveCR(this.CalcAverageDamagePerRound(), this.state.Offenses.AttackBonus);
+        var defCR = CRUtil.getDefensiveCR(this.HitDiceAverage(), this.state.Defenses.TempAC);
+
+        var average = CRUtil.getAverageCR(this.HitDiceAverage(), this.state.Defenses.TempAC, this.CalcAverageDamagePerRound(), this.state.Offenses.AttackBonus);
+
+        return (
+            <div>{defCR} & {offCR} => {average}</div>
+        );
+    }
+
+    Traits()
+    {
+        var traitSplats = this.state.Traits.map(tr => (<TraitSplat key={tr.Id} trait={tr} />));
+
+        return (
+            <div>{traitSplats}</div>
         );
     }
 }
