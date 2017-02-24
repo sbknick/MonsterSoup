@@ -1,17 +1,17 @@
 import * as Redux from 'redux';
 // import Types from '../types';
 
-import MonsterBuilderReducer, { MonsterBuilderState } from './monsterBuilder.reducer';
+import monsterBuilderReducer, * as fromMonsterBuilder from './monsterBuilder';
 import TraitsReducer, * as fromTraits from './traits.reducer';
 
 export type EntitiesState =
 {
-    monsterBuilder: MonsterBuilderState,
+    monsterBuilder: fromMonsterBuilder.MonsterBuilderState,
     traits: fromTraits.TraitsState
 }
 
 var entitiesReducer = Redux.combineReducers({
-    monsterBuilder: MonsterBuilderReducer,
+    monsterBuilder: monsterBuilderReducer,
     traits: TraitsReducer
 });
 export default entitiesReducer;
@@ -24,3 +24,6 @@ export const getMonsterBuilderData = (state: EntitiesState) =>
 
 export const getAllTraits = (state: EntitiesState) =>
     fromTraits.getAllTraits(state.traits);
+
+export const getAppliedTraitIds = (state: EntitiesState) =>
+    fromMonsterBuilder.getAppliedTraitIds(state.monsterBuilder);

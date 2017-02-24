@@ -5,6 +5,7 @@ import * as CRUtil from '../../util/CRUtil';
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
 import Attributes from './Attributes';
 import HitDice from './HitDice';
+import Traits from './Traits';
 import TraitSplat from './TraitSplat';
 
 import { Trait } from '../../redux/reducers/traits.reducer';
@@ -68,7 +69,6 @@ const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
 interface MonsterStatsState
 {
     Attributes: Attributes;
-    Traits: Trait[];
     Defenses: Defenses;
     Offenses: Offenses;
     Proficiency: number;
@@ -86,12 +86,6 @@ const OFFENSES: Offenses = {PrimaryStat: "Str", PrimarySpellStat: "Int", AttackB
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
     Attributes: ATTRIBUTES,
-    Traits: [{
-            Id: 7,
-            Name: "Avoidance",
-            Desc: "If the {monsterShortName} is subjected to an effect that allows it to make a saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails.",
-            EffectiveACModifier: 1
-    }],
     Defenses: DEFENSES,
     Offenses: OFFENSES,
     Proficiency: 2,
@@ -317,13 +311,8 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                             </LabelledItem>
                         </div>
                     </fieldset>
-                    <Fieldset legend="Traits" className="defensive-cr" collapsed={true} displayOnCollapse={"(" + this.state.Traits.length + ")"}>
-                        {this.Traits()}
-                        <div className="add-trait">
-                            <a href=""><i className="fa fa-plus"></i></a>
-                        </div>
-                        <div className="container">
-                        </div>
+                    <Fieldset legend="Traits" className="defensive-cr" collapsed={true} displayOnCollapse={"(1)"}>
+                        <Traits />
                     </Fieldset>
                     <Fieldset legend="Defensive CR" className="defensive-cr" displayOnCollapse={this.DefensiveCRSummary()}>
                         <div className="container">
@@ -512,12 +501,12 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     EffectiveACBoostFromTraits() : number
     {
         var effectiveACModifier = 0;
-        this.state.Traits.reduce((acc, tr) =>
-        {
-            if (tr.EffectiveACModifier != null)
-                acc += tr.EffectiveACModifier;
-            return acc;
-        }, effectiveACModifier);
+        // this.state.Traits.reduce((acc, tr) =>
+        // {
+        //     if (tr.EffectiveACModifier != null)
+        //         acc += tr.EffectiveACModifier;
+        //     return acc;
+        // }, effectiveACModifier);
         return effectiveACModifier;
     }
 
@@ -541,12 +530,12 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     EffectiveABBoostFromTraits() : number
     {
         var effectiveABModifier = 0;
-        this.state.Traits.reduce((acc, tr) =>
-        {
-            if (tr.EffectiveABModifier != null)
-                acc += tr.EffectiveABModifier;
-            return acc;
-        }, effectiveABModifier);
+        // this.state.Traits.reduce((acc, tr) =>
+        // {
+        //     if (tr.EffectiveABModifier != null)
+        //         acc += tr.EffectiveABModifier;
+        //     return acc;
+        // }, effectiveABModifier);
         return effectiveABModifier;
     }
 
@@ -576,15 +565,6 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
         return (
             <div>{defCR} & {offCR} => {average}</div>
-        );
-    }
-
-    Traits()
-    {
-        var traitSplats = this.state.Traits.map(tr => (<TraitSplat key={tr.Id} trait={tr} />));
-
-        return (
-            <div>{traitSplats}</div>
         );
     }
 }

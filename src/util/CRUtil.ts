@@ -177,40 +177,40 @@ export function getAverageCR(averageHp: number, effectiveAC: number, averageDPR:
         return Data.CRs[averageIdx];
     }
 
+    // lolmaths
     var defCR = defCRIdx == 0 ? 0 :
-                defCRIdx >= 4
-                ? (defCRIdx - 3)
-                : (1 << defCRIdx) / 16;
+                defCRIdx >= 4 ? (defCRIdx - 3) :
+                (1 << defCRIdx) / 16;
     var offCR = offCRIdx == 0 ? 0 :
-                offCRIdx >= 4
-                ? (offCRIdx - 3)
-                : (1 << offCRIdx) / 16;
+                offCRIdx >= 4 ? (offCRIdx - 3) :
+                (1 << offCRIdx) / 16;
     var ave = (offCR + defCR) / 2;
 
     if (ave >= 1)
         return Math.round(ave).toString();
 
-    console.log("------");
-    console.log(defCR + " " + offCR);
-    console.log(ave);
     ave *= 16;
-    console.log(ave);
     switch (ave) // blech, manual shit...
     {
-        case 0: return Data.CRs[0];
-        case 1: return Data.CRs[1]; // 1/16
-        case 2: return Data.CRs[1]; // 2/16, 1/8
-        case 3: return Data.CRs[2]; // 3/16
-        case 4: return Data.CRs[2]; // 1/4
-        case 5: return Data.CRs[2]; // 5/16
-        case 6: return Data.CRs[3]; // 3/8
-        case 7: return Data.CRs[3]; // 7/16
-        case 8: return Data.CRs[3]; // 1/2
-        case 9: return Data.CRs[3]; // 9/16
-        case 10: return Data.CRs[3]; // 5/8
-        case 11: return Data.CRs[3]; // 11/16
-        case 12: return Data.CRs[4]; // 3/4
-        default: return Data.CRs[4];
+        case 0:
+            return Data.CRs[0];
+        case 1: // 1/16
+        case 2: // 2/16, 1/8
+            return Data.CRs[1];
+        case 3: // 3/16
+        case 4: // 1/4
+        case 5: // 5/16
+            return Data.CRs[2];
+        case 6: // 3/8
+        case 7: // 7/16
+        case 8: // 1/2
+        case 9: // 9/16
+        case 10: // 5/8
+        case 11: // 11/16
+            return Data.CRs[3];
+
+        default: // >= 3/4
+            return Data.CRs[4];
     }
 }
 

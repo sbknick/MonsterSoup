@@ -37,3 +37,6 @@ export function normalise<T>(items: T[], idAccessor: IdAccessor<T>) : Normalised
 
 export const getAllTraits = (state: GlobalState) =>
     fromEntities.getAllTraits(state.entities);
+
+export const getAppliedTraitIds = (state: GlobalState) =>
+    fromEntities.getAppliedTraitIds(state.entities);
