@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { GlobalState, getAllTraits, getAppliedTraitIds } from '../../reducers';
+import { GlobalState, getAllTraits, getAppliedTraitIds } from '../../redux/reducers';
 import { MonsterBuilderState, getTraitArgs } from '../../redux/reducers/monsterBuilder';
 import { Trait } from '../../redux/reducers/traits.reducer';
 import * as Actions from '../../redux/actions/monsterBuilder/traits.actions';
@@ -18,11 +18,18 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
         this.state = {selectedTraitId: 0};
 
         this.SetSelectedTraitId = this.SetSelectedTraitId.bind(this);
+        this.handleAddTrait = this.handleAddTrait.bind(this);
     }
 
     SetSelectedTraitId(id: number)
     {
         this.setState({selectedTraitId: id});
+    }
+
+    handleAddTrait(e: any)
+    {
+        this.props.ApplyTrait(this.state.selectedTraitId)
+        this.SetSelectedTraitId(0);
     }
 
     render()
@@ -45,7 +52,9 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
                         <option disabled value={0}> -- select an option -- </option>
                         {traitOptions}
                     </select>
-                    <button onClick={() => this.props.ApplyTrait(this.state.selectedTraitId)}>Add Trait</button>
+                    <button onClick={this.handleAddTrait}
+                        disabled={this.state.selectedTraitId == 0}
+                        >Add Trait</button>
                 </div>
             </div>
         );
@@ -71,7 +80,7 @@ function mapStateToProps(state: GlobalState) : Props
         AppliedTraits: []
     } as Props;
 
-    props.Monster = state.otherRootReducer.entities.monsterBuilder;
+    props.Monster = state.entities.monsterBuilder;
 
     var allTraits = getAllTraits(state);
     var myTraitIds = getAppliedTraitIds(state);

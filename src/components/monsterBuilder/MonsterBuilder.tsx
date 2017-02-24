@@ -4,7 +4,8 @@ import * as React from 'react';
 import * as CRUtil from '../../util/CRUtil';
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
 import Attributes from './Attributes';
-import HitDice from './HitDice';
+// import HitDice from './HitDice';
+import Proficiency from './Proficiency';
 import Traits from './Traits';
 import TraitSplat from './TraitSplat';
 
@@ -247,38 +248,16 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
         const ConMod = this.GetMod("Con");
 
-        // const Attr = this.state.Attributes as any;
-
         return (
             <div className="monster-stats">
                 <fieldset>
                     <legend>{monsterName} Stats</legend>
-                    <Fieldset legend={"Redux'd Site"}>
-                        <Attributes />
-                        <HitDice />
-                    </Fieldset>
-                    <div className="inline-child-divs">
-                        <LabelledItem label="Str">
-                            <NumberInput value={this.state.Attributes.Str} onChange={e => this.SetAttribute("Str", e.target.value)} />
-                        </LabelledItem>
-                        <LabelledItem label="Dex">
-                            <NumberInput value={this.state.Attributes.Dex} onChange={e => this.SetAttribute("Dex", e.target.value)} />
-                        </LabelledItem>
-                        <LabelledItem label="Con">
-                            <NumberInput value={this.state.Attributes.Con} onChange={e => this.SetAttribute("Con", e.target.value)} />
-                        </LabelledItem>
-                        <LabelledItem label="Int">
-                            <NumberInput value={this.state.Attributes.Int} onChange={e => this.SetAttribute("Int", e.target.value)} />
-                        </LabelledItem>
-                        <LabelledItem label="Wis">
-                            <NumberInput value={this.state.Attributes.Wis} onChange={e => this.SetAttribute("Wis", e.target.value)} />
-                        </LabelledItem>
-                        <LabelledItem label="Cha">
-                            <NumberInput value={this.state.Attributes.Cha} onChange={e => this.SetAttribute("Cha", e.target.value)} />
-                        </LabelledItem>
-                    </div>
+
+                    <Attributes />
+                    {/* <HitDice /> */}
                     <div className="inline-child-divs">
                         <h4>Proficiency Bonus</h4>
+                        <Proficiency />
                         <HighlightBonusOnChange Value={this.state.Proficiency} />
                         <UpDownLinks onUpClicked={e => this.handleModifyProficiency(1)} onDownClicked={e => this.handleModifyProficiency(-1)} />
                     </div>
@@ -311,7 +290,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                             </LabelledItem>
                         </div>
                     </fieldset>
-                    <Fieldset legend="Traits" className="defensive-cr" collapsed={true} displayOnCollapse={"(1)"}>
+                    <Fieldset legend="Traits" className="defensive-cr" displayOnCollapse={"(1)"}>
                         <Traits />
                     </Fieldset>
                     <Fieldset legend="Defensive CR" className="defensive-cr" displayOnCollapse={this.DefensiveCRSummary()}>

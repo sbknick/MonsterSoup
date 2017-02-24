@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { GlobalState } from '../../reducers';
-import * as Actions from '../../actions/MonsterBuilder.AttributesActions';
+import { GlobalState, getMonsterBuilderData } from '../../redux/reducers';
+import * as Actions from '../../redux/actions/monsterBuilder/attributes.actions';
 import NumberInput from '../common/NumberInput';
 
 interface AttributeProps
@@ -85,14 +85,14 @@ interface AttributesProps
 function mapStateToProps(state: GlobalState): AttributesProps
 {
     return {
-        Attributes: state.monsterBuilder.attributes
+        Attributes: getMonsterBuilderData(state).attributes
     } as AttributesProps;
 }
 
 function mapDispatchToProps(dispatch: any): AttributesProps
 {
     return {
-        ModifyAttribute: (a, v) => dispatch(Actions.IncrementAttribute(a, v)),
+        ModifyAttribute: (a, v) => dispatch(Actions.ModifyAttribute(a, v)),
         SetAttribute: (a, v) => dispatch(Actions.SetAttribute(a, v))
     } as AttributesProps;
 }

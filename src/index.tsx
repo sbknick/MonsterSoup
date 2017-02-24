@@ -3,13 +3,13 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 // internal functions
-import configureStore from './store/configure-store';
+import initStore from './initStore';
 
 // components
 import Nav from './components/Nav';
-import MonsterBuilder from './components/monster-builder/MonsterBuilder';
+import MonsterBuilder from './components/monsterBuilder/MonsterBuilder';
 
-const store = configureStore();
+const store = initStore();
 
 ReactDOM.render(
     (

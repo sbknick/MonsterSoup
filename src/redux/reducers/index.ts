@@ -40,3 +40,6 @@ export const getAllTraits = (state: GlobalState) =>
 
 export const getAppliedTraitIds = (state: GlobalState) =>
     fromEntities.getAppliedTraitIds(state.entities);
+
+export const getMonsterBuilderData = (state: GlobalState) =>
+    fromEntities.getMonsterBuilderData(state.entities);

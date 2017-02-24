@@ -16,11 +16,12 @@ const TraitSplat = (props: Props) =>
         <p>
             {Util.DisplayTraitDesc(props.trait, props.monster, props.traitArgs)}
         </p>
+
         {props.trait.EffectiveACModifier != null &&
-            (<span>
+            (<p style={{fontSize: ".8em", fontStyle: "italic"}}>
                 {props.trait.EffectiveACModifier > 0 ? "Increase " : "Decrease "}
                 the monster's effective AC by {props.trait.EffectiveACModifier}
-            </span>)
+            </p>)
         }
     </div>
 );

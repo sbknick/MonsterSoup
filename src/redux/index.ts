@@ -1,0 +1,2 @@
+
+export { GlobalState } from './reducers';

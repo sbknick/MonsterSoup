@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { GlobalState } from '../../reducers';
-
 export class Fieldset extends React.Component<Props, State>
 {
     constructor(props: Props)
@@ -55,5 +53,4 @@ interface State
     isCollapsed: boolean;
 }
 
-// export const Fieldset = connect(mapStateToProps)(_Fieldset);
 export default Fieldset;
