@@ -7,7 +7,7 @@ interface ProficiencyActionPayload
     amount: number;
 }
 
-export const ModifyProficiency: Redux.ActionCreator<ProficiencyActionPayload> =
-    (amount: number) => ({ type: types.MODIFY_PROFICIENCY, amount: amount });
+export const modifyProficiency: Redux.ActionCreator<ProficiencyActionPayload> =
+    (amount: number) => ({ type: types.PROFICIENCY_MODIFY, amount: amount });
 
 export type ProficiencyAction = Redux.Action & ProficiencyActionPayload;

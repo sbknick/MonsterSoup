@@ -17,7 +17,7 @@ interface Props
 function mapStateToProps(state: GlobalState)
 {
     return {
-        proficiency: getMonsterBuilderData(state).proficiency.ProficiencyBonus
+        proficiency: getMonsterBuilderData(state).proficiency.proficiencyBonus
     };
 }
 

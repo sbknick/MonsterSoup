@@ -9,7 +9,7 @@ export class Fieldset extends React.Component<Props, State>
 
         this.state = {isCollapsed: true};
 
-        this.ToggleCollapse = this.ToggleCollapse.bind(this);
+        this.toggleCollapse = this.toggleCollapse.bind(this);
     }
 
     componentWillReceiveProps(props: Props)
@@ -20,7 +20,7 @@ export class Fieldset extends React.Component<Props, State>
         }
     }
 
-    ToggleCollapse()
+    private toggleCollapse()
     {
         this.setState({isCollapsed: !this.state.isCollapsed});
     }
@@ -29,13 +29,15 @@ export class Fieldset extends React.Component<Props, State>
     {
         return (
             <fieldset className={this.props.className} style={this.props.style}>
-                <legend onClick={this.ToggleCollapse}>{this.props.legend}</legend>
+                <legend onClick={this.toggleCollapse}>{this.props.legend}</legend>
                 {this.state.isCollapsed || this.props.children}
                 {this.state.isCollapsed && this.props.displayOnCollapse}
             </fieldset>
         )
     }
 }
+
+export default Fieldset;
 
 interface Props
 {
@@ -52,5 +54,3 @@ interface State
 {
     isCollapsed: boolean;
 }
-
-export default Fieldset;

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 interface ArmorProps
 {
-  IsMetal: boolean,
-  IsArmor: boolean,
-  UsesShield: boolean,
-  ArmorName: string,
+  isMetal: boolean,
+  isArmor: boolean,
+  usesShield: boolean,
+  armorName: string,
 }
 
 interface ArmorOption
@@ -39,9 +39,9 @@ export class Armor extends React.Component<ArmorProps, {}>
   }
 
   render() {
-    const { IsMetal, IsArmor, ArmorName, UsesShield } = this.props;
+    const { isMetal, isArmor, armorName, usesShield } = this.props;
 
-    let armorString = UsesShield ? ArmorName + ", shield" : ArmorName;
+    let armorString = usesShield ? armorName + ", shield" : armorName;
 
     return (
       <div className="armor">

@@ -1,19 +1,5 @@
 import * as React from 'react';
 
-interface Props
-{
-    Duration?: number;
-    Value: any;
-
-    style?: any;
-}
-
-interface State
-{
-    Timer: number;
-    HighlightClass: string;
-}
-
 export class HighlightOnChange extends React.Component<Props, State>
 {
     constructor(props: Props)
@@ -21,43 +7,57 @@ export class HighlightOnChange extends React.Component<Props, State>
         super(props);
 
         this.state = ({
-            Timer: 0,
-            HighlightClass: ""
+            timer: 0,
+            highlightClass: ""
         });
 
-        this.ClearHighlightClass = this.ClearHighlightClass.bind(this);
-        this.DoTimeout = this.DoTimeout.bind(this);
+        this.clearHighlightClass = this.clearHighlightClass.bind(this);
+        this.doTimeout = this.doTimeout.bind(this);
     }
 
     componentWillReceiveProps(props: Props)
     {
-        if (props.Value != this.props.Value)
-            this.DoTimeout();
+        if (props.value != this.props.value)
+            this.doTimeout();
     }
 
-    ClearHighlightClass()
+    private clearHighlightClass()
     {
-        this.setState({HighlightClass: ""} as State);
+        this.setState({highlightClass: ""} as State);
     }
 
-    DoTimeout()
+    private doTimeout()
     {
-        clearTimeout(this.state.Timer);
+        clearTimeout(this.state.timer);
 
         this.setState({
-            HighlightClass: "highlight-change",
-            Timer: setTimeout(this.ClearHighlightClass, this.props.Duration * 1000)
+            highlightClass: "highlight-change",
+            timer: setTimeout(this.clearHighlightClass, this.props.duration * 1000)
         } as State);
     }
 
     render()
     {
         return (
-            <div className={this.state.HighlightClass} style={this.props.style}>
-                {this.props.children}{this.props.Value}
+            <div className={this.state.highlightClass} style={this.props.style}>
+                {this.props.children}{this.props.value}
             </div>
         );
     }
 }
 
 export default HighlightOnChange;
+
+interface Props
+{
+    duration?: number;
+    value: any;
+
+    style?: any;
+}
+
+interface State
+{
+    timer: number;
+    highlightClass: string;
+}

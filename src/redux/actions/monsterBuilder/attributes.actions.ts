@@ -7,18 +7,18 @@ interface AttributeActionPayload
     value: number;
 }
 
-export const ModifyAttribute: Redux.ActionCreator<AttributeActionPayload> =
+export const modifyAttribute: Redux.ActionCreator<AttributeActionPayload> =
     (attr: string, value: number) =>
     ({
-        type: types.MODIFY_ATTRIBUTE,
+        type: types.ATTRIBUTE_MODIFY,
         attr: attr,
         value: value
     });
 
-export const SetAttribute: Redux.ActionCreator<AttributeActionPayload> =
+export const setAttribute: Redux.ActionCreator<AttributeActionPayload> =
     (attr: string, value: number) =>
     ({
-        type: types.SET_ATTRIBUTE,
+        type: types.ATTRIBUTE_SET,
         attr: attr,
         value: value
     });

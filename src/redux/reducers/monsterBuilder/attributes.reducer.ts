@@ -2,17 +2,17 @@ import * as Redux from 'redux';
 import * as types from '../../types/monsterBuilder/attributes.types';
 import * as Actions from '../../actions/monsterBuilder/attributes.actions';
 
-const AttributesReducer: Redux.Reducer<State> = (state: State = initialState, action: Actions.AttributesAction) =>
+const attributesReducer: Redux.Reducer<State> = (state: State = initialState, action: Actions.AttributesAction) =>
 {
     var newState = Object.assign({}, state);
 
     switch (action.type)
     {
-        case types.MODIFY_ATTRIBUTE:
+        case types.ATTRIBUTE_MODIFY:
             (newState as any)[action.attr] += action.value;
             break;
 
-        case types.SET_ATTRIBUTE:
+        case types.ATTRIBUTE_SET:
             (newState as any)[action.attr] = action.value;
             break;
 
@@ -23,7 +23,7 @@ const AttributesReducer: Redux.Reducer<State> = (state: State = initialState, ac
     return newState;
 }
 
-export default AttributesReducer;
+export default attributesReducer;
 
 export interface State
 {

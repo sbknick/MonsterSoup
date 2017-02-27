@@ -17,38 +17,27 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
 
         this.state = {selectedTraitId: 0};
 
-        this.SetSelectedTraitId = this.SetSelectedTraitId.bind(this);
+        this.setSelectedTraitId = this.setSelectedTraitId.bind(this);
         this.handleAddTrait = this.handleAddTrait.bind(this);
-    }
-
-    SetSelectedTraitId(id: number)
-    {
-        this.setState({selectedTraitId: id});
-    }
-
-    handleAddTrait(e: any)
-    {
-        this.props.ApplyTrait(this.state.selectedTraitId)
-        this.SetSelectedTraitId(0);
     }
 
     render()
     {
-        var traitSplats = this.props.AppliedTraits.map(t =>
-            <TraitSplat key={t.Id}
-                        monster={this.props.Monster}
+        var traitSplats = this.props.appliedTraits.map(t =>
+            <TraitSplat key={t.id}
+                        monster={this.props.monster}
                         trait={t}
-                        traitArgs={getTraitArgs(this.props.Monster, t)}
-                        onRemoveClicked={this.props.RemoveTrait} />
+                        traitArgs={getTraitArgs(this.props.monster, t)}
+                        onRemoveClicked={this.props.removeTrait} />
         );
 
-        var traitOptions = this.props.AvailableTraits.map(t => <option key={t.Id} value={t.Id} title={t.Desc}>{t.Name}</option>);
+        var traitOptions = this.props.availableTraits.map(t => <option key={t.id} value={t.id} title={t.desc}>{t.name}</option>);
 
         return (
             <div>
                 {traitSplats}
                 <div>
-                    <select value={this.state.selectedTraitId} onChange={(e: any) => this.SetSelectedTraitId(Number(e.target.value))}>
+                    <select value={this.state.selectedTraitId} onChange={(e: any) => this.setSelectedTraitId(Number(e.target.value))}>
                         <option disabled value={0}> -- select an option -- </option>
                         {traitOptions}
                     </select>
@@ -59,40 +48,51 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
             </div>
         );
     }
+
+    private setSelectedTraitId(id: number)
+    {
+        this.setState({selectedTraitId: id});
+    }
+
+    private handleAddTrait(e: any)
+    {
+        this.props.applyTrait(this.state.selectedTraitId)
+        this.setSelectedTraitId(0);
+    }
 }
 
 interface Props
 {
-    AllTraits: Trait[];
-    AvailableTraits: Trait[];
-    AppliedTraits: Trait[];
-    Monster: MonsterBuilderState;
+    allTraits: Trait[];
+    availableTraits: Trait[];
+    appliedTraits: Trait[];
+    monster: MonsterBuilderState;
 
-    ApplyTrait?: (id: number) => void;
-    RemoveTrait: (t: Trait) => void;
+    applyTrait?: (id: number) => void;
+    removeTrait: (t: Trait) => void;
 }
 
 function mapStateToProps(state: GlobalState) : Props
 {
     var props: Props = {
-        AllTraits: [],
-        AvailableTraits: [],
-        AppliedTraits: []
+        allTraits: [],
+        availableTraits: [],
+        appliedTraits: []
     } as Props;
 
-    props.Monster = state.entities.monsterBuilder;
+    props.monster = state.entities.monsterBuilder;
 
     var allTraits = getAllTraits(state);
     var myTraitIds = getAppliedTraitIds(state);
 
     allTraits.reduce((acc, tr) =>
     {
-        if (myTraitIds.indexOf(tr.Id) != -1)
-            acc.AppliedTraits.push(tr);
+        if (myTraitIds.indexOf(tr.id) != -1)
+            acc.appliedTraits.push(tr);
         else
-            acc.AvailableTraits.push(tr);
+            acc.availableTraits.push(tr);
 
-        acc.AllTraits.push(tr);
+        acc.allTraits.push(tr);
 
         return acc;
     }, props);
@@ -103,8 +103,8 @@ function mapStateToProps(state: GlobalState) : Props
 function mapDispatchToProps(dispatch: any) : Props
 {
     return {
-        ApplyTrait: (id: number) => dispatch(Actions.ApplyTrait(id)),
-        RemoveTrait: (t: Trait) => dispatch(Actions.RemoveTrait(t.Id))
+        applyTrait: (id: number) => dispatch(Actions.applyTrait(id)),
+        removeTrait: (t: Trait) => dispatch(Actions.removeTrait(t.id))
     } as Props;
 }
 

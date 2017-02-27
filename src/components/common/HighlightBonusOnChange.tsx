@@ -1,23 +1,9 @@
 import * as React from 'react';
 
-interface Props
-{
-    Duration?: number;
-    Value: number;
-
-    style?: any;
-}
-
-interface State
-{
-    Timer: number;
-    HighlightClass: string;
-}
-
 export class HighlightBonusOnChange extends React.Component<Props, State>
 {
     static defaultProps: Props = {
-        Duration: 0.5
+        duration: 0.5
     } as Props;
 
     constructor(props: Props)
@@ -25,43 +11,57 @@ export class HighlightBonusOnChange extends React.Component<Props, State>
         super(props);
 
         this.state = ({
-            Timer: 0,
-            HighlightClass: ""
+            timer: 0,
+            highlightClass: ""
         });
 
-        this.ClearHighlightClass = this.ClearHighlightClass.bind(this);
-        this.DoTimeout = this.DoTimeout.bind(this);
+        this.clearHighlightClass = this.clearHighlightClass.bind(this);
+        this.doTimeout = this.doTimeout.bind(this);
     }
 
     componentWillReceiveProps(props: Props)
     {
-        if (props.Value != this.props.Value)
-            this.DoTimeout();
+        if (props.value != this.props.value)
+            this.doTimeout();
     }
 
-    ClearHighlightClass()
+    private clearHighlightClass()
     {
-        this.setState({HighlightClass: ""} as State);
+        this.setState({highlightClass: ""} as State);
     }
 
-    DoTimeout()
+    private doTimeout()
     {
-        clearTimeout(this.state.Timer);
+        clearTimeout(this.state.timer);
 
         this.setState({
-            HighlightClass: "highlight-change",
-            Timer: setTimeout(this.ClearHighlightClass, this.props.Duration * 1000)
+            highlightClass: "highlight-change",
+            timer: setTimeout(this.clearHighlightClass, this.props.duration * 1000)
         } as State);
     }
 
     render()
     {
         return (
-            <div className={this.state.HighlightClass} style={this.props.style}>
-                {this.props.Value && this.props.Value >= 0 ? "+" : ""}{this.props.Value}
+            <div className={this.state.highlightClass} style={this.props.style}>
+                {this.props.value && this.props.value >= 0 ? "+" : ""}{this.props.value}
             </div>
         );
     }
 }
 
 export default HighlightBonusOnChange;
+
+interface Props
+{
+    duration?: number;
+    value: number;
+
+    style?: any;
+}
+
+interface State
+{
+    timer: number;
+    highlightClass: string;
+}

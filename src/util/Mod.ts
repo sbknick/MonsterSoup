@@ -1,13 +1,18 @@
 
-export function Mod(value: number) : number
+// A function to return the "mod" value for a given number.
+// E.g. with a Str score of 9, the resulting mod should be -1
+// This does not convert to string or add the '+' prefix
+export function mod(value: number) : number
 {
     var result = Math.floor((value / 2) - 5);
     return result;
 }
 
-export function ModBonus(value: number) : string
+// A function to return the "mod" value for a given number.
+// This will pre-pend a '+' prefix if non-negative.
+// E.g. a Str score of 11 will return "+0"
+export function modBonus(value: number) : string
 {
-    var mod = Mod(value);
-
-    return mod >= 0 ? "+" + mod : mod.toString();
+    var result = mod(value);
+    return result >= 0 ? "+" + result : result.toString();
 }

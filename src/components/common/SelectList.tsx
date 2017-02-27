@@ -1,14 +1,5 @@
 import * as React from 'react';
 
-interface Props
-{
-    value?: any;
-    defaultValue?: any;
-    onChange?: (e: any) => void;
-
-    options: string[];
-}
-
 export class SelectList extends React.Component<Props, {}>
 {
     render()
@@ -26,3 +17,12 @@ export class SelectList extends React.Component<Props, {}>
 }
 
 export default SelectList;
+
+interface Props
+{
+    value?: any;
+    defaultValue?: any;
+    onChange?: (e: any) => void;
+
+    options: string[];
+}

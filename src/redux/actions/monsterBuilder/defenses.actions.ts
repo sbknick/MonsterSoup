@@ -12,26 +12,26 @@ interface IdxPayload
     idx: number;
 }
 
-export const SetHitDiceCount: Redux.ActionCreator<IdxValuePayload> =
+export const setHitDiceCount: Redux.ActionCreator<IdxValuePayload> =
     (idx: number, value: number) =>
     ({
-        type: types.SET_HIT_DICE_COUNT,
+        type: types.HIT_DICE_COUNT_SET,
         idx: idx,
         value: value
     });
 
-export const SetHitDieSize: Redux.ActionCreator<IdxValuePayload> =
+export const setHitDieSize: Redux.ActionCreator<IdxValuePayload> =
     (idx: number, value: number) =>
     ({
-        type: types.SET_HIT_DICE_COUNT,
+        type: types.HIT_DICE_COUNT_SET,
         idx: idx,
         value: value
     });
 
-export const AddNewHitDie: Redux.ActionCreator<void> =
-    () => ({ type: types.ADD_NEW_HIT_DIE })
+export const addNewHitDie: Redux.ActionCreator<void> =
+    () => ({ type: types.HIT_DIE_ADD_NEW })
 
-export const RemoveHitDie: Redux.ActionCreator<void> =
-    (idx: number) => ({ type: types.REMOVE_HIT_DIE, idx: idx })
+export const removeHitDie: Redux.ActionCreator<void> =
+    (idx: number) => ({ type: types.HIT_DIE_REMOVE, idx: idx })
 
 export type DefensesAction = Redux.Action | Redux.Action & (IdxPayload | IdxValuePayload);

@@ -10,12 +10,12 @@ const TraitsReducer: Redux.Reducer<State> = (state = initialState, action: Actio
 
     switch (action.type)
     {
-        case types.REMOVE_TRAIT:
-            newState.AppliedTraitIds = newState.AppliedTraitIds.filter(tid => tid != action.traitId);
+        case types.TRAIT_REMOVE:
+            newState.appliedTraitIds = newState.appliedTraitIds.filter(tid => tid != action.traitId);
             break;
 
-        case types.APPLY_TRAIT:
-            newState.AppliedTraitIds.push(action.traitId);
+        case types.TRAIT_APPLY:
+            newState.appliedTraitIds.push(action.traitId);
             break;
 
         default:
@@ -29,13 +29,13 @@ export default TraitsReducer;
 
 export interface State
 {
-    AppliedTraitIds: number[];
-    TraitArgs: TraitArgsMap;
+    appliedTraitIds: number[];
+    traitArgs: TraitArgsMap;
 }
 
 const initialState: State = {
-    AppliedTraitIds: [7],
-    TraitArgs: {}
+    appliedTraitIds: [7],
+    traitArgs: {}
 };
 
 type TraitArgsMap = {[key: number] : TraitArgs};
@@ -48,7 +48,7 @@ export interface TraitArgs
 }
 
 export const getAppliedTraitIds = (state: State) =>
-    state.AppliedTraitIds;
+    state.appliedTraitIds;
 
 export const getTraitArgs = (state: State, trait: Trait) =>
-    state.TraitArgs[trait.Id];
+    state.traitArgs[trait.id];

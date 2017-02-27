@@ -9,8 +9,8 @@ const proficiencyReducer: Redux.Reducer<{}> = (state = initialState, action: Act
 
     switch (action.type)
     {
-        case types.MODIFY_PROFICIENCY:
-            newState.ProficiencyBonus += action.amount;
+        case types.PROFICIENCY_MODIFY:
+            newState.proficiencyBonus += action.amount;
             break;
 
         default:
@@ -23,14 +23,14 @@ const proficiencyReducer: Redux.Reducer<{}> = (state = initialState, action: Act
 
 export interface State
 {
-    ProficiencyBonus: number;
+    proficiencyBonus: number;
 }
 
 const initialState: State = {
-    ProficiencyBonus: 2
+    proficiencyBonus: 2
 };
 
 export default proficiencyReducer;
 
 export const getProficiencyBonus = (state: State) =>
-    state.ProficiencyBonus;
+    state.proficiencyBonus;

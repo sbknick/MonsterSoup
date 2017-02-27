@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+import * as Util from '../../util/Mod';
+
 import { GlobalState, getMonsterBuilderData } from '../../redux/reducers';
+import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer';
 import * as Actions from '../../redux/actions/monsterBuilder/attributes.actions';
 import NumberInput from '../common/NumberInput';
-
-interface AttributeProps
-{
-    label: string,
-    value: number,
-    modifyAttribute: (label: string, value: number) => void;
-    setAttribute: (label: string, value: number) => void;
-}
 
 export class Attribute extends React.Component<AttributeProps, {}>
 {
@@ -22,13 +17,7 @@ export class Attribute extends React.Component<AttributeProps, {}>
         this.valueChanged = this.valueChanged.bind(this);
     }
 
-    Mod(value: number): string | number
-    {
-        var result = Math.floor((value / 2) - 5);
-        return result < 0 ? result : "+" + result;
-    }
-
-    handleClick(e: any, value: number)
+    private handleClick(e: any, value: number)
     {
         e.preventDefault();
         this.props.modifyAttribute(this.props.label, value);
@@ -58,61 +47,57 @@ export class Attribute extends React.Component<AttributeProps, {}>
                     <i className="fa fa-minus"></i>
                 </a>
 
-                <div className="report">{value} ({this.Mod(value)})</div>
+                <div className="report">{value} ({Util.modBonus(value)})</div>
             </div>
         );
     }
 }
 
-interface AttributesSet
+interface AttributeProps
 {
-    Str: number;
-    Dex: number;
-    Con: number;
-    Int: number;
-    Wis: number;
-    Cha: number;
+    label: string,
+    value: number,
+    modifyAttribute: (label: string, value: number) => void;
+    setAttribute: (label: string, value: number) => void;
+}
+
+// class Attributes extends React.Component<AttributesProps, void>
+const Attributes: React.StatelessComponent<AttributesProps> = (props: AttributesProps) =>
+{
+    const attr = props.attributes as any;
+    let attributes = Object.keys(attr).map(key =>
+        <Attribute key={key} label={key} value={attr[key]} modifyAttribute={props.modifyAttribute} setAttribute={props.setAttribute} />
+    );
+
+    return (
+        <div className="attributes">
+            <h4>Attributes</h4>
+            {attributes}
+        </div>
+    );
 }
 
 interface AttributesProps
 {
-    Attributes: AttributesSet;
+    attributes: AttributesSet;
 
-    ModifyAttribute: (attr: string, value: number) => void;
-    SetAttribute: (attr: string, value: number) => void;
+    modifyAttribute: (attr: string, value: number) => void;
+    setAttribute: (attr: string, value: number) => void;
 }
 
 function mapStateToProps(state: GlobalState): AttributesProps
 {
     return {
-        Attributes: getMonsterBuilderData(state).attributes
+        attributes: getMonsterBuilderData(state).attributes
     } as AttributesProps;
 }
 
 function mapDispatchToProps(dispatch: any): AttributesProps
 {
     return {
-        ModifyAttribute: (a, v) => dispatch(Actions.ModifyAttribute(a, v)),
-        SetAttribute: (a, v) => dispatch(Actions.SetAttribute(a, v))
+        modifyAttribute: (a, v) => dispatch(Actions.modifyAttribute(a, v)),
+        setAttribute: (a, v) => dispatch(Actions.setAttribute(a, v))
     } as AttributesProps;
-}
-
-class Attributes extends React.Component<AttributesProps, void>
-{
-    render()
-    {
-        const attr = this.props.Attributes as any;
-        let attributes = Object.keys(attr).map(key =>
-            <Attribute key={key} label={key} value={attr[key]} modifyAttribute={this.props.ModifyAttribute} setAttribute={this.props.SetAttribute} />
-        );
-
-        return (
-            <div className="attributes">
-                <h4>Attributes</h4>
-                {attributes}
-            </div>
-        )
-    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Attributes);

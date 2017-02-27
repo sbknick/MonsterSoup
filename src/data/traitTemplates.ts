@@ -3,15 +3,15 @@ import defaultTraits from './traits';
 
 interface TraitTemplate
 {
-    Id: number;
-    Name: string;
-    TraitIds: number[];
+    id: number;
+    name: string;
+    traitIds: number[];
 
-    Traits?: Trait[];
+    traits?: Trait[];
 }
 
 const defaultTraitTemplates: TraitTemplate[] = [
-    { Id: 1, Name: "Spider", TraitIds: [1, 2] }
+    { id: 1, name: "Spider", traitIds: [1, 2] }
 ];
 
 export default defaultTraitTemplates;

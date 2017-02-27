@@ -1,6 +1,6 @@
 import * as Redux from 'redux';
 
-const DescriptionReducer: Redux.Reducer<State> = (state = initialState, action: any) =>
+const descriptionReducer: Redux.Reducer<State> = (state = initialState, action: any) =>
 {
     var newState = Object.assign({}, state);
 
@@ -21,7 +21,7 @@ const DescriptionReducer: Redux.Reducer<State> = (state = initialState, action: 
     return newState;
 }
 
-export default DescriptionReducer;
+export default descriptionReducer;
 
 export interface State
 {

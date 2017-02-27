@@ -2,10 +2,10 @@ import { MonsterBuilderState, getDescription, getTraitArgs } from '../redux/redu
 import { Trait } from '../redux/reducers/traits.reducer';
 import { TraitArgs } from '../redux/reducers/monsterBuilder/traits.reducer';
 
-export const DisplayTraitDesc = (trait: Trait, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
+export const displayTraitDesc = (trait: Trait, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
 {
     let args = traitArgs || getTraitArgs(monster, trait);
-    let desc = trait.Desc;
+    let desc = trait.desc;
 
     // Do Monster-Description-based replaces
 
@@ -35,10 +35,10 @@ export const DisplayTraitDesc = (trait: Trait, monster: MonsterBuilderState, tra
     return desc;
 };
 
-export const DisplayTraitName = (trait: Trait, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
+export const displayTraitName = (trait: Trait, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
 {
     const args = traitArgs || getTraitArgs(monster, trait);
-    let name = trait.Name;
+    let name = trait.name;
 
     // Do TraitArgs-based replaces
 

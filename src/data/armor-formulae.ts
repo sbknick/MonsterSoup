@@ -3,7 +3,7 @@ interface ArmorFormula
     attribute: string;
 }
 
-export const Options = {
+export const options = {
     Armored: "ARMOR",
     UnarmoredDefenseBarbarian: "UNARMORED_DEFENSE", // barb: 10 + dex + con, shield allowed
     UnarmoredDefenseMonk: "UNARMORED_DEFENSE2", // monk: 10 + dex + wis, no shield
@@ -14,4 +14,4 @@ let armor: ArmorFormula = {
     attribute: "Dex"
 };
 
-export default Options;
+export default options;

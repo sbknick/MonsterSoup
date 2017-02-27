@@ -31,33 +31,33 @@ var initialState: TraitsState = { byId: {}, allIds: [] };
 
 export class Trait
 {
-    Id: number;
-    Name: string;
-    Desc: string;
-    MiscText?: string;
-    MiscTextApplyType?: MiscTextApplyType;
+    id: number;
+    name: string;
+    desc: string;
+    miscText?: string;
+    miscTextApplyType?: MiscTextApplyType;
 
-    EffectiveACModifier?: number;
-    EffectiveHPMultiplier?: number;
-    EffectiveABModifier?: number;
-    EffectiveDCModifier?: number;
+    effectiveACModifier?: number;
+    effectiveHPMultiplier?: number;
+    effectiveABModifier?: number;
+    effectiveDCModifier?: number;
 
-    EffectiveDPRModifier?: number;
-    EffectiveDPRMultiplier?: number;
-    EffectiveDPRModifierString?: string;
+    effectiveDPRModifier?: number;
+    effectiveDPRMultiplier?: number;
+    effectiveDPRModifierString?: string;
 
-    Requires?: any;
-    Special?: SpecialTraitType;
-    NotReady?: boolean;
+    requires?: any;
+    special?: SpecialTraitType;
+    notReady?: boolean;
 }
 
 interface TraitArgs
 {
-    ShortName: string;
+    shortName: string;
 
-    Damage?: string;
-    DamageType?: string;
-    Weapon?: string;
+    damage?: string;
+    damageType?: string;
+    weapon?: string;
 }
 
 export enum MiscTextApplyType
@@ -75,7 +75,7 @@ function normalise(items: Trait[]) : NormalisedData<Trait>
     var results: NormalisedData<Trait> = { byId: {}, allIds: [] };
 
     return items.reduce((acc, tr) => {
-        let id = tr.Id;
+        let id = tr.id;
         acc.byId[id] = tr;
         acc.allIds.push(id);
         return acc;

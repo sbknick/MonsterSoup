@@ -7,7 +7,7 @@ This allows us to Increment or Decrement CR by "1", so that 1 goes down to 1/2,
 
 function getCRIdxForHP(average: number): number
 {
-    var range = Data.HPCRRanges.find(r => r.Low <= average && average <= r.High);
+    var range = Data.HPCRRanges.find(r => r.low <= average && average <= r.high);
     return range.CR;
 }
 
@@ -35,7 +35,7 @@ function getCRIdxRangeForAC(effectiveAC: number): Data.Range
 export function getCRRangeForAC(effectiveAC: number): any
 {
     var idxRange = getCRIdxRangeForAC(effectiveAC);
-    return { Low: Data.CRs[idxRange.Low], High: Data.CRs[idxRange.High] };
+    return { Low: Data.CRs[idxRange.low], High: Data.CRs[idxRange.high] };
 }
 
 function getIdxForCR(cr: number | string): number
@@ -54,7 +54,7 @@ function getIdxForCR(cr: number | string): number
 
 function getExpectedACForCRIdx(idx: number): number
 {
-    var range = Data.ACCRRanges.find(r => r.Low <= idx && idx <= r.High);
+    var range = Data.ACCRRanges.find(r => r.low <= idx && idx <= r.high);
     return range.AC;
 }
 
@@ -69,7 +69,7 @@ function getDefensiveCRIdx(averageHp: number, effectiveAC: number) : number
     var hpCrIdx = getCRIdxForHP(averageHp);
     var acCrIdxRange = getCRIdxRangeForAC(effectiveAC);
 
-    if (acCrIdxRange.Low <= hpCrIdx && hpCrIdx <= acCrIdxRange.High)
+    if (acCrIdxRange.low <= hpCrIdx && hpCrIdx <= acCrIdxRange.high)
         return hpCrIdx;
 
     var crAc = getExpectedACForCRIdx(hpCrIdx);
@@ -88,7 +88,7 @@ export function getDefensiveCR(averageHp: number, effectiveAC: number) : string
 
 function getCRIdxForDPR(average: number): number
 {
-    var range = Data.DPRCRRanges.find(r => r.Low <= average && average <= r.High);
+    var range = Data.DPRCRRanges.find(r => r.low <= average && average <= r.high);
     return range.CR;
 }
 
@@ -100,7 +100,7 @@ export function getCRForDPR(average: number): string
 
 function getExpectedABForCRIdx(idx: number): number
 {
-    var range = Data.ABCRRanges.find(r => r.Low <= idx && idx <= r.High);
+    var range = Data.ABCRRanges.find(r => r.low <= idx && idx <= r.high);
     return range.AB;
 }
 
@@ -112,7 +112,7 @@ export function getExpectedABForCR(cr: number | string): number
 
 function getExpectedDCForCRIdx(idx: number): number
 {
-    var range = Data.DCCRRanges.find(r => r.Low <= idx && idx <= r.High);
+    var range = Data.DCCRRanges.find(r => r.low <= idx && idx <= r.high);
     return range.DC;
 }
 
@@ -140,7 +140,7 @@ function getCRIdxRangeForAB(effectiveAB: number): Data.Range
 export function getCRRangeForAB(effectiveAB: number): any
 {
     var idxRange = getCRIdxRangeForAB(effectiveAB);
-    return { Low: Data.CRs[idxRange.Low], High: Data.CRs[idxRange.High] };
+    return { Low: Data.CRs[idxRange.low], High: Data.CRs[idxRange.high] };
 }
 
 function getOffensiveCRIdx(averageDPR: number, effectiveAB: number) : number
@@ -149,7 +149,7 @@ function getOffensiveCRIdx(averageDPR: number, effectiveAB: number) : number
     var abCrIdxRange = getCRIdxRangeForAB(effectiveAB);
     // var dcCrIdxRange = getCRIdxRangeForDC(effectiveDC);
 
-    if (abCrIdxRange.Low <= dprCrIdx && dprCrIdx <= abCrIdxRange.High)
+    if (abCrIdxRange.low <= dprCrIdx && dprCrIdx <= abCrIdxRange.high)
         return dprCrIdx;
 
     var crAb = getExpectedABForCRIdx(dprCrIdx);
@@ -216,12 +216,12 @@ export function getAverageCR(averageHp: number, effectiveAC: number, averageDPR:
 
 function getCRIdxRangeForProficiency(proficiencyBonus: number): Data.Range
 {
-    var range = Data.ProficiencyCRRanges.find(r => r.Proficiency == proficiencyBonus);
+    var range = Data.ProficiencyCRRanges.find(r => r.proficiency == proficiencyBonus);
     return range;
 }
 
 export function getCRRangeForProficiency(proficiencyBonus: number): any
 {
     var idxRange = getCRIdxRangeForProficiency(proficiencyBonus);
-    return { Low: Data.CRs[idxRange.Low], High: Data.CRs[idxRange.High] };
+    return { Low: Data.CRs[idxRange.low], High: Data.CRs[idxRange.high] };
 }
