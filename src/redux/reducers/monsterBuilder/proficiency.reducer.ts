@@ -5,12 +5,16 @@ import * as Actions from '../../actions/monsterBuilder/proficiency.actions';
 
 const proficiencyReducer: Redux.Reducer<{}> = (state = initialState, action: Actions.ProficiencyAction) =>
 {
+    const MIN_PROFICIENCY = 2;
+    const MAX_PROFICIENCY = 9;
+
     var newState = Object.assign({}, state);
 
     switch (action.type)
     {
         case types.PROFICIENCY_MODIFY:
             newState.proficiencyBonus += action.amount;
+            newState.proficiencyBonus = Math.min(MAX_PROFICIENCY, Math.max(MIN_PROFICIENCY, newState.proficiencyBonus));
             break;
 
         default:

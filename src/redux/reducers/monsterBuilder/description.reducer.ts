@@ -6,11 +6,11 @@ const descriptionReducer: Redux.Reducer<State> = (state = initialState, action: 
 
     switch (action.type)
     {
-        case "SET_SHORT_NAME":
+        case "SHORT_NAME_SET":
             newState.shortName = action.ShortName;
             break;
 
-        case "CLEAR_SHORT_NAME":
+        case "SHORT_NAME_CLEAR":
             newState = initialState;
             break;
 

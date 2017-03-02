@@ -43,9 +43,9 @@ export class HighlightBonusOnChange extends React.Component<Props, State>
     render()
     {
         return (
-            <div className={this.state.highlightClass} style={this.props.style}>
+            <span className={this.state.highlightClass} style={this.props.style}>
                 {this.props.value && this.props.value >= 0 ? "+" : ""}{this.props.value}
-            </div>
+            </span>
         );
     }
 }

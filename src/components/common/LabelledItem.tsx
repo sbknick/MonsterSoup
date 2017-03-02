@@ -8,33 +8,31 @@ interface Props
     labelType?: string;
 
     className?: string;
+    style?: any;
 }
 
-export class LabelledItem extends React.Component<Props, void>
+export const LabelledItem: React.StatelessComponent<Props> = (props) =>
 {
-    render()
-    {
-        var Container = this.props.container || "div";
-        var ContentContainer = this.props.contentContainer || "div";
-        var LabelType = this.props.labelType || "label";
+    var Container = props.container || "div";
+    var ContentContainer = props.contentContainer || "div";
+    var LabelType = props.labelType || "label";
 
-        if (ContentContainer != "none")
-            return (
-                <Container className={this.props.className}>
-                    <LabelType>{this.props.label}</LabelType>
-                    <ContentContainer>
-                        {this.props.children}
-                    </ContentContainer>
-                </Container>
-            );
-        else
-            return (
-                <Container className={this.props.className}>
-                    <LabelType>{this.props.label}</LabelType>
-                    {this.props.children}
-                </Container>
-            )
-    }
+    if (ContentContainer != "none")
+        return (
+            <Container className={props.className} style={props.style}>
+                <LabelType>{props.label}</LabelType>
+                <ContentContainer>
+                    {props.children}
+                </ContentContainer>
+            </Container>
+        );
+    else
+        return (
+            <Container className={props.className} style={props.style}>
+                <LabelType>{props.label}</LabelType>
+                {props.children}
+            </Container>
+        );
 }
 
 export default LabelledItem;

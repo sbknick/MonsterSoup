@@ -9,6 +9,7 @@ import Attributes from './Attributes';
 import Proficiency from './Proficiency';
 import Traits from './Traits';
 import TraitSplat from './TraitSplat';
+import Saves from './Saves';
 
 import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer'
 import { Trait } from '../../redux/reducers/traits.reducer';
@@ -214,13 +215,9 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
                     <Attributes />
                     {/* <HitDice /> */}
-                    <div className="inline-child-divs">
-                        <h4>Proficiency Bonus</h4>
-                        <Proficiency />
-                        <HighlightBonusOnChange value={this.state.proficiency} />
-                        <UpDownLinks onUpClicked={e => this.handleModifyProficiency(1)} onDownClicked={e => this.handleModifyProficiency(-1)} />
-                    </div>
-                    <fieldset className="saving-throws">
+                    <Proficiency />
+
+                    {/*<fieldset className="saving-throws">
                         <legend>Saving Throws</legend>
                         <div className="inline-child-divs">
                             <LabelledItem label="Str">
@@ -248,7 +245,9 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                 <div>{this.GetMod("Cha")}</div>
                             </LabelledItem>
                         </div>
-                    </fieldset>
+                    </fieldset>*/}
+                    <Saves />
+
                     <Fieldset legend="Traits" className="defensive-cr" displayOnCollapse={"(1)"}>
                         <Traits />
                     </Fieldset>
@@ -431,6 +430,11 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     <Fieldset legend="Total CR" displayOnCollapse={this.TotalCRSummary()}>
                         {this.TotalCRSummary()}
                     </Fieldset>
+                    <div style={{marginTop: "30px"}}>
+                        <a href="">Export as StatBlocks HTML</a>
+                        <br />
+                        <a href="">Export as Homebrewery Markdown</a>
+                    </div>
                 </fieldset>
             </div>
         );

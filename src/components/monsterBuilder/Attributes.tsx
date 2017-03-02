@@ -6,7 +6,7 @@ import * as Util from '../../util/Mod';
 import { GlobalState, getMonsterBuilderData } from '../../redux/reducers';
 import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer';
 import * as Actions from '../../redux/actions/monsterBuilder/attributes.actions';
-import NumberInput from '../common/NumberInput';
+import { HighlightOnChange, NumberInput } from '../common';
 
 export class Attribute extends React.Component<AttributeProps, {}>
 {
@@ -47,7 +47,9 @@ export class Attribute extends React.Component<AttributeProps, {}>
                     <i className="fa fa-minus"></i>
                 </a>
 
-                <div className="report">{value} ({Util.modBonus(value)})</div>
+                <div className="report inline-children">
+                    <HighlightOnChange value={value} /> (<HighlightOnChange value={Util.modBonus(value)} />)
+                </div>
             </div>
         );
     }

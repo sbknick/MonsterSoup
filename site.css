@@ -144,3 +144,13 @@ legend {
     display: block;
     clear: both;
 }
+
+/**** Saves block ****/
+
+.saving-throws > *:not(:last-child) {
+    margin-right: 10px;
+}
+
+.saving-throws > *:not(:first-child) {
+    text-align: center;
+}
