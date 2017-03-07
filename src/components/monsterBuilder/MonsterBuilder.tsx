@@ -3,8 +3,10 @@ import * as React from 'react';
 
 import * as CRUtil from '../../util/CRUtil';
 import { mod, modBonus } from '../../util/Mod';
+
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
 import Attributes from './Attributes';
+import Defenses from './Defenses';
 // import HitDice from './HitDice';
 import Proficiency from './Proficiency';
 import Traits from './Traits';
@@ -214,121 +216,14 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     <legend>{monsterName} Stats</legend>
 
                     <Attributes />
-                    {/* <HitDice /> */}
                     <Proficiency />
-
-                    {/*<fieldset className="saving-throws">
-                        <legend>Saving Throws</legend>
-                        <div className="inline-child-divs">
-                            <LabelledItem label="Str">
-                                <input type="checkbox" />
-                                <div>{this.GetMod("Str")}</div>
-                            </LabelledItem>
-                            <LabelledItem label="Dex">
-                                <input type="checkbox" />
-                                <div>{this.GetMod("Dex")}</div>
-                            </LabelledItem>
-                            <LabelledItem label="Con">
-                                <input type="checkbox" />
-                                <div>{this.GetMod("Con")}</div>
-                            </LabelledItem>
-                            <LabelledItem label="Int">
-                                <input type="checkbox" />
-                                <div>{this.GetMod("Int")}</div>
-                            </LabelledItem>
-                            <LabelledItem label="Wis">
-                                <input type="checkbox" />
-                                <div>{this.GetMod("Wis")}</div>
-                            </LabelledItem>
-                            <LabelledItem label="Cha">
-                                <input type="checkbox" />
-                                <div>{this.GetMod("Cha")}</div>
-                            </LabelledItem>
-                        </div>
-                    </fieldset>*/}
                     <Saves />
 
                     <Fieldset legend="Traits" className="defensive-cr" displayOnCollapse={"(1)"}>
                         <Traits />
                     </Fieldset>
                     <Fieldset legend="Defensive CR" className="defensive-cr" displayOnCollapse={this.DefensiveCRSummary()}>
-                        <div className="container">
-                            <div className="defensive-cr-details">
-                                <div>
-                                    <h4>Hit Dice <UpDownLinks onUpClicked={e => {console.log("Up Clicked")}} onDownClicked={e => {console.log("Down Clicked")}} /></h4>
-                                    <div>
-                                        <label title="The monster's Size will determine the default size of the hit die">Size</label>
-                                        <select defaultValue="Medium d8">
-                                            <option>Tiny d4</option>
-                                            <option>Small d6</option>
-                                            <option>Medium d8</option>
-                                            <option>Large d10</option>
-                                            <option>Huge d12</option>
-                                            <option>Gargantuan d20</option>
-                                        </select>
-                                        <div className="hit-dice-box">
-                                            <NumberInput min={1} max={40} value={hitDiceCount} onBlur={this.modifyHitDiceCount} />
-                                            d
-                                            <NumberInput min={1} max={20} value={hitDieSize} onBlur={this.modifyHitDieSize} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4>Armor Class</h4>
-                                    <div className="armor-formula">
-                                        <select value={this.state.defenses.ACFormulaType} onChange={this.handleChangeACFormulaType}>
-                                            <option value={STANDARD_ARMOR}>Standard Armor</option>
-                                            <option value={NATURAL_ARMOR}>Natural Armor</option>
-                                            <option value={UNARMORED_DEFENSE}>Unarmored Defense</option>
-                                        </select>
-                                        <br />
-                                        <input type="checkbox" /> Include a Shield
-                                        <br />
-                                        <label>Bonus</label>
-                                        <NumberInput value={0} />
-                                        {(this.state.defenses.ACFormulaType == UNARMORED_DEFENSE ?
-                                            UNARMORED_DEFENSE
-                                        : this.state.defenses.ACFormulaType == NATURAL_ARMOR ?
-                                            NATURAL_ARMOR
-                                        : STANDARD_ARMOR)}
-                                    </div>
-                                    <div>
-                                        <label>AC</label>
-                                        <span>12</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="defensive-cr-calculations">
-                                <div>
-                                    <h4>HP Average</h4>
-                                    <div>
-                                        <div>{this.hitDiceAverage()} ({hitDiceCount}d{hitDieSize} + {hitDiceCount * conMod})</div>
-                                        <LabelledItem label="CR for Average HP">
-                                            {CRUtil.getCRForHP(this.hitDiceAverage())}
-                                        </LabelledItem>
-                                        <LabelledItem label="Expected AC for Average HP">
-                                            {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(this.hitDiceAverage()))}
-                                        </LabelledItem>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4>Effective AC</h4>
-                                    <NumberInput value={this.state.defenses.tempAC} onChange={e => this.setTempAC(e.target.value)} />
-                                    <LabelledItem label="CR Range for Effective AC">
-                                        {JSON.stringify(CRUtil.getCRRangeForAC(this.state.defenses.tempAC))}
-                                    </LabelledItem>
-                                </div>
-                            </div>
-                            <div className="defensive-cr-outcome">
-                                <LabelledItem label="Defensive CR Rating" labelType="h4">
-                                    {CRUtil.getDefensiveCR(this.hitDiceAverage(), this.state.defenses.tempAC)}
-                                </LabelledItem>
-                                <div>
-                                    <h4>AutoScale!</h4>
-                                    <UpDownLinks size={2} onUpClicked={e => console.log('up clicked')} onDownClicked={e => console.log('down clicked')} />
-                                </div>
-                            </div>
-                        </div>
+                        <Defenses />
                     </Fieldset>
                     <Fieldset legend="Offensive CR" className="offensive-cr" displayOnCollapse={this.OffensiveCRSummary()}>
                         <div className="container">

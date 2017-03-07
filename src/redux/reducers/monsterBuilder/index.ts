@@ -3,6 +3,7 @@ import * as Redux from 'redux';
 import { Trait } from '../traits.reducer';
 
 import attributesReducer, * as fromAttributes from './attributes.reducer';
+import defensesReducer, * as fromDefenses from './defenses.reducer';
 import descriptionReducer, * as fromDescription from './description.reducer';
 import proficiencyReducer, * as fromProficiency from './proficiency.reducer';
 import savesReducer, * as fromSaves from './saves.reducer';
@@ -10,6 +11,7 @@ import traitsReducer, * as fromTraits from './traits.reducer';
 
 const monsterBuilderReducer = Redux.combineReducers({
     attributes: attributesReducer,
+    defenses: defensesReducer,
     description: descriptionReducer,
     proficiency: proficiencyReducer,
     saves: savesReducer,
@@ -18,6 +20,7 @@ const monsterBuilderReducer = Redux.combineReducers({
 
 export type MonsterBuilderState = {
     attributes: fromAttributes.State,
+    defenses: fromDefenses.State,
     description: fromDescription.State,
     proficiency: fromProficiency.State,
     saves: fromSaves.State,
