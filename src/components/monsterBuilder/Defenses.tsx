@@ -50,7 +50,7 @@ const Defenses: React.StatelessComponent<Props> = (props: Props) =>
             <div className="defensive-cr-details">
                 <LabelledItem label="Hit Dice" labelType="h4">
                     <label title="The monster's Size will determine the default size of the hit die">Size</label>
-                    <select defaultValue="Medium" onChange={e => props.setSize((Size as any)[e.target.value])}>
+                    <select defaultValue="Medium" onChange={(e: any) => props.setSize((Size as any)[e.target.value])}>
                         {sizeOptions}
                     </select>
                     {hitDiceSplats}

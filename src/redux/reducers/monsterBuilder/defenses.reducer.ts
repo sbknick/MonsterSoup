@@ -66,6 +66,11 @@ export const defensesReducer: Redux.Reducer<State> = (state = initialState, acti
             }
             break;
 
+        case types.ARMOR_FORMULA_SET:
+            const aract = action as Actions.SetArmorFormulaAction;
+            newState.armorFormula = aract.armorFormula;
+            break;
+
         case types.TEMP_AC_SET:
             const valact = action as Actions.TempACSetAction;
             newState.tempAC = valact.value;

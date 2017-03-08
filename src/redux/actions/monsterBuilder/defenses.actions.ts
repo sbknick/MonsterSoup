@@ -1,5 +1,5 @@
 import * as Redux from "redux";
-import { Size } from "../../reducers/monsterBuilder/defenses.reducer";
+import { ArmorFormulaOption, Size } from "../../reducers/monsterBuilder/defenses.reducer";
 import * as types from "../../types/monsterBuilder/defenses.types";
 
 interface IdxPayload
@@ -43,16 +43,21 @@ export const setSize: Redux.ActionCreator<{size: Size}> =
 export const toggleSizeOverride: Redux.ActionCreator<void> =
     () => ({ type: types.SIZE_OVERRIDE_TOGGLE });
 
+export const setArmorFormula: Redux.ActionCreator<{armorFormula: ArmorFormulaOption}> =
+    (armorFormula) => ({ type: types.ARMOR_FORMULA_SET, armorFormula });
+
 export const setTempAC: Redux.ActionCreator<ValuePayload> =
     (value: number) => ({ type: types.TEMP_AC_SET, value });
 
 export type HitDiceModifyAction = Redux.Action & IdxValuePayload;
 export type HitDieRemoveAction = Redux.Action & IdxPayload;
 export type SizeSetAction = Redux.Action & {size: Size};
+export type SetArmorFormulaAction = Redux.Action & {armorFormula: ArmorFormulaOption};
 export type TempACSetAction = Redux.Action & ValuePayload;
 
 export type DefensesAction = Redux.Action
                            | HitDiceModifyAction
                            | HitDieRemoveAction
                            | SizeSetAction
+                           | SetArmorFormulaAction
                            | TempACSetAction;

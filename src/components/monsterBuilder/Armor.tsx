@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
+import * as Actions from "../../redux/actions/monsterBuilder/defenses.actions";
 import { getMonsterBuilderData, GlobalState } from "../../redux/reducers";
 import { ArmorFormulaOption, State as DefensesState } from "../../redux/reducers/monsterBuilder/defenses.reducer";
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
@@ -36,11 +37,12 @@ export const Armor: React.StatelessComponent<ArmorProps> = (props) =>
         formulaOptions.push(<option key={opt}>{opt}</option>);
     }
 
-    let idx = 0;
+    // let idx = 0;
 
     return (
         <div className="armor-formula">
-            <select onChange={() => { ; }}>
+            <select value={props.armorFormula}
+                    onChange={(e: any) => props.setArmorFormula((ArmorFormulaOption as any)[e.target.value])}>
                 {formulaOptions}
                 {/*<option value={STANDARD_ARMOR}>Standard Armor</option>
                 <option value={NATURAL_ARMOR}>Natural Armor</option>
@@ -78,6 +80,8 @@ interface ArmorProps
     isArmor: boolean;
     usesShield: boolean;
     armorName: string;
+
+    setArmorFormula: (af: ArmorFormulaOption) => void;
 }
 
 // interface ArmorOption
@@ -100,18 +104,27 @@ interface ArmorProps
 //         disadvantageOnStealth: false,
 //     },
 // ];
+//
+// const STANDARD_ARMOR: "STANDARD_ARMOR" = "STANDARD_ARMOR";
+// const NATURAL_ARMOR: "NATURAL_ARMOR" = "NATURAL_ARMOR";
+// const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
+//
+// const FormulaOptions = [STANDARD_ARMOR, NATURAL_ARMOR, UNARMORED_DEFENSE];
 
-const STANDARD_ARMOR: "STANDARD_ARMOR" = "STANDARD_ARMOR";
-const NATURAL_ARMOR: "NATURAL_ARMOR" = "NATURAL_ARMOR";
-const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
-
-const FormulaOptions = [STANDARD_ARMOR, NATURAL_ARMOR, UNARMORED_DEFENSE];
-
-function mapStateToProps(state: GlobalState)
+function mapStateToProps(state: GlobalState): ArmorProps
 {
     const mb = getMonsterBuilderData(state);
 
-    return {};
+    return {
+        armorFormula: mb.defenses.armorFormula,
+    } as ArmorProps;
 }
+
+function mapDispatchToProps(dispatch: any): ArmorProps
+{
+    return {
+        setArmorFormula: (af) => dispatch(Actions.setArmorFormula(af)),
+    } as ArmorProps;
+};
 
 export default connect(mapStateToProps)(Armor);
