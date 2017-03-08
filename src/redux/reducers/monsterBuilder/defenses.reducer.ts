@@ -1,53 +1,55 @@
-import * as Redux from 'redux';
-import * as types from '../../types/monsterBuilder/defenses.types';
-import * as Actions from '../../actions/monsterBuilder/defenses.actions';
+import * as Redux from "redux";
+import * as Actions from "../../actions/monsterBuilder/defenses.actions";
+import * as types from "../../types/monsterBuilder/defenses.types";
 
 export const defensesReducer: Redux.Reducer<State> = (state = initialState, action: Actions.DefensesAction) =>
 {
-    var newState = Object.assign({}, state);
+    const newState = Object.assign({}, state);
+
+    let dieModAction: Actions.HitDiceModifyAction;
 
     switch (action.type)
     {
         case types.HIT_DICE_COUNT_SET:
-            let act = <Actions.HitDiceModifyAction>action; // let act = action as Actions.
-            newState.hitDice[act.idx].hitDiceCount = act.value;
+            dieModAction = action as Actions.HitDiceModifyAction;
+            newState.hitDice[dieModAction.idx].hitDiceCount = dieModAction.value;
             break;
 
         case types.HIT_DIE_SIZE_SET:
-            act = <Actions.HitDiceModifyAction>action;
-            newState.hitDice[act.idx].hitDieSize = act.value;
-            if (act.idx == 0)
+            dieModAction = action as Actions.HitDiceModifyAction;
+            newState.hitDice[dieModAction.idx].hitDieSize = dieModAction.value;
+            if (dieModAction.idx === 0)
             {
                 newState.sizeOverridden = true;
             }
             break;
 
         case types.HIT_DIE_ADD_NEW:
-            newState.hitDice.push(initialState.hitDice[0]);
+            newState.hitDice.push({ hitDiceCount: 2, hitDieSize: sizeDieSize(newState.size)});
             break;
 
         case types.HIT_DIE_REMOVE:
-            let idxact = <Actions.HitDieRemoveAction>action;
+            const idxact = action as Actions.HitDieRemoveAction;
 
-            if (newState.hitDice.length == 1)
+            if (newState.hitDice.length === 1)
                 throw new RangeError();
 
             newState.hitDice.splice(idxact.idx, 1);
 
-            if (idxact.idx == 0 && !newState.sizeOverridden)
+            if (idxact.idx === 0 && !newState.sizeOverridden)
             {
                 newState.hitDice[0].hitDieSize = sizeDieSize(newState.size);
             }
             break;
 
         case types.SIZE_SET:
-            let valact = <Actions.SizeSetAction>action;
-            if (newState.size != valact.value)
+            const sizeact = action as Actions.SizeSetAction;
+            if (newState.size !== sizeact.size)
             {
-                newState.size = valact.value;
-                if (newState.sizeOverridden)
+                newState.size = sizeact.size;
+                if (!newState.sizeOverridden)
                 {
-                    newState.hitDice[0].hitDieSize = sizeDieSize(valact.value);
+                    newState.hitDice[0].hitDieSize = sizeDieSize(sizeact.size);
                 }
             }
             break;
@@ -65,7 +67,7 @@ export const defensesReducer: Redux.Reducer<State> = (state = initialState, acti
             break;
 
         case types.TEMP_AC_SET:
-            valact = <Actions.TempACSetAction>action;
+            const valact = action as Actions.TempACSetAction;
             newState.tempAC = valact.value;
             break;
 
@@ -73,7 +75,7 @@ export const defensesReducer: Redux.Reducer<State> = (state = initialState, acti
             return state;
     }
 
-    return state;
+    return newState;
 };
 
 function sizeDieSize(size: Size)
@@ -97,7 +99,7 @@ export enum Size
     Medium,
     Large,
     Huge,
-    Gargantuan
+    Gargantuan,
 }
 
 export interface HitDice
@@ -106,12 +108,20 @@ export interface HitDice
     hitDieSize: number;
 }
 
+export enum ArmorFormulaOption
+{
+    StandardArmor = 1,
+    NaturalArmor,
+    UnarmoredDefense,
+};
+
 export interface State
 {
     size: Size;
     sizeOverridden: boolean;
     hitDice: HitDice[];
 
+    armorFormula: ArmorFormulaOption;
     tempAC: number;
 }
 
@@ -122,8 +132,10 @@ const initialState: State = {
         hitDiceCount: 2,
         hitDieSize: 8,
     }],
+
+    armorFormula: ArmorFormulaOption.StandardArmor,
     tempAC: 12,
-}
+};
 
 
 export default defensesReducer;

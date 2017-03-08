@@ -1,0 +1,15 @@
+{
+    /* Extend the default ruleset */
+    "extends": "tslint:latest",
+    "rules": {
+        "one-line": [false, "check-open-brace"],
+        "semicolon": true,
+        "curly": false,
+        "radix": false,
+        "interface-name": false,
+        "arrow-parens": false,
+        "object-literal-sort-keys": false,
+        "no-consecutive-blank-lines": false,
+        "switch-default": false
+    }
+}

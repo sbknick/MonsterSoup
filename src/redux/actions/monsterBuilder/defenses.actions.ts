@@ -1,5 +1,6 @@
-import * as Redux from 'redux';
-import * as types from '../../types/monsterBuilder/defenses.types';
+import * as Redux from "redux";
+import { Size } from "../../reducers/monsterBuilder/defenses.reducer";
+import * as types from "../../types/monsterBuilder/defenses.types";
 
 interface IdxPayload
 {
@@ -18,36 +19,36 @@ export const setHitDiceCount: Redux.ActionCreator<IdxValuePayload> =
     (idx: number, value: number) =>
     ({
         type: types.HIT_DICE_COUNT_SET,
-        idx: idx,
-        value: value
+        idx,
+        value,
     });
 
 export const setHitDieSize: Redux.ActionCreator<IdxValuePayload> =
     (idx: number, value: number) =>
     ({
-        type: types.HIT_DICE_COUNT_SET,
-        idx: idx,
-        value: value
+        type: types.HIT_DIE_SIZE_SET,
+        idx,
+        value,
     });
 
 export const addNewHitDie: Redux.ActionCreator<void> =
     () => ({ type: types.HIT_DIE_ADD_NEW });
 
 export const removeHitDie: Redux.ActionCreator<IdxPayload> =
-    (idx: number) => ({ type: types.HIT_DIE_REMOVE, idx: idx });
+    (idx: number) => ({ type: types.HIT_DIE_REMOVE, idx });
 
-export const setSize: Redux.ActionCreator<ValuePayload> =
-    (value: number) => ({ type: types.SIZE_SET, value: value });
+export const setSize: Redux.ActionCreator<{size: Size}> =
+    (size: Size) => ({ type: types.SIZE_SET, size });
 
 export const toggleSizeOverride: Redux.ActionCreator<void> =
     () => ({ type: types.SIZE_OVERRIDE_TOGGLE });
 
 export const setTempAC: Redux.ActionCreator<ValuePayload> =
-    (value: number) => ({ type: types.TEMP_AC_SET, value: value });
+    (value: number) => ({ type: types.TEMP_AC_SET, value });
 
 export type HitDiceModifyAction = Redux.Action & IdxValuePayload;
 export type HitDieRemoveAction = Redux.Action & IdxPayload;
-export type SizeSetAction = Redux.Action & ValuePayload;
+export type SizeSetAction = Redux.Action & {size: Size};
 export type TempACSetAction = Redux.Action & ValuePayload;
 
 export type DefensesAction = Redux.Action

@@ -1,127 +1,155 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import * as React from "react";
+import { connect } from "react-redux";
 
-import * as CRUtil from '../../util/CRUtil';
-import { mod, modBonus } from '../../util/Mod';
+import * as CRUtil from "../../util/CRUtil";
+import { asBonus, mod, modBonus } from "../../util/Mod";
 
-import { GlobalState, getMonsterBuilderData } from '../../redux/reducers';
-import { State as DefensesState, HitDice, Size } from '../../redux/reducers/monsterBuilder/defenses.reducer';
-// import { }
+import * as Actions from "../../redux/actions/monsterBuilder/defenses.actions";
+import { getMonsterBuilderData, GlobalState } from "../../redux/reducers";
+import { HitDice, Size, State as DefensesState } from "../../redux/reducers/monsterBuilder/defenses.reducer";
 
-import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
-import Armor from './Armor';
+import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
+    NumberInput, SelectList, UpDownLinks } from "../common";
+import Armor from "./Armor";
+
+/* tslint:disable:no-console n/o-empty */
 
 const Defenses: React.StatelessComponent<Props> = (props: Props) =>
 {
-    var sizeOptions: any[] = [];
-    for (var size in Size)
-    {
+
+    const sizeOptions: any[] = [];
+    for (const size in Size) {
         if (parseInt(size))
             continue;
         sizeOptions.push(<option key={size}>{size}</option>);
     }
 
-    var hitDiceSplats = props.defenses.hitDice.map(hd =>
-        <div key={hd.toString()} className="hit-dice-box">
-            <NumberInput min={1} max={40} value={hd.hitDiceCount} onBlur={() => {}} />
-            d
-            <NumberInput min={4} max={20} value={hd.hitDieSize} onBlur={() => {}} />
-        </div>
-    );
+    let idx = 0;
+    const hitDiceSplats = props.defenses.hitDice.map(hd =>
+    {
+        const key = idx++;
+        return  (
+            <div key={key} className="hit-dice-box">
+                {key > 0 &&
+                    <button onClick={e => props.removeHitDie(key)}> - </button>
+                }
+                <NumberInput min={1} max={40} value={hd.hitDiceCount}
+                             onBlur={e => props.setHitDiceCount(key, parseInt(e.target.value))} />
+                d
+                <NumberInput min={4} max={20} value={hd.hitDieSize}
+                             onBlur={e => props.setHitDieSize(key, parseInt(e.target.value))} />
+               {asBonus(props.conMod)}
+            </div>
+        );
+    });
 
-    var averageHp = hitDiceAverage(props);
+    const averageHp = hitDiceAverage(props);
 
     return (
         <div className="container">
             <div className="defensive-cr-details">
                 <LabelledItem label="Hit Dice" labelType="h4">
                     <label title="The monster's Size will determine the default size of the hit die">Size</label>
-                    <select defaultValue="Medium" onChange={() => {}}>
+                    <select defaultValue="Medium" onChange={e => props.setSize((Size as any)[e.target.value])}>
                         {sizeOptions}
                     </select>
-                    <div className="inline-children">
-                        {hitDiceSplats}
-                    </div>
+                    {hitDiceSplats}
+                    <button onClick={props.addNewHitDie}> + </button>
                 </LabelledItem>
                 <LabelledItem label="Armor Class" labelType="h4">
                     <Armor />
-                    <div>
-                        <label>AC</label>
-                        <span>12</span>
-                    </div>
                 </LabelledItem>
             </div>
+
             <div className="defensive-cr-calculations">
-                <div>
-                    <h4>HP Average</h4>
-                    <div>
-                        <div>{averageHp} ({0}d{0} + {0 * 0})</div>
-                        <LabelledItem label="CR for Average HP">
-                            {CRUtil.getCRForHP(averageHp)}
-                        </LabelledItem>
-                        <LabelledItem label="Expected AC for Average HP">
-                            {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(averageHp))}
-                        </LabelledItem>
-                    </div>
-                </div>
-                <div>
-                    <h4>Effective AC</h4>
-                    <NumberInput value={props.defenses.tempAC} onChange={() => {}} />
+                <LabelledItem label="HP Average" labelType="h4">
+                    <p>{averageHp} ({
+                        props.defenses.hitDice.map(hd =>
+                        `${hd.hitDiceCount}d${hd.hitDieSize}${props.conMod !== 0
+                                ? asBonus(props.conMod * hd.hitDiceCount) : ""}`)
+                        .join(" + ")
+                    })</p>
+                    <LabelledItem label="CR for Average HP">
+                        {CRUtil.getCRForHP(averageHp)}
+                    </LabelledItem>
+                    <LabelledItem label="Expected AC for Average HP">
+                        {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(averageHp))}
+                    </LabelledItem>
+                </LabelledItem>
+                <LabelledItem label="Effective AC" labelType="h4">
+                    <NumberInput value={props.defenses.tempAC}
+                                 onChange={e => props.setTempAC(parseInt(e.target.value))} />
                     <LabelledItem label="CR Range for Effective AC">
                         {JSON.stringify(CRUtil.getCRRangeForAC(props.defenses.tempAC))}
                     </LabelledItem>
-                </div>
+                </LabelledItem>
             </div>
+
             <div className="defensive-cr-outcome">
                 <LabelledItem label="Defensive CR Rating" labelType="h4">
                     {CRUtil.getDefensiveCR(averageHp, props.defenses.tempAC)}
                 </LabelledItem>
                 <div>
                     <h4>AutoScale!</h4>
-                    <UpDownLinks size={2} onUpClicked={e => console.log('up clicked')} onDownClicked={e => console.log('down clicked')} />
+                    <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
+                                          onDownClicked={e => console.log("'down clicked'")} />
                 </div>
             </div>
         </div>
-    )
+    );
 };
 
 interface Props
 {
     defenses: DefensesState;
     conMod: number;
+
+    setHitDiceCount: (idx: number, n: number) => void;
+    setHitDieSize: (idx: number, n: number) => void;
+    addNewHitDie: () => void;
+    removeHitDie: (idx: number) => void;
+    setSize: (size: Size) => void;
+    toggleSizeOverride: () => void;
+    setTempAC: (ac: number) => void;
 }
 
-function hitDiceAverage(props: Props) : number
+function hitDiceAverage(props: Props): number
 {
-    var total = props.defenses.hitDice
+    const total = props.defenses.hitDice
                 .map(hd => singleHitDiceAverage(hd, props.conMod))
                 .reduce((a, b) => a + b);
 
     return total;
 }
 
-function singleHitDiceAverage(hitDice: HitDice, conMod: number) : number
+function singleHitDiceAverage(hitDice: HitDice, conMod: number): number
 {
-    let averageRoll = Math.floor(hitDice.hitDieSize / 2);
+    const averageRoll = Math.floor(hitDice.hitDieSize / 2);
 
-    var sum = (averageRoll + conMod) * hitDice.hitDiceCount;
+    const sum = (averageRoll + conMod) * hitDice.hitDiceCount;
     return sum;
 }
 
-function mapStateToProps(state: GlobalState) : Props
+function mapStateToProps(state: GlobalState): Props
 {
-    var mb = getMonsterBuilderData(state);
+    const mb = getMonsterBuilderData(state);
 
     return {
+        conMod: mod(mb.attributes.Con),
         defenses: mb.defenses,
-        conMod: mod(mb.attributes.Con)
     } as Props;
 }
 
-function mapDispatchToProps(dispatch: any) : Props
+function mapDispatchToProps(dispatch: any): Props
 {
     return {
-
+        addNewHitDie: () => dispatch(Actions.addNewHitDie()),
+        removeHitDie: (idx: number) => dispatch(Actions.removeHitDie(idx)),
+        setHitDiceCount: (idx: number, n: number) => dispatch(Actions.setHitDiceCount(idx, n)),
+        setHitDieSize: (idx: number, n: number) => dispatch(Actions.setHitDieSize(idx, n)),
+        setSize: (size: Size) => dispatch(Actions.setSize(size)),
+        setTempAC: (ac: number) => dispatch(Actions.setTempAC(ac)),
+        toggleSizeOverride: () => dispatch(Actions.toggleSizeOverride()),
     } as Props;
 }
 
