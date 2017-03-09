@@ -2,25 +2,28 @@ import * as Redux from "redux";
 import * as Actions from "../../actions/monsterBuilder/defenses.actions";
 import * as types from "../../types/monsterBuilder/defenses.types";
 
+import { ArmorData, armors } from "../../../data/armor";
+
 export const defensesReducer: Redux.Reducer<State> = (state = initialState, action: Actions.DefensesAction) =>
 {
     const newState = Object.assign({}, state);
 
-    let dieModAction: Actions.HitDiceModifyAction;
-
     switch (action.type)
     {
         case types.HIT_DICE_COUNT_SET:
-            dieModAction = action as Actions.HitDiceModifyAction;
-            newState.hitDice[dieModAction.idx].hitDiceCount = dieModAction.value;
+            {
+                const { idx, value } = action as Actions.HitDiceModifyAction;
+                newState.hitDice[idx].hitDiceCount = value;
+            }
             break;
 
         case types.HIT_DIE_SIZE_SET:
-            dieModAction = action as Actions.HitDiceModifyAction;
-            newState.hitDice[dieModAction.idx].hitDieSize = dieModAction.value;
-            if (dieModAction.idx === 0)
             {
-                newState.sizeOverridden = true;
+                const { idx, value } = action as Actions.HitDiceModifyAction;
+                newState.hitDice[idx].hitDieSize = value;
+
+                if (idx === 0)
+                    newState.sizeOverridden = true;
             }
             break;
 
@@ -29,27 +32,29 @@ export const defensesReducer: Redux.Reducer<State> = (state = initialState, acti
             break;
 
         case types.HIT_DIE_REMOVE:
-            const idxact = action as Actions.HitDieRemoveAction;
-
-            if (newState.hitDice.length === 1)
-                throw new RangeError();
-
-            newState.hitDice.splice(idxact.idx, 1);
-
-            if (idxact.idx === 0 && !newState.sizeOverridden)
             {
-                newState.hitDice[0].hitDieSize = sizeDieSize(newState.size);
+                const { idx } = action as Actions.HitDieRemoveAction;
+
+                if (newState.hitDice.length === 1)
+                    throw new RangeError();
+
+                newState.hitDice.splice(idx, 1);
+
+                if (idx === 0 && !newState.sizeOverridden)
+                    newState.hitDice[0].hitDieSize = sizeDieSize(newState.size);
             }
             break;
 
         case types.SIZE_SET:
-            const sizeact = action as Actions.SizeSetAction;
-            if (newState.size !== sizeact.size)
             {
-                newState.size = sizeact.size;
-                if (!newState.sizeOverridden)
+                const { size } = action as Actions.SizeSetAction;
+                if (newState.size !== size)
                 {
-                    newState.hitDice[0].hitDieSize = sizeDieSize(sizeact.size);
+                    newState.size = size;
+                    if (!newState.sizeOverridden)
+                    {
+                        newState.hitDice[0].hitDieSize = sizeDieSize(size);
+                    }
                 }
             }
             break;
@@ -67,13 +72,43 @@ export const defensesReducer: Redux.Reducer<State> = (state = initialState, acti
             break;
 
         case types.ARMOR_FORMULA_SET:
-            const aract = action as Actions.SetArmorFormulaAction;
-            newState.armorFormula = aract.armorFormula;
+            {
+                const { armorFormula } = action as Actions.SetArmorFormulaAction;
+                newState.armorFormula = armorFormula;
+            }
+            break;
+
+        case types.ARMOR_SET:
+            {
+                const { armor } = action as {armor: string};
+                const armorObject = armors.find(a => a.name === armor);
+                newState.armor = armorObject;
+            }
+            break;
+
+        case types.UNARMORED_AC_ATTRIBUTE_SET:
+            {
+                const { attr } = action as {attr: string};
+                newState.unarmoredACAttribute = attr;
+            }
+            break;
+
+        case types.USE_SHIELD_TOGGLE:
+            newState.useShield = !newState.useShield;
+            break;
+
+        case types.MISC_AC_BONUS_SET:
+            {
+                const { value } = action as {value: number};
+                newState.miscACBonus = (action as {value: number}).value;
+            }
             break;
 
         case types.TEMP_AC_SET:
-            const valact = action as Actions.TempACSetAction;
-            newState.tempAC = valact.value;
+            {
+                const { value } = action as Actions.TempACSetAction;
+                newState.tempAC = value;
+            }
             break;
 
         default:
@@ -127,6 +162,11 @@ export interface State
     hitDice: HitDice[];
 
     armorFormula: ArmorFormulaOption;
+    armor?: ArmorData;
+    unarmoredACAttribute?: string;
+    useShield: boolean;
+    miscACBonus: number;
+
     tempAC: number;
 }
 
@@ -139,8 +179,11 @@ const initialState: State = {
     }],
 
     armorFormula: ArmorFormulaOption.StandardArmor,
+    armor: armors[1],
+    useShield: false,
+    miscACBonus: 0,
+
     tempAC: 12,
 };
-
 
 export default defensesReducer;

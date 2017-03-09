@@ -15,8 +15,8 @@ export const CRs: string[] =
 [
     "0", "1/8", "1/4", "1/2", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
     "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
-]
+    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+];
 
 //#region Proficiency CR
 
@@ -34,7 +34,7 @@ export const ProficiencyCRRanges: ProficiencyCRRange[] =
     { proficiency: 6, low: 20, high: 23 },
     { proficiency: 7, low: 24, high: 27 },
     { proficiency: 8, low: 28, high: 31 },
-    { proficiency: 9, low: 32, high: 33 }
+    { proficiency: 9, low: 32, high: 33 },
 ];
 
 //#endregion
@@ -81,7 +81,7 @@ export const HPCRRanges: HPCRRange[] =
     { low: 671, high: 715, CR: 30 },
     { low: 716, high: 760, CR: 31 },
     { low: 761, high: 805, CR: 32 },
-    { low: 806, high: 850, CR: 33 }
+    { low: 806, high: 850, CR: 33 },
 ];
 
 //#endregion
@@ -102,8 +102,8 @@ export const ACCRRanges: ACCRRange[] =
     { AC: 16, low: 11, high: 12 },
     { AC: 17, low: 13, high: 15 },
     { AC: 18, low: 16, high: 19 },
-    { AC: 19, low: 20, high: 33 }
-]
+    { AC: 19, low: 20, high: 33 },
+];
 
 //#endregion
 
@@ -117,9 +117,9 @@ interface DPRCRRange extends Range
 export const DPRCRRanges: DPRCRRange[] =
 [
     { low: 0, high: 1, CR: 0 },
-    { low: 2, high: 3, CR: 1/8 },
-    { low: 4, high: 5, CR: 1/4 },
-    { low: 6, high: 8, CR: 1/2 },
+    { low: 2, high: 3, CR: 1 / 8 },
+    { low: 4, high: 5, CR: 1 / 4 },
+    { low: 6, high: 8, CR: 1 / 2 },
     { low: 9, high: 14, CR: 1 },
     { low: 15, high: 20, CR: 2 },
     { low: 21, high: 26, CR: 3 },
@@ -149,7 +149,7 @@ export const DPRCRRanges: DPRCRRange[] =
     { low: 249, high: 266, CR: 27 },
     { low: 267, high: 284, CR: 28 },
     { low: 285, high: 302, CR: 29 },
-    { low: 303, high: 320, CR: 30 }
+    { low: 303, high: 320, CR: 30 },
 ];
 
 //#endregion
@@ -175,7 +175,7 @@ export const ABCRRanges: ABCRRange[] =
     { AB: 11, low: 24, high: 26 },
     { AB: 12, low: 27, high: 29 },
     { AB: 13, low: 30, high: 32 },
-    { AB: 14, low: 33, high: 33 }
+    { AB: 14, low: 33, high: 33 },
 ];
 
 //#endregion
@@ -200,7 +200,7 @@ export const DCCRRanges: DCCRRange[] =
     { DC: 20, low: 24, high: 26 },
     { DC: 21, low: 27, high: 29 },
     { DC: 22, low: 30, high: 32 },
-    { DC: 23, low: 33, high: 33 }
+    { DC: 23, low: 33, high: 33 },
 ];
 
 //#endregion

@@ -1,5 +1,5 @@
-import { Trait } from '../redux/reducers/traits.reducer';
-import defaultTraits from './traits';
+import { Trait } from "../redux/reducers/traits.reducer";
+import defaultTraits from "./traits";
 
 interface TraitTemplate
 {
@@ -11,7 +11,7 @@ interface TraitTemplate
 }
 
 const defaultTraitTemplates: TraitTemplate[] = [
-    { id: 1, name: "Spider", traitIds: [1, 2] }
+    { id: 1, name: "Spider", traitIds: [1, 2] },
 ];
 
 export default defaultTraitTemplates;

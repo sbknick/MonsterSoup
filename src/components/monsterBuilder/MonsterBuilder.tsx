@@ -1,10 +1,11 @@
-import * as React from 'react';
+import * as React from "react";
 // import { connect } from 'react-redux';
 
-import * as CRUtil from '../../util/CRUtil';
-import { mod, modBonus } from '../../util/Mod';
+import * as CRUtil from "../../util/CRUtil";
+import { mod, modBonus } from "../../util/Mod";
 
-import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem, NumberInput, SelectList, UpDownLinks } from '../common';
+import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
+         NumberInput, SelectList, UpDownLinks } from "../common";
 import Attributes from './Attributes';
 import Defenses from './Defenses';
 // import HitDice from './HitDice';
@@ -27,8 +28,6 @@ interface Defenses
     hitDiceCount: number;
 
     ACFormulaType: string;
-
-    baseAC: number;
 
     tempAC: number;
 }

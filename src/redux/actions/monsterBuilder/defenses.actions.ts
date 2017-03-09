@@ -46,6 +46,18 @@ export const toggleSizeOverride: Redux.ActionCreator<void> =
 export const setArmorFormula: Redux.ActionCreator<{armorFormula: ArmorFormulaOption}> =
     (armorFormula) => ({ type: types.ARMOR_FORMULA_SET, armorFormula });
 
+export const setArmor: Redux.ActionCreator<{armor: string}> =
+    (armor) => ({ type: types.ARMOR_SET, armor });
+
+export const setUnarmoredACAttribute: Redux.ActionCreator<{attr: string}> =
+    (attr) => ({ type: types.UNARMORED_AC_ATTRIBUTE_SET, attr });
+
+export const toggleUseShield: Redux.ActionCreator<void> =
+    () => ({ type: types.USE_SHIELD_TOGGLE });
+
+export const setMiscACBonus: Redux.ActionCreator<ValuePayload> =
+    (value) => ({ type: types.MISC_AC_BONUS_SET, value });
+
 export const setTempAC: Redux.ActionCreator<ValuePayload> =
     (value: number) => ({ type: types.TEMP_AC_SET, value });
 
@@ -60,4 +72,6 @@ export type DefensesAction = Redux.Action
                            | HitDieRemoveAction
                            | SizeSetAction
                            | SetArmorFormulaAction
+                           | (Redux.Action & {armor: string})
+                           | (Redux.Action & {attr: string})
                            | TempACSetAction;
