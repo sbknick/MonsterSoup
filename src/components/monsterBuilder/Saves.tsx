@@ -1,16 +1,15 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import * as React from "react";
+import { connect } from "react-redux";
 
-import * as Attr from '../../data/attributes';
-import * as Util from '../../util/Mod';
+import * as Attr from "data/attributes";
+import * as Util from "util/Mod";
 
-import { GlobalState, getMonsterBuilderData } from '../../redux/reducers';
-import { getAttributeScore, getSaveState } from '../../redux/reducers/monsterBuilder';
-import { State as AttrState } from '../../redux/reducers/monsterBuilder/attributes.reducer';
-import { SaveState } from '../../redux/reducers/monsterBuilder/saves.reducer';
+import { AttributesState, SavesStateSingle } from "monsterBuilder/types";
+import { getMonsterBuilderData, GlobalState } from "redux/reducers";
+import { getAttributeScore, getSaveState } from "redux/reducers/monsterBuilder";
 
-import * as Actions from '../../redux/actions/monsterBuilder/saves.actions';
-import { Fieldset, HighlightBonusOnChange, LabelledItem } from '../common';
+import { Fieldset, HighlightBonusOnChange, LabelledItem } from "common";
+import * as Actions from "monsterBuilder/actions/saves.actions";
 
 export const SaveSplat: React.StatelessComponent<SaveSplatProps> = (props) =>
 (
@@ -31,7 +30,7 @@ interface SaveSplatProps
     attr: string;
     score: number;
     proficiencyBonus: number;
-    saveState: SaveState;
+    saveState: SavesStateSingle;
 
     toggleProficiency: () => void;
     toggleExpertise: () => void;
@@ -40,10 +39,10 @@ interface SaveSplatProps
 
 export const Saves: React.StatelessComponent<SavesProps> = (props) =>
 {
-    var attrs = Attr.attributes;
-    var splats = attrs.map(a =>
+    const attrs = Attr.attributes;
+    const splats = attrs.map(a =>
     {
-        let idx = Attr.getAttributeOrdinal(a);
+        const idx = Attr.getAttributeOrdinal(a);
 
         return (
             <SaveSplat key={a}
@@ -68,30 +67,30 @@ interface SavesProps
 {
     proficiencyBonus: number;
     attributeScores: number[];
-    saveStates: SaveState[];
+    saveStates: SavesStateSingle[];
 
-    toggleProficiencyDelegates: (() => void)[];
-    toggleExpertiseDelegates: (() => void)[];
-    modifyMiscBonusDelegates: ((n: number) => void)[];
+    toggleProficiencyDelegates: Array<(() => void)>;
+    toggleExpertiseDelegates: Array<(() => void)>;
+    modifyMiscBonusDelegates: Array<((n: number) => void)>;
 }
 
-function mapStateToProps(state: GlobalState) : SavesProps
+function mapStateToProps(state: GlobalState): SavesProps
 {
-    var mb = getMonsterBuilderData(state);
+    const mb = getMonsterBuilderData(state);
 
     return {
         attributeScores: Attr.attributes.map(a => getAttributeScore(mb, a)),
         proficiencyBonus: mb.proficiency.proficiencyBonus,
-        saveStates: Attr.attributes.map(a => getSaveState(mb, a))
+        saveStates: Attr.attributes.map(a => getSaveState(mb, a)),
     } as SavesProps;
 }
 
-function mapDispatchToProps(dispatch: any) : SavesProps
+function mapDispatchToProps(dispatch: any): SavesProps
 {
-    var newProps = {
+    const newProps = {
         toggleProficiencyDelegates: [],
         toggleExpertiseDelegates: [],
-        modifyMiscBonusDelegates:[]
+        modifyMiscBonusDelegates: [],
     } as SavesProps;
 
     Attr.attributes.reduce((acc, attr) =>

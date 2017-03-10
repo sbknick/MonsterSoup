@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import * as React from "react";
+import { connect } from "react-redux";
 
-import { GlobalState, getAllTraits, getAppliedTraitIds } from '../../redux/reducers';
-import { MonsterBuilderState, getTraitArgs } from '../../redux/reducers/monsterBuilder';
-import { Trait } from '../../redux/reducers/traits.reducer';
-import * as Actions from '../../redux/actions/monsterBuilder/traits.actions';
+import * as Actions from "monsterBuilder/actions/traits.actions";
+import { getAllTraits, getAppliedTraitIds, GlobalState } from "redux/reducers";
+import { getTraitArgs, MonsterBuilderState } from "redux/reducers/monsterBuilder";
+import { Trait } from "redux/reducers/traits.reducer";
 
-import TraitSplat from './TraitSplat';
+import TraitSplat from "./TraitSplat";
 
 
 class Traits extends React.Component<Props, {selectedTraitId: number}>
@@ -21,28 +21,31 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
         this.handleAddTrait = this.handleAddTrait.bind(this);
     }
 
-    render()
+    public render()
     {
-        var traitSplats = this.props.appliedTraits.map(t =>
+        const traitSplats = this.props.appliedTraits.map(t =>
             <TraitSplat key={t.id}
                         monster={this.props.monster}
                         trait={t}
                         traitArgs={getTraitArgs(this.props.monster, t)}
-                        onRemoveClicked={this.props.removeTrait} />
+                        onRemoveClicked={this.props.removeTrait} />,
         );
 
-        var traitOptions = this.props.availableTraits.map(t => <option key={t.id} value={t.id} title={t.desc}>{t.name}</option>);
+        const traitOptions = this.props.availableTraits.map(t => (
+            <option key={t.id} value={t.id} title={t.desc}>{t.name}</option>
+        ));
 
         return (
             <div>
                 {traitSplats}
                 <div>
-                    <select value={this.state.selectedTraitId} onChange={(e: any) => this.setSelectedTraitId(Number(e.target.value))}>
+                    <select value={this.state.selectedTraitId}
+                            onChange={(e: any) => this.setSelectedTraitId(Number(e.target.value))}>
                         <option disabled value={0}> -- select an option -- </option>
                         {traitOptions}
                     </select>
                     <button onClick={this.handleAddTrait}
-                        disabled={this.state.selectedTraitId == 0}
+                        disabled={this.state.selectedTraitId === 0}
                         >Add Trait</button>
                 </div>
             </div>
@@ -56,7 +59,7 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
 
     private handleAddTrait(e: any)
     {
-        this.props.applyTrait(this.state.selectedTraitId)
+        this.props.applyTrait(this.state.selectedTraitId);
         this.setSelectedTraitId(0);
     }
 }
@@ -72,9 +75,9 @@ interface Props
     removeTrait: (t: Trait) => void;
 }
 
-function mapStateToProps(state: GlobalState) : Props
+function mapStateToProps(state: GlobalState): Props
 {
-    var props: Props = {
+    const props: Props = {
         allTraits: [],
         availableTraits: [],
         appliedTraits: []
@@ -82,12 +85,12 @@ function mapStateToProps(state: GlobalState) : Props
 
     props.monster = state.entities.monsterBuilder;
 
-    var allTraits = getAllTraits(state);
-    var myTraitIds = getAppliedTraitIds(state);
+    const allTraits = getAllTraits(state);
+    const myTraitIds = getAppliedTraitIds(state);
 
     allTraits.reduce((acc, tr) =>
     {
-        if (myTraitIds.indexOf(tr.id) != -1)
+        if (myTraitIds.indexOf(tr.id) !== -1)
             acc.appliedTraits.push(tr);
         else
             acc.availableTraits.push(tr);
@@ -100,11 +103,11 @@ function mapStateToProps(state: GlobalState) : Props
     return props;
 }
 
-function mapDispatchToProps(dispatch: any) : Props
+function mapDispatchToProps(dispatch: any): Props
 {
     return {
         applyTrait: (id: number) => dispatch(Actions.applyTrait(id)),
-        removeTrait: (t: Trait) => dispatch(Actions.removeTrait(t.id))
+        removeTrait: (t: Trait) => dispatch(Actions.removeTrait(t.id)),
     } as Props;
 }
 

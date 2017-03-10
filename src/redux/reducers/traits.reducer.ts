@@ -2,7 +2,7 @@ import * as Redux from 'redux';
 import { NormalisedData } from '../reducers';
 import defaultTraits from '../../data/traits';
 
-const TraitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: any) =>
+const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: any) =>
 {
     if (state.allIds.length == 0)
     {
@@ -23,7 +23,7 @@ const TraitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action:
 
     return newState;
 };
-export default TraitsReducer;
+export default traitsReducer;
 
 export type TraitsState = NormalisedData<Trait>;
 

@@ -6,31 +6,32 @@ import { mod, modBonus } from "../../util/Mod";
 
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
          NumberInput, SelectList, UpDownLinks } from "../common";
-import Attributes from './Attributes';
-import Defenses from './Defenses';
+import Attributes from "./Attributes";
+import Defenses from "./Defenses";
 // import HitDice from './HitDice';
-import Proficiency from './Proficiency';
-import Traits from './Traits';
-import TraitSplat from './TraitSplat';
-import Saves from './Saves';
+import Proficiency from "./Proficiency";
+import Saves from "./Saves";
+import Traits from "./Traits";
+import TraitSplat from "./TraitSplat";
 
-import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer'
-import { Trait } from '../../redux/reducers/traits.reducer';
+import { AttributesState } from "monsterBuilder/types";
+// import { State as AttributesSet } from "../../redux/reducers/monsterBuilder/attributes.reducer";
+import { Trait } from "../../redux/reducers/traits.reducer";
 
 interface MonsterStatsProps
 {
-    monsterName: string,
+    monsterName: string;
 }
 
-interface Defenses
-{
-    hitDieSize: number;
-    hitDiceCount: number;
-
-    ACFormulaType: string;
-
-    tempAC: number;
-}
+// interface Defenses
+// {
+//     hitDieSize: number;
+//     hitDiceCount: number;
+//
+//     ACFormulaType: string;
+//
+//     tempAC: number;
+// }
 
 interface Offenses
 {
@@ -64,7 +65,7 @@ const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
 interface MonsterStatsState
 {
     // attributes: AttributesSet;
-    defenses: Defenses;
+    // defenses: Defenses;
     offenses: Offenses;
     proficiency: number;
 
@@ -72,16 +73,18 @@ interface MonsterStatsState
 }
 
 // const ATTRIBUTES: AttributesSet = { Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10 };
-const DEFENSES: Defenses = {hitDieSize: 8, hitDiceCount: 2, ACFormulaType: STANDARD_ARMOR, baseAC: 10, tempAC: 14};
+// const DEFENSES: Defenses = {hitDieSize: 8, hitDiceCount: 2, ACFormulaType: STANDARD_ARMOR, baseAC: 10, tempAC: 14};
 const ATTACKS: Attack[] = [
-    {name: "Bite", reach: 5, damageDiceCount: 2, damageDieSize: 6, damageBonus: 2, description: "Nomnomnom."}
+    {name: "Bite", reach: 5, damageDiceCount: 2, damageDieSize: 6, damageBonus: 2, description: "Nomnomnom."},
 ];
-const OFFENSES: Offenses = {primaryStat: "Str", primarySpellStat: "Int", attackBonus: 6, saveDCBonus: 0, multiattackCount: 1, attacks: ATTACKS, averageDPR: 12};
+const OFFENSES: Offenses = {primaryStat: "Str", primarySpellStat: "Int",
+    attackBonus: 6, saveDCBonus: 0, multiattackCount: 1, attacks: ATTACKS,
+    averageDPR: 12};
 
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
     // attributes: ATTRIBUTES,
-    defenses: DEFENSES,
+    // defenses: DEFENSES,
     offenses: OFFENSES,
     proficiency: 2,
     isProficiencyChanged: false,
@@ -99,115 +102,16 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.handleChangeACFormulaType = this.handleChangeACFormulaType.bind(this);
         this.handleChangePrimaryStat = this.handleChangePrimaryStat.bind(this);
         this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
-        this.setTempAC = this.setTempAC.bind(this);
-        this.setTempAverageDPR = this.setTempAverageDPR.bind(this);
+        // this.setTempAC = this.setTempAC.bind(this);
+        // this.setTempAverageDPR = this.setTempAverageDPR.bind(this);
     }
 
-    private GetMod(attr: string): number
-    {
-        return 0;
-        // var value = (this.state.attributes as any)[attr];
-        // return mod(value);
-    }
-
-    // EffectiveAC(): number
-    // {
-    //     var ac = this.state.Defenses.BaseAC + this.Mod(this.state.Attributes.Dex);
-    //     return ac;
-    // }
-
-    private hitDiceAverage(): number
-    {
-        const { hitDieSize, hitDiceCount } = this.state.defenses;
-        const conMod = 0; // mod(this.state.attributes.Con);
-
-        let averageRoll = Math.floor(hitDieSize / 2);
-
-        var sum = (averageRoll + conMod) * hitDiceCount;
-        return sum;
-    }
-
-    private calcAverageDamagePerRound(): number
-    {
-        return this.state.offenses.averageDPR;
-    }
-
-    private handleAttributeChange(e: any, attr: string): void
-    {
-        // this.setAttribute(attr, e.target.value as number);
-    }
-
-    private handleChange(attr: string): (e: any) => void
-    {
-        return e => {};
-        // return (e: any) => this.SetAttribute(attr, e.target.value);
-    }
-
-    private modifyHitDiceCount(e: any)
-    {
-        // const def = this.state.Defenses;
-        // def.hitDiceCount = e.target.value;
-        // this.setState({defenses: def} as MonsterStatsState);
-    }
-
-    private  modifyHitDieSize(e: any)
-    {
-        // const def = this.state.Defenses;
-        // def.hitDieSize = e.target.value;
-        // this.setState({defenses: def} as MonsterStatsState);
-    }
-
-    private handleChangeACFormulaType(e: any)
-    {
-        // const def = this.state.Defenses;
-        // def.ACFormulaType = e.target.value;
-        // this.setState({defenses: def} as MonsterStatsState);
-    }
-
-    private handleChangePrimaryStat(e: any)
-    {
-        // const off = this.state.Offenses;
-        // off.primaryStat = e.target.value;
-        // this.setState({offenses: off} as MonsterStatsState);
-    }
-
-    private handleChangePrimarySpellStat(e: any)
-    {
-        // const off = this.state.Offenses;
-        // off.primarySpellStat = e.target.value;
-        // this.setState({offenses: off} as MonsterStatsState);
-    }
-
-    private handleModifyProficiency(value: number)
-    {
-        // var newValue = this.state.Proficiency + value;
-        // newValue = Math.max(2, newValue);
-        // newValue = Math.min(10, newValue);
-        //
-        // if (newValue != this.state.Proficiency)
-        //     this.setState({proficiency: newValue, isProficiencyChanged: true} as MonsterStatsState);
-    }
-
-    private setTempAC(value: number)
-    {
-        // let def = this.state.Defenses;
-        // def.tempAC = value;
-        // this.setState({defenses: def} as MonsterStatsState);
-    }
-
-    private setTempAverageDPR(value: number)
-    {
-        // let off = this.state.Offenses;
-        // off.averageDPR = value;
-        // this.setState({offenses: off} as MonsterStatsState);
-    }
-
-    render()
+    public render()
     {
         const { monsterName } = this.props;
-        const { hitDieSize, hitDiceCount } = this.state.defenses;
+        // const { hitDieSize, hitDiceCount } = this.state.defenses;
 
-        const conMod = this.GetMod("Con");
+        // const conMod = this.GetMod("Con");
 
         return (
             <div className="monster-stats">
@@ -221,10 +125,12 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     <Fieldset legend="Traits" className="defensive-cr" displayOnCollapse={"(1)"}>
                         <Traits />
                     </Fieldset>
-                    <Fieldset legend="Defensive CR" className="defensive-cr" displayOnCollapse={this.DefensiveCRSummary()}>
+                    <Fieldset legend="Defensive CR" className="defensive-cr"
+                              displayOnCollapse={this.DefensiveCRSummary()}>
                         <Defenses />
                     </Fieldset>
-                    <Fieldset legend="Offensive CR" className="offensive-cr" displayOnCollapse={this.OffensiveCRSummary()}>
+                    <Fieldset legend="Offensive CR" className="offensive-cr"
+                              displayOnCollapse={this.OffensiveCRSummary()}>
                         <div className="container">
                             <div className="offensive-cr-primarystats">
                                 <LabelledItem label="Primary Attack Stat">
@@ -301,7 +207,8 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                 <LabelledItem label="Average DPR">
                                     {this.calcAverageDamagePerRound()}
                                 </LabelledItem>
-                                <NumberInput value={this.state.offenses.averageDPR} onChange={e => this.setTempAverageDPR(e.target.value)} />
+                                <NumberInput value={this.state.offenses.averageDPR}
+                                             onChange={e => {; } /* this.setTempAverageDPR(e.target.value)*/} />
                             </div>
                             <div>
                                 <h4>Offensive CR</h4>
@@ -334,9 +241,109 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         );
     }
 
-    EffectiveACBoostFromTraits() : number
+    private GetMod(attr: string): number
     {
-        var effectiveACModifier = 0;
+        return 0;
+        // var value = (this.state.attributes as any)[attr];
+        // return mod(value);
+    }
+
+    // EffectiveAC(): number
+    // {
+    //     var ac = this.state.Defenses.BaseAC + this.Mod(this.state.Attributes.Dex);
+    //     return ac;
+    // }
+
+    private hitDiceAverage(): number
+    {
+        // const { hitDieSize, hitDiceCount } = this.state.defenses;
+        // const conMod = 0; // mod(this.state.attributes.Con);
+        //
+        // let averageRoll = Math.floor(hitDieSize / 2);
+        //
+        // var sum = (averageRoll + conMod) * hitDiceCount;
+        // return sum;
+        return 1;
+    }
+
+    private calcAverageDamagePerRound(): number
+    {
+        return this.state.offenses.averageDPR;
+    }
+
+    private handleAttributeChange(e: any, attr: string): void
+    {
+        // this.setAttribute(attr, e.target.value as number);
+    }
+
+    private handleChange(attr: string): (e: any) => void
+    {
+        return e => {};
+        // return (e: any) => this.SetAttribute(attr, e.target.value);
+    }
+
+    private modifyHitDiceCount(e: any)
+    {
+        // const def = this.state.Defenses;
+        // def.hitDiceCount = e.target.value;
+        // this.setState({defenses: def} as MonsterStatsState);
+    }
+
+    private  modifyHitDieSize(e: any)
+    {
+        // const def = this.state.Defenses;
+        // def.hitDieSize = e.target.value;
+        // this.setState({defenses: def} as MonsterStatsState);
+    }
+
+    private handleChangeACFormulaType(e: any)
+    {
+        // const def = this.state.Defenses;
+        // def.ACFormulaType = e.target.value;
+        // this.setState({defenses: def} as MonsterStatsState);
+    }
+
+    private handleChangePrimaryStat(e: any)
+    {
+        // const off = this.state.Offenses;
+        // off.primaryStat = e.target.value;
+        // this.setState({offenses: off} as MonsterStatsState);
+    }
+
+    private handleChangePrimarySpellStat(e: any)
+    {
+        // const off = this.state.Offenses;
+        // off.primarySpellStat = e.target.value;
+        // this.setState({offenses: off} as MonsterStatsState);
+    }
+
+    private handleModifyProficiency(value: number)
+    {
+        // var newValue = this.state.Proficiency + value;
+        // newValue = Math.max(2, newValue);
+        // newValue = Math.min(10, newValue);
+        //
+        // if (newValue != this.state.Proficiency)
+        //     this.setState({proficiency: newValue, isProficiencyChanged: true} as MonsterStatsState);
+    }
+
+    // private setTempAC(value: number)
+    // {
+    //     // let def = this.state.Defenses;
+    //     // def.tempAC = value;
+    //     // this.setState({defenses: def} as MonsterStatsState);
+    // }
+    //
+    // private setTempAverageDPR(value: number)
+    // {
+    //     // let off = this.state.Offenses;
+    //     // off.averageDPR = value;
+    //     // this.setState({offenses: off} as MonsterStatsState);
+    // }
+
+    private EffectiveACBoostFromTraits() : number
+    {
+        const effectiveACModifier = 0;
         // this.state.Traits.reduce((acc, tr) =>
         // {
         //     if (tr.EffectiveACModifier != null)
@@ -346,16 +353,16 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         return effectiveACModifier;
     }
 
-    DefensiveCRSummary()
+    private DefensiveCRSummary()
     {
-        var effectiveACModifier = this.EffectiveACBoostFromTraits();
+        const effectiveACModifier = this.EffectiveACBoostFromTraits();
 
         return (
             <div style={{fontSize: ".8em"}}>
                 <i>  -HP:</i> <b>{this.hitDiceAverage()}</b> (CR {CRUtil.getCRForHP(this.hitDiceAverage())})
-                <i>  -AC:</i> <b>{this.state.defenses.tempAC}</b>
-                {effectiveACModifier != 0 && ("+" + effectiveACModifier + " Effective from Traits")}
-                <i>  -CR:</i> <b>{CRUtil.getDefensiveCR(this.hitDiceAverage(), this.state.defenses.tempAC)}</b>
+                <i>  -AC:</i> <b>{12}</b>
+                {effectiveACModifier !== 0 && ("+" + effectiveACModifier + " Effective from Traits")}
+                <i>  -CR:</i> <b>{CRUtil.getDefensiveCR(this.hitDiceAverage(), 12)}</b>
                 {
 
                 }
@@ -363,9 +370,9 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         );
     }
 
-    EffectiveABBoostFromTraits() : number
+    private EffectiveABBoostFromTraits() : number
     {
-        var effectiveABModifier = 0;
+        const effectiveABModifier = 0;
         // this.state.Traits.reduce((acc, tr) =>
         // {
         //     if (tr.EffectiveABModifier != null)
@@ -375,29 +382,28 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         return effectiveABModifier;
     }
 
-    OffensiveCRSummary()
+    private OffensiveCRSummary(): JSX.Element
     {
-        var effectiveABModifier = this.EffectiveABBoostFromTraits();
+        const effectiveABModifier = this.EffectiveABBoostFromTraits();
 
         return (
             <div style={{fontSize: ".8em"}}>
-                <i>  -DPR:</i> <b>{this.calcAverageDamagePerRound()}</b> (CR {CRUtil.getCRForDPR(this.calcAverageDamagePerRound())})
+                <i>  -DPR:</i> <b>{this.calcAverageDamagePerRound()}</b> (CR {
+                    CRUtil.getCRForDPR(this.calcAverageDamagePerRound())})
                 <i>  -AB:</i> <b>{this.state.offenses.attackBonus}</b>
                 {effectiveABModifier != 0 && ("+" + effectiveABModifier + " Effective from Traits")}
-                <i>  -CR:</i> <b>{CRUtil.getOffensiveCR(this.calcAverageDamagePerRound(), this.state.offenses.attackBonus)}</b>
-                {
-
-                }
+                <i>  -CR:</i> <b>{CRUtil.getOffensiveCR(this.calcAverageDamagePerRound(),
+                                                        this.state.offenses.attackBonus)}</b>
             </div>
         );
     }
 
-    TotalCRSummary()
+    private TotalCRSummary(): JSX.Element
     {
-        var offCR = CRUtil.getOffensiveCR(this.calcAverageDamagePerRound(), this.state.offenses.attackBonus);
-        var defCR = CRUtil.getDefensiveCR(this.hitDiceAverage(), this.state.defenses.tempAC);
+        const defCR = CRUtil.getDefensiveCR(this.hitDiceAverage(), 12);
+        const offCR = CRUtil.getOffensiveCR(this.calcAverageDamagePerRound(), this.state.offenses.attackBonus);
 
-        var average = CRUtil.getAverageCR(this.hitDiceAverage(), this.state.defenses.tempAC, this.calcAverageDamagePerRound(), this.state.offenses.attackBonus);
+        const average = CRUtil.getAverageCR(this.hitDiceAverage(), 12, this.calcAverageDamagePerRound(), this.state.offenses.attackBonus);
 
         return (
             <div>{defCR} & {offCR} => {average}</div>

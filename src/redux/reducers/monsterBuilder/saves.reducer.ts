@@ -1,15 +1,16 @@
-import * as Redux from 'redux';
-import * as types from '../../types/monsterBuilder/saves.types';
-import * as Actions from '../../actions/monsterBuilder/saves.actions';
+import * as Redux from "redux";
 
-import { State as Attributes } from './attributes.reducer';
-import { getAttributeOrdinal } from '../../../data/attributes';
+import * as Actions from "monsterBuilder/actions/saves.actions";
+import * as types from "redux/types/monsterBuilder/saves.types";
 
-const savesReducer: Redux.Reducer<State> = (state = initialState, action: Actions.SavesAction) =>
+import { getAttributeOrdinal } from "data/attributes";
+import { AttributesState, SavesState, SavesStateSingle } from "monsterBuilder/types";
+
+const savesReducer: Redux.Reducer<SavesState> = (state = initialState, action: Actions.SavesAction) =>
 {
-    var newState = Object.assign({}, state);
-    var idx = getAttributeOrdinal(action.attr);
-    var save = newState.saves[idx];
+    const newState = Object.assign({}, state);
+    const idx = getAttributeOrdinal(action.attr);
+    const save = newState.saves[idx];
 
     switch (action.type)
     {
@@ -41,8 +42,10 @@ const savesReducer: Redux.Reducer<State> = (state = initialState, action: Action
             break;
 
         case types.SAVE_BONUS_MODIFY:
-            let act = <Actions.ModifySavesAction>action;
-            save.miscBonus += act.amount;
+            {
+                const { amount } = action as Actions.ModifySavesAction;
+                save.miscBonus += amount;
+            }
             break;
 
         default:
@@ -50,30 +53,37 @@ const savesReducer: Redux.Reducer<State> = (state = initialState, action: Action
     }
 
     return newState;
-}
-
-export interface State
-{
-    saves: SaveState[];
 };
 
-export interface SaveState
-{
-    hasProficiency: boolean;
-    hasExpertise: boolean;
-    miscBonus: number;
-}
+// export interface State
+// {
+//     saves: SaveState[];
+// };
+
+// export interface SaveState
+// {
+//     hasProficiency: boolean;
+//     hasExpertise: boolean;
+//     miscBonus: number;
+// }
 
 const initialSaveState = () => ({ hasProficiency: false, hasExpertise: false, miscBonus: 0 });
 
-const initialState: State = {
-    saves: [ initialSaveState(), initialSaveState(), initialSaveState(), initialSaveState(), initialSaveState(), initialSaveState() ],
-}
+const initialState: SavesState = {
+    saves: [
+        initialSaveState(),
+        initialSaveState(),
+        initialSaveState(),
+        initialSaveState(),
+        initialSaveState(),
+        initialSaveState(),
+    ],
+};
 
 export default savesReducer;
 
-export function getSaveState(state: State, attr: string) : SaveState
+export function getSaveState(state: SavesState, attr: string): SavesStateSingle
 {
-    var idx = getAttributeOrdinal(attr);
+    const idx = getAttributeOrdinal(attr);
     return state.saves[idx];
 }

@@ -1,12 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Trait } from '../../redux/reducers/traits.reducer';
-import { TraitArgs } from '../../redux/reducers/monsterBuilder/traits.reducer'
-import { MonsterBuilderState } from '../../redux/reducers/monsterBuilder';
+import { TraitArgs } from "monsterBuilder/reducers/traits.reducer";
+import { MonsterBuilderState } from "redux/reducers/monsterBuilder";
+import { Trait } from "redux/reducers/traits.reducer";
 
-import * as Util from '../../util/MonsterTraitUtil';
+import * as Util from "util/MonsterTraitUtil";
 
-const TraitSplat: React.StatelessComponent<Props> = (props: Props) =>
+interface Props
+{
+    trait: Trait;
+    monster: MonsterBuilderState;
+    traitArgs?: TraitArgs;
+    onRemoveClicked: (t: Trait) => void;
+}
+
+const TraitSplat: React.StatelessComponent<Props> = (props) =>
 (
     <div>
         <h5>
@@ -30,11 +38,3 @@ const TraitSplat: React.StatelessComponent<Props> = (props: Props) =>
 );
 
 export default TraitSplat;
-
-interface Props
-{
-    trait: Trait
-    monster: MonsterBuilderState,
-    traitArgs?: TraitArgs,
-    onRemoveClicked: (t: Trait) => void
-}

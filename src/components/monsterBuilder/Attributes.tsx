@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 
 import * as Util from '../../util/Mod';
 
+import { AttributesState } from "monsterBuilder/types";
 import { GlobalState, getMonsterBuilderData } from '../../redux/reducers';
-import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer';
+// import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer';
 import * as Actions from '../../redux/actions/monsterBuilder/attributes.actions';
 import { HighlightOnChange, NumberInput } from '../common';
 
@@ -81,7 +82,7 @@ const Attributes: React.StatelessComponent<AttributesProps> = (props: Attributes
 
 interface AttributesProps
 {
-    attributes: AttributesSet;
+    attributes: AttributesState;
 
     modifyAttribute: (attr: string, value: number) => void;
     setAttribute: (attr: string, value: number) => void;

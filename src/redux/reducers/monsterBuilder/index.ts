@@ -1,13 +1,15 @@
-import * as Redux from 'redux';
+import * as Redux from "redux";
 
-import { Trait } from '../traits.reducer';
+import { Trait } from "../traits.reducer";
 
-import attributesReducer, * as fromAttributes from './attributes.reducer';
-import defensesReducer, * as fromDefenses from './defenses.reducer';
-import descriptionReducer, * as fromDescription from './description.reducer';
-import proficiencyReducer, * as fromProficiency from './proficiency.reducer';
-import savesReducer, * as fromSaves from './saves.reducer';
-import traitsReducer, * as fromTraits from './traits.reducer';
+import attributesReducer, * as fromAttributes from "./attributes.reducer";
+import defensesReducer, * as fromDefenses from "./defenses.reducer";
+import descriptionReducer, * as fromDescription from "./description.reducer";
+import proficiencyReducer, * as fromProficiency from "./proficiency.reducer";
+import savesReducer, * as fromSaves from "./saves.reducer";
+import traitsReducer, * as fromTraits from "./traits.reducer";
+
+import { AttributesState, DefensesState, SavesState } from "monsterBuilder/types";
 
 const monsterBuilderReducer = Redux.combineReducers({
     attributes: attributesReducer,
@@ -15,16 +17,17 @@ const monsterBuilderReducer = Redux.combineReducers({
     description: descriptionReducer,
     proficiency: proficiencyReducer,
     saves: savesReducer,
-    traits: traitsReducer
+    traits: traitsReducer,
 });
 
-export type MonsterBuilderState = {
-    attributes: fromAttributes.State,
-    defenses: fromDefenses.State,
-    description: fromDescription.State,
-    proficiency: fromProficiency.State,
-    saves: fromSaves.State,
-    traits: fromTraits.State
+export interface MonsterBuilderState
+{
+    attributes: AttributesState;
+    defenses: DefensesState;
+    description: fromDescription.State;
+    proficiency: fromProficiency.State;
+    saves: SavesState;
+    traits: fromTraits.State;
 };
 
 export default monsterBuilderReducer;
@@ -47,7 +50,7 @@ export const getSaves = (state: MonsterBuilderState) =>
 export const getSaveState = (state: MonsterBuilderState, attr: string) =>
     fromSaves.getSaveState(state.saves, attr);
 
-//-- Traits --//
+// -- Traits -- //
 export const getAppliedTraitIds = (state: MonsterBuilderState) =>
     fromTraits.getAppliedTraitIds(state.traits);
 

@@ -1,19 +1,13 @@
-import * as React from 'react';
+import * as React from "react";
 
+export const Nav: React.StatelessComponent<void> = () =>
+(
+    <div className="navigation pure-menu pure-menu-horizontal pure-menu-fixed">
+        <span className="pure-menu-heading">Monster Soup</span>
+        <nav>
 
-class Nav extends React.Component<{}, {}>
-{
-    render()
-    {
-        return (
-            <div className="navigation pure-menu pure-menu-horizontal pure-menu-fixed">
-                <span className="pure-menu-heading">Monster Soup</span>
-                <nav>
-
-                </nav>
-            </div>
-        );
-    }
-}
+        </nav>
+    </div>
+);
 
 export default Nav;

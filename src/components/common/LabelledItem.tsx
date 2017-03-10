@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 interface Props
 {
@@ -13,11 +13,11 @@ interface Props
 
 export const LabelledItem: React.StatelessComponent<Props> = (props) =>
 {
-    var Container = props.container || "div";
-    var ContentContainer = props.contentContainer || "div";
-    var LabelType = props.labelType || "label";
+    const Container = props.container || "div";
+    const ContentContainer = props.contentContainer || "div";
+    const LabelType = props.labelType || "label";
 
-    if (ContentContainer != "none")
+    if (ContentContainer !== "none")
         return (
             <Container className={props.className} style={props.style}>
                 <LabelType>{props.label}</LabelType>
@@ -33,6 +33,6 @@ export const LabelledItem: React.StatelessComponent<Props> = (props) =>
                 {props.children}
             </Container>
         );
-}
+};
 
 export default LabelledItem;

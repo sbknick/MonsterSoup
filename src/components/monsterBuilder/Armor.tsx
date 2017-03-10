@@ -1,24 +1,19 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "../../redux/actions/monsterBuilder/defenses.actions";
-import { getMonsterBuilderData, GlobalState } from "../../redux/reducers";
-import { State as AttributesState } from "../../redux/reducers/monsterBuilder/attributes.reducer";
-import { ArmorFormulaOption, State as DefensesState } from "../../redux/reducers/monsterBuilder/defenses.reducer";
-import { titleize } from "../../util/String";
+import * as Actions from "monsterBuilder/actions/defenses.actions";
+import { ArmorData, ArmorFormulaOption, ArmorType, AttributesState, DefensesState } from "monsterBuilder/types";
+import { getMonsterBuilderData, GlobalState } from "redux/reducers";
+
+import { armors, attributes } from "data";
+import { mod } from "util/Mod";
+import { titleize } from "util/String";
+
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-         NumberInput, SelectList, UpDownLinks } from "../common";
+         NumberInput, SelectList, UpDownLinks } from "common";
 
-import { ArmorData, armors, ArmorType } from "../../data/armor";
-import { attributes } from "../../data/attributes";
-import { mod } from "../../util/Mod";
-
-export const Armor: React.StatelessComponent<ArmorProps> = (props) =>
+export const Armor: React.StatelessComponent<Props> = (props) =>
 {
-    // const { isMetal, isArmor, armorName, usesShield } = this.props;
-
-    // const armorString = usesShield ? armorName + ", shield" : armorName;
-
     let armorSplat: any;
 
     switch (props.armorFormula)
@@ -75,7 +70,7 @@ function compileArmorOptions(): void
     }
 }
 
-const StandardArmor: React.StatelessComponent<ArmorProps> = (props) =>
+const StandardArmor: React.StatelessComponent<Props> = (props) =>
 {
     compileArmorOptions();
 
@@ -101,7 +96,7 @@ const StandardArmor: React.StatelessComponent<ArmorProps> = (props) =>
     );
 };
 
-function calcACForStandardArmor(props: ArmorProps): string
+function calcACForStandardArmor(props: Props): string
 {
     let ac = props.armor.value + props.miscACBonus;
     ac += props.useShield ? 2 : 0;
@@ -126,7 +121,7 @@ function calcACForStandardArmor(props: ArmorProps): string
     return `${ac} (${props.armor.name.toLowerCase()}${(props.useShield ? ", shield" : "")})`;
 }
 
-const NaturalArmor: React.StatelessComponent<ArmorProps> = (props) =>
+const NaturalArmor: React.StatelessComponent<Props> = (props) =>
 (
     <div>
         <p>
@@ -142,7 +137,7 @@ const NaturalArmor: React.StatelessComponent<ArmorProps> = (props) =>
     </div>
 );
 
-function calcACForNaturalArmor(props: ArmorProps): string
+function calcACForNaturalArmor(props: Props): string
 {
     let ac = 10 + props.miscACBonus + props.dexMod;
     ac += props.useShield ? 2 : 0;
@@ -150,7 +145,7 @@ function calcACForNaturalArmor(props: ArmorProps): string
     return `${ac} (natural armor${(props.useShield ? ", shield" : "")})`;
 }
 
-const UnarmoredDefense: React.StatelessComponent<ArmorProps> = (props) =>
+const UnarmoredDefense: React.StatelessComponent<Props> = (props) =>
 (
     <div>
         <p>
@@ -173,20 +168,20 @@ const UnarmoredDefense: React.StatelessComponent<ArmorProps> = (props) =>
     </div>
 );
 
-function calcACForUnarmoredDefense(props: ArmorProps): string
+function calcACForUnarmoredDefense(props: Props): string
 {
     let ac = 10 + props.miscACBonus + props.dexMod;
     ac += props.useShield ? 2 : 0;
 
     if (props.unarmoredACAttribute)
     {
-        ac += mod(props.attributes[props.unarmoredACAttribute]);
+        ac += mod((props.attributes as any)[props.unarmoredACAttribute]);
     }
 
     return `${ac}${(props.useShield ? " (shield)" : "")}`;
 }
 
-interface ArmorProps
+interface Props
 {
     dexMod: number;
     attributes: AttributesState;
@@ -209,7 +204,7 @@ interface ArmorProps
     setMiscACBonus: (value: number) => void;
 }
 
-function mapStateToProps(state: GlobalState): ArmorProps
+function mapStateToProps(state: GlobalState): Props
 {
     const mb = getMonsterBuilderData(state);
 
@@ -221,10 +216,10 @@ function mapStateToProps(state: GlobalState): ArmorProps
         unarmoredACAttribute: mb.defenses.unarmoredACAttribute,
         useShield: mb.defenses.useShield,
         miscACBonus: mb.defenses.miscACBonus,
-    } as ArmorProps;
+    } as Props;
 }
 
-function mapDispatchToProps(dispatch: any): ArmorProps
+function mapDispatchToProps(dispatch: any): Props
 {
     return {
         setArmorFormula: (af) => dispatch(Actions.setArmorFormula(af)),
@@ -232,7 +227,7 @@ function mapDispatchToProps(dispatch: any): ArmorProps
         setUnarmoredACAttribute: (attr) => dispatch(Actions.setUnarmoredACAttribute(attr)),
         toggleUseShield: () => dispatch(Actions.toggleUseShield()),
         setMiscACBonus: (value) => dispatch(Actions.setMiscACBonus(value)),
-    } as ArmorProps;
+    } as Props;
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Armor);

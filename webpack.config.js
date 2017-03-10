@@ -11,7 +11,17 @@ module.exports = {
   devtool: "source-map",
 
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.tsx']
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.tsx'],
+    root: [
+        path.resolve('./node_modules'),
+        path.resolve('./src'),
+    ],
+    alias: {
+        "common": path.resolve("./src/components/common"),
+        "monsterBuilder/actions": path.resolve("./src/redux/actions/monsterBuilder"),
+        "monsterBuilder/types": path.resolve("./src/types/monsterBuilder"),
+        "monsterBuilder/reducers": path.resolve("./src/redux/reducers/monsterBuilder/*")
+    }
   },
 
   module: {

@@ -1,10 +1,13 @@
 import * as Redux from "redux";
-import * as Actions from "../../actions/monsterBuilder/defenses.actions";
-import * as types from "../../types/monsterBuilder/defenses.types";
 
-import { ArmorData, armors } from "../../../data/armor";
+import * as Actions from "monsterBuilder/actions/defenses.actions";
+import * as types from "redux/types/monsterBuilder/defenses.types";
 
-export const defensesReducer: Redux.Reducer<State> = (state = initialState, action: Actions.DefensesAction) =>
+import { armors } from "data/armor";
+import { ArmorData, ArmorFormulaOption, DefensesState, Size } from "monsterBuilder/types";
+import * as Types from "monsterBuilder/types";
+
+export const defensesReducer: Redux.Reducer<DefensesState> = (state = initialState, action: Actions.DefensesAction) =>
 {
     const newState = Object.assign({}, state);
 
@@ -132,45 +135,7 @@ function sizeDieSize(size: Size)
     }
 }
 
-export enum Size
-{
-    Tiny = 1,
-    Small,
-    Medium,
-    Large,
-    Huge,
-    Gargantuan,
-}
-
-export interface HitDice
-{
-    hitDiceCount: number;
-    hitDieSize: number;
-}
-
-export enum ArmorFormulaOption
-{
-    StandardArmor = 1,
-    NaturalArmor,
-    UnarmoredDefense,
-};
-
-export interface State
-{
-    size: Size;
-    sizeOverridden: boolean;
-    hitDice: HitDice[];
-
-    armorFormula: ArmorFormulaOption;
-    armor?: ArmorData;
-    unarmoredACAttribute?: string;
-    useShield: boolean;
-    miscACBonus: number;
-
-    tempAC: number;
-}
-
-const initialState: State = {
+const initialState: DefensesState = {
     size: Size.Medium,
     sizeOverridden: false,
     hitDice: [{

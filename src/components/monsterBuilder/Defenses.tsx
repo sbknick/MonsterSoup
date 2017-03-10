@@ -1,29 +1,35 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as CRUtil from "../../util/CRUtil";
-import { asBonus, mod, modBonus } from "../../util/Mod";
+import * as Actions from "monsterBuilder/actions/defenses.actions";
+import { DefensesState, HitDice, Size } from "monsterBuilder/types";
+import { getMonsterBuilderData, GlobalState } from "redux/reducers";
 
-import * as Actions from "../../redux/actions/monsterBuilder/defenses.actions";
-import { getMonsterBuilderData, GlobalState } from "../../redux/reducers";
-import { HitDice, Size, State as DefensesState } from "../../redux/reducers/monsterBuilder/defenses.reducer";
+import * as CRUtil from "util/CRUtil";
+import { asBonus, mod, modBonus } from "util/Mod";
 
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-    NumberInput, SelectList, UpDownLinks } from "../common";
+    NumberInput, SelectList, UpDownLinks } from "common";
 import Armor from "./Armor";
 
-/* tslint:disable:no-console n/o-empty */
+/* tslint:disable:no-console */
 
-const Defenses: React.StatelessComponent<Props> = (props: Props) =>
+interface Props
 {
+    defenses: DefensesState;
+    conMod: number;
 
-    const sizeOptions: any[] = [];
-    for (const size in Size) {
-        if (parseInt(size))
-            continue;
-        sizeOptions.push(<option key={size}>{size}</option>);
-    }
+    setHitDiceCount: (idx: number, n: number) => void;
+    setHitDieSize: (idx: number, n: number) => void;
+    addNewHitDie: () => void;
+    removeHitDie: (idx: number) => void;
+    setSize: (size: Size) => void;
+    toggleSizeOverride: () => void;
+    setTempAC: (ac: number) => void;
+}
 
+const HitDiceSplats: React.StatelessComponent<Props> = (props) =>
+{
     let idx = 0;
     const hitDiceSplats = props.defenses.hitDice.map(hd =>
     {
@@ -43,6 +49,28 @@ const Defenses: React.StatelessComponent<Props> = (props: Props) =>
         );
     });
 
+    return <div>{hitDiceSplats}</div>;
+};
+
+const SizeSelect: React.StatelessComponent<Props> = (props) =>
+{
+    const sizeOptions: any[] = [];
+    for (const size in Size) {
+        if (parseInt(size))
+            continue;
+        sizeOptions.push(<option key={size}>{size}</option>);
+    }
+
+    return (
+        <select defaultValue="Medium"
+                onChange={(e: any) => props.setSize((Size as any)[e.target.value])}>
+            {sizeOptions}
+        </select>
+    );
+};
+
+const Defenses: React.StatelessComponent<Props> = (props) =>
+{
     const averageHp = hitDiceAverage(props);
 
     return (
@@ -50,10 +78,10 @@ const Defenses: React.StatelessComponent<Props> = (props: Props) =>
             <div className="defensive-cr-details">
                 <LabelledItem label="Hit Dice" labelType="h4">
                     <label title="The monster's Size will determine the default size of the hit die">Size</label>
-                    <select defaultValue="Medium" onChange={(e: any) => props.setSize((Size as any)[e.target.value])}>
-                        {sizeOptions}
-                    </select>
-                    {hitDiceSplats}
+                    <SizeSelect {...props} />
+                    { // hitDiceSplats//
+                    }
+                    <HitDiceSplats {...props} />
                     <button onClick={props.addNewHitDie}> + </button>
                 </LabelledItem>
                 <LabelledItem label="Armor Class" labelType="h4">
@@ -98,20 +126,6 @@ const Defenses: React.StatelessComponent<Props> = (props: Props) =>
         </div>
     );
 };
-
-interface Props
-{
-    defenses: DefensesState;
-    conMod: number;
-
-    setHitDiceCount: (idx: number, n: number) => void;
-    setHitDieSize: (idx: number, n: number) => void;
-    addNewHitDie: () => void;
-    removeHitDie: (idx: number) => void;
-    setSize: (size: Size) => void;
-    toggleSizeOverride: () => void;
-    setTempAC: (ac: number) => void;
-}
 
 function hitDiceAverage(props: Props): number
 {

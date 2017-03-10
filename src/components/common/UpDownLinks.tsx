@@ -1,4 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
+
+/* tslint:disable: no-unused-expression */
 
 export class UpDownLinks extends React.Component<Props, State>
 {
@@ -14,32 +16,24 @@ export class UpDownLinks extends React.Component<Props, State>
         this.handleClick = this.handleClick.bind(this);
     }
 
-    private handleClick(action: EventHandler): EventHandler
+    public render()
     {
-        return e => {
-            e.preventDefault && e.preventDefault();
-            action(e);
-        };
-    }
-
-    render()
-    {
-        let arrowParentStyle = {
+        const arrowParentStyle = {
             position: "relative",
             // top: "2",
-            "marginLeft": "8px",
-            "fontSize": this.state.size + "em"
+            marginLeft: "8px",
+            fontSize: this.state.size + "em",
         };
 
-        let downArrowStyle = {
+        const downArrowStyle = {
             position: "absolute",
-            top: "0.25em"
+            top: "0.25em",
         };
 
-        let upArrowStyle = {
+        const upArrowStyle = {
             position: "absolute",
-            top: "-0.25em"
-        }
+            top: "-0.25em",
+        };
 
         return (
             <span style={arrowParentStyle} className="up-down">
@@ -51,6 +45,14 @@ export class UpDownLinks extends React.Component<Props, State>
                 </a>
             </span>
         );
+    }
+
+    private handleClick(action: EventHandler): EventHandler
+    {
+        return e => {
+            e.preventDefault && e.preventDefault();
+            action(e);
+        };
     }
 }
 

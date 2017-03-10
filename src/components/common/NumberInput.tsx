@@ -1,6 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
-const DEFAULT_NUMBER_FORMAT = '0,0[.][00]';
+/* tslint:disable: no-empty */
+
+const DEFAULT_NUMBER_FORMAT = "0,0[.][00]";
 
 interface NumberInputProps
 {
@@ -14,20 +16,20 @@ interface NumberInputProps
     onChange?: (e: any) => void;
 }
 
+interface NumberInputState
+{
+    focused: boolean;
+    value: number;
+}
+
 const DEFAULT_PROPS: NumberInputProps = {
     value: null,
     format: DEFAULT_NUMBER_FORMAT,
 
     onFocus: () => {},
     onBlur: () => {},
-    onChange: () => {}
+    onChange: () => {},
 };
-
-interface NumberInputState
-{
-    focused: boolean;
-    value: number;
-}
 
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState>
 {
@@ -40,15 +42,15 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         // numeral: keep track of the input's current value (numeral object)
         this.state = {
             focused: false,
-            value: value
-        }
+            value,
+        };
 
-        this.onChange = this.onChange.bind(this)
-        this.onFocus = this.onFocus.bind(this)
-        this.onBlur = this.onBlur.bind(this)
+        this.onChange = this.onChange.bind(this);
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
     }
 
-    componentWillReceiveProps(props: NumberInputProps)
+    public componentWillReceiveProps(props: NumberInputProps)
     {
         // Prevent changing the value via external entry when editing.
         if (!this.state.focused) {
@@ -63,12 +65,35 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     // 	} as NumberInputState);
     // }
 
+    public render()
+    {
+        let value: number = this.state.focused ? this.state.value : this.valueAsFormatted();
+        if (Number.isNaN(value))
+        {
+            value = this.props.min;
+        }
+
+        return React.createElement(
+            "input",
+            Object.assign({}, this.props, {
+                ref: "input",
+                className: "small-input",
+                type: "text",
+                pattern: "[0-9.]*",
+                onChange: this.onChange,
+                onFocus: this.onFocus,
+                onBlur: this.onBlur,
+                value,
+            }),
+        );
+    }
+
     private onChange(e: any)// React.FormEvent<HTMLInputElement>)
     {
         e.persist();
         this.setState(
             {
-                value: e.target.value
+                value: e.target.value,
             } as NumberInputState,
             () => this.props.onChange && this.props.onChange(e));
     }
@@ -108,10 +133,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             {
                 focused: false,
                 // value: n ? (n as any).format(this.props.format) : null
-                value: n
+                value: n,
             } as NumberInputState,
-            () => this.props.onBlur && this.props.onBlur(event)
-        )
+            () => this.props.onBlur && this.props.onBlur(event),
+        );
     }
 
     private onFocus(e: any)
@@ -120,38 +145,16 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         const n = e.target.value as number;
         this.setState({
             focused: true,
-            value: n
+            value: n,
         } as NumberInputState,
         () => this.props.onFocus && this.props.onFocus(e));
     }
 
     private valueAsFormatted(): number
     {
-        let n = Math.floor(this.state.value);
+        const n = Math.floor(this.state.value);
         // return n ?  (n as any).format(this.props.format) : null;
         return n;
-    }
-
-    render() {
-        let value: number = this.state.focused ? this.state.value : this.valueAsFormatted();
-        if (Number.isNaN(value))
-        {
-            value = this.props.min;
-        }
-
-        return React.createElement(
-            'input',
-            Object.assign({}, this.props, {
-                ref: 'input',
-                className: 'small-input',
-                type: 'text',
-                pattern: '[0-9.]*',
-                onChange: this.onChange,
-                onFocus: this.onFocus,
-                onBlur: this.onBlur,
-                value: value
-            })
-        );
     }
 }
 
