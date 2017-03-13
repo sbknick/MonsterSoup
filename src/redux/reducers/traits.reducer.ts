@@ -1,15 +1,17 @@
-import * as Redux from 'redux';
-import { NormalisedData } from '../reducers';
-import defaultTraits from '../../data/traits';
+import * as Redux from "redux";
+
+import defaultTraits from "data/traits";
+import { NormalisedData } from "redux/reducers";
+import { Trait } from "types";
 
 const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: any) =>
 {
-    if (state.allIds.length == 0)
+    if (state.allIds.length === 0)
     {
         state = normalise(defaultTraits);
     }
 
-    var newState = Object.assign({}, state);
+    let newState = Object.assign({}, state);
 
     switch (action.type)
     {
@@ -27,55 +29,14 @@ export default traitsReducer;
 
 export type TraitsState = NormalisedData<Trait>;
 
-var initialState: TraitsState = { byId: {}, allIds: [] };
+const initialState: TraitsState = { byId: {}, allIds: [] };
 
-export class Trait
+function normalise(items: Trait[]): NormalisedData<Trait>
 {
-    id: number;
-    name: string;
-    desc: string;
-    miscText?: string;
-    miscTextApplyType?: MiscTextApplyType;
-
-    effectiveACModifier?: number;
-    effectiveHPMultiplier?: number;
-    effectiveABModifier?: number;
-    effectiveDCModifier?: number;
-
-    effectiveDPRModifier?: number;
-    effectiveDPRMultiplier?: number;
-    effectiveDPRModifierString?: string;
-
-    requires?: any;
-    special?: SpecialTraitType;
-    notReady?: boolean;
-}
-
-interface TraitArgs
-{
-    shortName: string;
-
-    damage?: string;
-    damageType?: string;
-    weapon?: string;
-}
-
-export enum MiscTextApplyType
-{
-    ToDamageText = 1,
-}
-
-export enum SpecialTraitType
-{
-    Brute = 1,
-}
-
-function normalise(items: Trait[]) : NormalisedData<Trait>
-{
-    var results: NormalisedData<Trait> = { byId: {}, allIds: [] };
+    const results: NormalisedData<Trait> = { byId: {}, allIds: [] };
 
     return items.reduce((acc, tr) => {
-        let id = tr.id;
+        const id = tr.id;
         acc.byId[id] = tr;
         acc.allIds.push(id);
         return acc;

@@ -1,4 +1,4 @@
-import { Trait } from "redux/reducers/traits.reducer";
+import { Trait } from "types";
 import defaultTraits from "./traits";
 
 interface TraitTemplate

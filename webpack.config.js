@@ -20,7 +20,8 @@ module.exports = {
         "common": path.resolve("./src/components/common"),
         "monsterBuilder/actions": path.resolve("./src/redux/actions/monsterBuilder"),
         "monsterBuilder/types": path.resolve("./src/types/monsterBuilder"),
-        "monsterBuilder/reducers": path.resolve("./src/redux/reducers/monsterBuilder/*")
+        "monsterBuilder/reducers": path.resolve("./src/redux/reducers/monsterBuilder"),
+        "types": path.resolve("./src/types")
     }
   },
 

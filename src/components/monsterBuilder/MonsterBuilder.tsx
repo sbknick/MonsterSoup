@@ -1,22 +1,20 @@
 import * as React from "react";
 // import { connect } from 'react-redux';
 
-import * as CRUtil from "../../util/CRUtil";
-import { mod, modBonus } from "../../util/Mod";
+import * as CRUtil from "util/CRUtil";
+import { mod, modBonus } from "util/Mod";
 
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
          NumberInput, SelectList, UpDownLinks } from "../common";
 import Attributes from "./Attributes";
 import Defenses from "./Defenses";
-// import HitDice from './HitDice';
 import Proficiency from "./Proficiency";
 import Saves from "./Saves";
 import Traits from "./Traits";
 import TraitSplat from "./TraitSplat";
 
 import { AttributesState } from "monsterBuilder/types";
-// import { State as AttributesSet } from "../../redux/reducers/monsterBuilder/attributes.reducer";
-import { Trait } from "../../redux/reducers/traits.reducer";
+import { Trait } from "types";
 
 interface MonsterStatsProps
 {

@@ -1,17 +1,17 @@
-import { MonsterBuilderState, getDescription, getTraitArgs } from '../redux/reducers/monsterBuilder';
-import { Trait } from '../redux/reducers/traits.reducer';
-import { TraitArgs } from '../redux/reducers/monsterBuilder/traits.reducer';
+import { getDescription, getTraitArgs, MonsterBuilderState } from "monsterBuilder/reducers";
+import { TraitArgs } from "monsterBuilder/types";
+import { Trait } from "types";
 
 export const displayTraitDesc = (trait: Trait, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
 {
-    let args = traitArgs || getTraitArgs(monster, trait);
+    const args = traitArgs || getTraitArgs(monster, trait);
     let desc = trait.desc;
 
     // Do Monster-Description-based replaces
 
     if (/{(s|S)hortName}/.test(desc))
     {
-        var shortName = getDescription(monster).shortName;
+        const shortName = getDescription(monster).shortName;
         desc = desc.replace(/{shortName}/g, shortName)
                    .replace(/{ShortName}/g, capitalize(shortName));
     }
@@ -27,7 +27,7 @@ export const displayTraitDesc = (trait: Trait, monster: MonsterBuilderState, tra
 
     if (/{(d|D)amageType}/.test(desc))
     {
-        var damageType = args.damageType || "undefined";
+        const damageType = args.damageType || "undefined";
         desc = desc.replace(/{damageType}/g, damageType)
                    .replace(/{DamageType}/g, capitalize(damageType));
     }
@@ -52,6 +52,6 @@ export const displayTraitName = (trait: Trait, monster: MonsterBuilderState, tra
     }
 
     return name;
-}
+};
 
 const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);

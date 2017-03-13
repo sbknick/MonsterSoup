@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 
-import { Trait } from "../traits.reducer";
+import { Trait } from "types";
 
 import attributesReducer, * as fromAttributes from "./attributes.reducer";
 import defensesReducer, * as fromDefenses from "./defenses.reducer";

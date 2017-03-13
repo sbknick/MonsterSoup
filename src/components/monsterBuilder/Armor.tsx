@@ -6,6 +6,7 @@ import { ArmorData, ArmorFormulaOption, ArmorType, AttributesState, DefensesStat
 import { getMonsterBuilderData, GlobalState } from "redux/reducers";
 
 import { armors, attributes } from "data";
+import * as Calc from "util/Calc";
 import { mod } from "util/Mod";
 import { titleize } from "util/String";
 
@@ -14,22 +15,7 @@ import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
 
 export const Armor: React.StatelessComponent<Props> = (props) =>
 {
-    let armorSplat: any;
-
-    switch (props.armorFormula)
-    {
-        case ArmorFormulaOption.StandardArmor:
-            armorSplat = <StandardArmor {...props} />;
-            break;
-
-        case ArmorFormulaOption.NaturalArmor:
-            armorSplat = <NaturalArmor {...props} />;
-            break;
-
-        default:
-            armorSplat = <UnarmoredDefense {...props} />;
-            break;
-    }
+    const armorSplat = getArmorSplat(props);
 
     const formulaOptions: any[] = [];
     for (const opt in ArmorFormulaOption) {
@@ -38,11 +24,9 @@ export const Armor: React.StatelessComponent<Props> = (props) =>
         formulaOptions.push(<option key={opt} value={opt}>{titleize(ArmorFormulaOption[opt])}</option>);
     }
 
-    // let idx = 0;
-
     return (
         <div className="armor-formula">
-            <select value={props.armorFormula}
+            <select value={props.defenses.armorFormula}
                     onChange={e => props.setArmorFormula(parseInt(e.target.value) as ArmorFormulaOption)}>
                 {formulaOptions}
             </select>
@@ -50,6 +34,24 @@ export const Armor: React.StatelessComponent<Props> = (props) =>
         </div>
     );
 };
+
+function getArmorSplat(props: Props): JSX.Element
+{
+    switch (props.defenses.armorFormula)
+    {
+        case ArmorFormulaOption.StandardArmor:
+            return <StandardArmor {...props} />;
+
+        case ArmorFormulaOption.NaturalArmor:
+            return <NaturalArmor {...props} />;
+
+        case ArmorFormulaOption.UnarmoredDefense:
+            return <UnarmoredDefense {...props} />;
+
+        default:
+            throw new Error();
+    }
+}
 
 let armorOptions: JSX.Element[] = [];
 
@@ -77,125 +79,76 @@ const StandardArmor: React.StatelessComponent<Props> = (props) =>
     return (
         <div>
             <p>
-                <select value={props.armor.name} onChange={e => props.setArmor(e.target.value)}>
+                <select value={props.defenses.armor.name}
+                        onChange={e => props.setArmor(e.target.value)}>
                     {armorOptions}
                 </select>
                 <button title="Add custom armor type"> + </button>
             </p>
             <p>
-                <input type="checkbox" checked={props.useShield} onChange={props.toggleUseShield} /> Include a Shield
+                <input type="checkbox" checked={props.defenses.useShield}
+                       onChange={props.toggleUseShield} /> Include a Shield
             </p>
             <label>Bonus</label>
-            <NumberInput value={props.miscACBonus} onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
+            <NumberInput value={props.defenses.miscACBonus}
+                         onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
             <p>
                 <label>AC</label>
                 <br />
-                {calcACForStandardArmor(props)}
+                {Calc.getACOutputForStandardArmor(props.defenses, props.attributes)}
             </p>
         </div>
     );
 };
 
-function calcACForStandardArmor(props: Props): string
-{
-    let ac = props.armor.value + props.miscACBonus;
-    ac += props.useShield ? 2 : 0;
-
-    switch (props.armor.type)
-    {
-        case ArmorType.Light:
-            ac += props.dexMod;
-            break;
-
-        case ArmorType.Medium:
-            ac += Math.min(2, props.dexMod);
-            break;
-
-        case ArmorType.Heavy:
-            break;
-
-        default:
-            throw new RangeError("Unexpected armor type");
-    }
-
-    return `${ac} (${props.armor.name.toLowerCase()}${(props.useShield ? ", shield" : "")})`;
-}
-
 const NaturalArmor: React.StatelessComponent<Props> = (props) =>
 (
     <div>
         <p>
-            <input type="checkbox" checked={props.useShield} onChange={props.toggleUseShield} /> Include a Shield
+            <input type="checkbox" checked={props.defenses.useShield}
+                   onChange={props.toggleUseShield} /> Include a Shield
         </p>
         <label>Bonus</label>
-        <NumberInput value={props.miscACBonus} onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
+        <NumberInput value={props.defenses.miscACBonus}
+                     onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
         <p>
             <label>AC</label>
             <br />
-            {calcACForNaturalArmor(props)}
+            {Calc.getACOutputForNaturalArmor(props.defenses, props.attributes)}
         </p>
     </div>
 );
-
-function calcACForNaturalArmor(props: Props): string
-{
-    let ac = 10 + props.miscACBonus + props.dexMod;
-    ac += props.useShield ? 2 : 0;
-
-    return `${ac} (natural armor${(props.useShield ? ", shield" : "")})`;
-}
 
 const UnarmoredDefense: React.StatelessComponent<Props> = (props) =>
 (
     <div>
         <p>
             <label>AC from Attribute</label>
-            <select value={props.unarmoredACAttribute} onChange={e => props.setUnarmoredACAttribute(e.target.value)}>
+            <select value={props.defenses.unarmoredACAttribute}
+                    onChange={e => props.setUnarmoredACAttribute(e.target.value)}>
                 <option>N/A</option>
                 {attributes.map(a => <option key={a}>{a}</option>)}
             </select>
         </p>
         <p>
-            <input type="checkbox" checked={props.useShield} onChange={props.toggleUseShield} /> Include a Shield
+            <input type="checkbox" checked={props.defenses.useShield}
+                   onChange={props.toggleUseShield} /> Include a Shield
         </p>
         <label>Bonus</label>
-        <NumberInput value={props.miscACBonus} onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
+        <NumberInput value={props.defenses.miscACBonus}
+                     onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
         <p>
             <label>AC</label>
             <br />
-            {calcACForUnarmoredDefense(props)}
+            {Calc.getACOutputForUnarmoredDefense(props.defenses, props.attributes)}
         </p>
     </div>
 );
 
-function calcACForUnarmoredDefense(props: Props): string
-{
-    let ac = 10 + props.miscACBonus + props.dexMod;
-    ac += props.useShield ? 2 : 0;
-
-    if (props.unarmoredACAttribute)
-    {
-        ac += mod((props.attributes as any)[props.unarmoredACAttribute]);
-    }
-
-    return `${ac}${(props.useShield ? " (shield)" : "")}`;
-}
-
 interface Props
 {
-    dexMod: number;
     attributes: AttributesState;
-
-    armorFormula: ArmorFormulaOption;
-
-    // Standard Armor
-    armor?: ArmorData;
-
-    // Unarmored Defense
-    unarmoredACAttribute?: string;
-
-    useShield?: boolean;
-    miscACBonus: number;
+    defenses: DefensesState;
 
     setArmorFormula: (af: ArmorFormulaOption) => void;
     setArmor: (a: string) => void;
@@ -209,13 +162,8 @@ function mapStateToProps(state: GlobalState): Props
     const mb = getMonsterBuilderData(state);
 
     return {
-        dexMod: mod(mb.attributes.Dex),
         attributes: mb.attributes,
-        armorFormula: mb.defenses.armorFormula,
-        armor: mb.defenses.armor,
-        unarmoredACAttribute: mb.defenses.unarmoredACAttribute,
-        useShield: mb.defenses.useShield,
-        miscACBonus: mb.defenses.miscACBonus,
+        defenses: mb.defenses,
     } as Props;
 }
 

@@ -15,8 +15,10 @@
       "data/*": ["./src/data/*"],
       "monsterBuilder/actions/*": ["./src/redux/actions/monsterBuilder/*"],
       "monsterBuilder/types": ["./src/types/monsterBuilder"],
+      "monsterBuilder/reducers": ["./src/redux/reducers/monsterBuilder"],
       "monsterBuilder/reducers/*": ["./src/redux/reducers/monsterBuilder/*"],
       "redux/*": ["./src/redux/*"],
+      "types": ["./src/types"],
       "util": ["./src/util"],
       "util/*": ["./src/util/*"]
     }

@@ -11,3 +11,12 @@ export interface AttributesState
     Wis: number;
     Cha: number;
 }
+
+export interface TraitArgs
+{
+    shortName: string;
+
+    damageString?: string;
+    damageType?: string;
+    weapon?: string;
+}

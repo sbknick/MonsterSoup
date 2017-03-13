@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as Actions from "monsterBuilder/actions/traits.actions";
 import { getAllTraits, getAppliedTraitIds, GlobalState } from "redux/reducers";
 import { getTraitArgs, MonsterBuilderState } from "redux/reducers/monsterBuilder";
-import { Trait } from "redux/reducers/traits.reducer";
+import { Trait } from "types";
 
 import TraitSplat from "./TraitSplat";
 
@@ -80,7 +80,7 @@ function mapStateToProps(state: GlobalState): Props
     const props: Props = {
         allTraits: [],
         availableTraits: [],
-        appliedTraits: []
+        appliedTraits: [],
     } as Props;
 
     props.monster = state.entities.monsterBuilder;

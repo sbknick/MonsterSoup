@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { TraitArgs } from "monsterBuilder/reducers/traits.reducer";
-import { MonsterBuilderState } from "redux/reducers/monsterBuilder";
-import { Trait } from "redux/reducers/traits.reducer";
+import { MonsterBuilderState } from "monsterBuilder/reducers";
+import { TraitArgs } from "monsterBuilder/types";
+import { Trait } from "types";
 
 import * as Util from "util/MonsterTraitUtil";
 

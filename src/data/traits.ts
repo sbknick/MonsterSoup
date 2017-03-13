@@ -1,4 +1,4 @@
-import { Trait, MiscTextApplyType, SpecialTraitType } from '../redux/reducers/traits.reducer';
+import { Trait, MiscTextApplyType, SpecialTraitType } from "types";
 
 const defaultTraits: Trait[] = [
     { id: 1, name: "Aggressive", effectiveDPRModifier: 2, desc: "As a bonus action, {shortName} can move up to its speed toward a hostile creature that it can see.",

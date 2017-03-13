@@ -5,6 +5,7 @@ import * as Actions from "monsterBuilder/actions/defenses.actions";
 import { DefensesState, HitDice, Size } from "monsterBuilder/types";
 import { getMonsterBuilderData, GlobalState } from "redux/reducers";
 
+import * as Calc from "util/Calc";
 import * as CRUtil from "util/CRUtil";
 import { asBonus, mod, modBonus } from "util/Mod";
 
@@ -71,7 +72,7 @@ const SizeSelect: React.StatelessComponent<Props> = (props) =>
 
 const Defenses: React.StatelessComponent<Props> = (props) =>
 {
-    const averageHp = hitDiceAverage(props);
+    const averageHp = Calc.averageHitDice(props.defenses.hitDice, props.conMod);
 
     return (
         <div className="container">
@@ -79,8 +80,6 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
                 <LabelledItem label="Hit Dice" labelType="h4">
                     <label title="The monster's Size will determine the default size of the hit die">Size</label>
                     <SizeSelect {...props} />
-                    { // hitDiceSplats//
-                    }
                     <HitDiceSplats {...props} />
                     <button onClick={props.addNewHitDie}> + </button>
                 </LabelledItem>
@@ -126,23 +125,6 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
         </div>
     );
 };
-
-function hitDiceAverage(props: Props): number
-{
-    const total = props.defenses.hitDice
-                .map(hd => singleHitDiceAverage(hd, props.conMod))
-                .reduce((a, b) => a + b);
-
-    return total;
-}
-
-function singleHitDiceAverage(hitDice: HitDice, conMod: number): number
-{
-    const averageRoll = Math.floor(hitDice.hitDieSize / 2);
-
-    const sum = (averageRoll + conMod) * hitDice.hitDiceCount;
-    return sum;
-}
 
 function mapStateToProps(state: GlobalState): Props
 {
