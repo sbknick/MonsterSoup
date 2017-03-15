@@ -73,12 +73,19 @@ function getDefensiveCRIdx(averageHp: number, effectiveAC: number): number
     if (acCrIdxRange.low <= hpCrIdx && hpCrIdx <= acCrIdxRange.high)
         return hpCrIdx;
 
-    const crAc = getExpectedACForCRIdx(hpCrIdx);
-    const diff = effectiveAC - crAc;
-    const crIncr = diff >= 0 ? Math.floor(diff / 2) : Math.ceil(diff / 2);
+    const crIncr = getCRAdjustmentForAC(averageHp, effectiveAC);
 
     const finalIdx = hpCrIdx + crIncr;
     return finalIdx;
+}
+
+export function getCRAdjustmentForAC(averageHp: number, effectiveAC: number): number
+{
+    const hpCrIdx = getCRIdxForHP(averageHp);
+    const crAc = getExpectedACForCRIdx(hpCrIdx);
+    const diff = effectiveAC - crAc;
+    const crIncr = diff >= 0 ? Math.floor(diff / 2) : Math.ceil(diff / 2);
+    return crIncr;
 }
 
 export function getDefensiveCR(averageHp: number, effectiveAC: number): string

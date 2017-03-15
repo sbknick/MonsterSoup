@@ -2,8 +2,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import * as Actions from "monsterBuilder/actions/defenses.actions";
-import { DefensesState, HitDice, Size } from "monsterBuilder/types";
-import { getMonsterBuilderData, GlobalState } from "redux/reducers";
+import { AttributesState, DefensesState, HitDice, MonsterTrait, Size, TraitArgs,
+         TraitsState } from "monsterBuilder/types";
+import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "redux/reducers";
+import { Trait } from "types";
 
 import * as Calc from "util/Calc";
 import * as CRUtil from "util/CRUtil";
@@ -17,8 +19,12 @@ import Armor from "./Armor";
 
 interface Props
 {
+    attributes: AttributesState;
     defenses: DefensesState;
+    traits: MonsterTrait[];
     conMod: number;
+    ac: number;
+    effectiveAC: number;
 
     setHitDiceCount: (idx: number, n: number) => void;
     setHitDieSize: (idx: number, n: number) => void;
@@ -28,6 +34,68 @@ interface Props
     toggleSizeOverride: () => void;
     setTempAC: (ac: number) => void;
 }
+
+const Defenses: React.StatelessComponent<Props> = (props) =>
+{
+    const averageHp = Calc.averageHitDice(props.defenses.hitDice, props.conMod);
+
+    return (
+        <div className="container">
+            <div className="defensive-cr-details">
+                <LabelledItem label="Hit Dice" labelType="h4">
+                    <label title="The monster's Size will determine the default size of the hit die">Size</label>
+                    <SizeSelect {...props} />
+                    <HitDiceSplats {...props} />
+                    <button onClick={props.addNewHitDie}> + </button>
+                    <br /><br />
+                    <LabelledItem label="Average HP">
+                        <AverageHPSplat averageHp={averageHp} hitDice={props.defenses.hitDice} conMod={props.conMod} />
+                    </LabelledItem>
+                </LabelledItem>
+                <LabelledItem label="Armor Class" labelType="h4">
+                    <Armor />
+                </LabelledItem>
+            </div>
+
+            <div className="defensive-cr-calculations">
+                <LabelledItem label="Defensive CR Calculations" labelType="h4">
+                    <LabelledItem label="Expected CR for Average HP">
+                        {CRUtil.getCRForHP(averageHp)}
+                    </LabelledItem>
+
+                    <LabelledItem label="Expected AC for Average HP">
+                        {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(averageHp))}
+                    </LabelledItem>
+
+                    <EffectiveAC {...props} />
+                    <DefensiveCRCalcs averageHp={averageHp} {...props} />
+                </LabelledItem>
+            </div>
+
+            <div className="defensive-cr-outcome">
+                <LabelledItem label="Defensive CR Rating" labelType="h4">
+                    {CRUtil.getDefensiveCR(averageHp, props.defenses.tempAC)}
+                </LabelledItem>
+                <div>
+                    <h4>AutoScale!</h4>
+                    <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
+                                          onDownClicked={e => console.log("'down clicked'")} />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const AverageHPSplat: React.StatelessComponent<{averageHp: number, hitDice: HitDice[], conMod: number}> =
+({averageHp, hitDice, conMod}) =>
+{
+    const sum = 0;
+    return (<p>{averageHp} ({
+        hitDice.map(hd => `${hd.hitDiceCount}d${hd.hitDieSize}`).join(" + ")
+        + " + " +
+        hitDice.reduce((acc, hd) => acc + hd.hitDiceCount, sum)
+    })</p>);
+};
 
 const HitDiceSplats: React.StatelessComponent<Props> = (props) =>
 {
@@ -70,69 +138,49 @@ const SizeSelect: React.StatelessComponent<Props> = (props) =>
     );
 };
 
-const Defenses: React.StatelessComponent<Props> = (props) =>
+const EffectiveAC: React.StatelessComponent<Props> = (props) =>
 {
-    const averageHp = Calc.averageHitDice(props.defenses.hitDice, props.conMod);
+    const range = CRUtil.getCRRangeForAC(props.effectiveAC);
 
     return (
-        <div className="container">
-            <div className="defensive-cr-details">
-                <LabelledItem label="Hit Dice" labelType="h4">
-                    <label title="The monster's Size will determine the default size of the hit die">Size</label>
-                    <SizeSelect {...props} />
-                    <HitDiceSplats {...props} />
-                    <button onClick={props.addNewHitDie}> + </button>
-                </LabelledItem>
-                <LabelledItem label="Armor Class" labelType="h4">
-                    <Armor />
-                </LabelledItem>
-            </div>
+        <LabelledItem label="Effective AC">
+            {Calc.getEffectiveACOutput(props.defenses, props.attributes, props.traits)}
+            <LabelledItem label="Expected CR Range for Effective AC">
+                {(range.Low === "0" && range.High === "0") ? "0" : `${range.Low}-${range.High}`}
+            </LabelledItem>
+        </LabelledItem>
+    );
+};
 
-            <div className="defensive-cr-calculations">
-                <LabelledItem label="HP Average" labelType="h4">
-                    <p>{averageHp} ({
-                        props.defenses.hitDice.map(hd =>
-                        `${hd.hitDiceCount}d${hd.hitDieSize}${props.conMod !== 0
-                                ? asBonus(props.conMod * hd.hitDiceCount) : ""}`)
-                        .join(" + ")
-                    })</p>
-                    <LabelledItem label="CR for Average HP">
-                        {CRUtil.getCRForHP(averageHp)}
-                    </LabelledItem>
-                    <LabelledItem label="Expected AC for Average HP">
-                        {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(averageHp))}
-                    </LabelledItem>
-                </LabelledItem>
-                <LabelledItem label="Effective AC" labelType="h4">
-                    <NumberInput value={props.defenses.tempAC}
-                                 onChange={e => props.setTempAC(parseInt(e.target.value))} />
-                    <LabelledItem label="CR Range for Effective AC">
-                        {JSON.stringify(CRUtil.getCRRangeForAC(props.defenses.tempAC))}
-                    </LabelledItem>
-                </LabelledItem>
-            </div>
+const DefensiveCRCalcs: React.StatelessComponent<Props & {averageHp: number}> = (props) =>
+{
+    const diff = props.effectiveAC - props.ac;
 
-            <div className="defensive-cr-outcome">
-                <LabelledItem label="Defensive CR Rating" labelType="h4">
-                    {CRUtil.getDefensiveCR(averageHp, props.defenses.tempAC)}
-                </LabelledItem>
-                <div>
-                    <h4>AutoScale!</h4>
-                    <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
-                                          onDownClicked={e => console.log("'down clicked'")} />
-                </div>
-            </div>
-        </div>
+    return (
+        <LabelledItem label="Defensive CR Calculations" labelType="h4" style={{marginTop: "20px"}}>
+            <LabelledItem label="CR from Average HP" value={CRUtil.getCRForHP(props.averageHp)} />
+            <LabelledItem label="Adjustment from eAC"
+            value={CRUtil.getCRAdjustmentForAC(props.averageHp, props.effectiveAC)} />
+            <LabelledItem label="Total" value={CRUtil.getDefensiveCR(props.averageHp, props.effectiveAC)} />
+
+        </LabelledItem>
     );
 };
 
 function mapStateToProps(state: GlobalState): Props
 {
     const mb = getMonsterBuilderData(state);
+    const traits = getTraitsForMonster(state);
+
+    const monsterTraits: MonsterTrait[] = traits.map(t => ({ trait: t, traitArgs: getTraitArgs(state, t)}));
 
     return {
         conMod: mod(mb.attributes.Con),
+        attributes: mb.attributes,
         defenses: mb.defenses,
+        traits: monsterTraits,
+        ac: Calc.calcAC(mb.defenses, mb.attributes),
+        effectiveAC: Calc.calcEffectiveAC(mb.defenses, mb.attributes, monsterTraits),
     } as Props;
 }
 

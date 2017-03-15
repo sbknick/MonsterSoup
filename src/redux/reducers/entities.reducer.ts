@@ -1,13 +1,14 @@
 import * as Redux from "redux";
-// import Types from '../types';
 
-import monsterBuilderReducer, * as fromMonsterBuilder from './monsterBuilder';
-import traitsReducer, * as fromTraits from './traits.reducer';
+import { Trait } from "types";
 
-export type EntitiesState =
+import monsterBuilderReducer, * as fromMonsterBuilder from "./monsterBuilder";
+import traitsReducer, * as fromTraits from "./traits.reducer";
+
+export interface EntitiesState
 {
-    monsterBuilder: fromMonsterBuilder.MonsterBuilderState,
-    traits: fromTraits.TraitsState
+    monsterBuilder: fromMonsterBuilder.MonsterBuilderState;
+    traits: fromTraits.TraitsState;
 }
 
 const entitiesReducer = Redux.combineReducers({
@@ -27,3 +28,6 @@ export const getAllTraits = (state: EntitiesState) =>
 
 export const getAppliedTraitIds = (state: EntitiesState) =>
     fromMonsterBuilder.getAppliedTraitIds(state.monsterBuilder);
+
+export const getTraitArgs = (state: EntitiesState, trait: Trait) =>
+    fromMonsterBuilder.getTraitArgs(state.monsterBuilder, trait);

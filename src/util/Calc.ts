@@ -1,7 +1,10 @@
-import { mod } from "./Mod";
+import { asBonus, mod } from "./Mod";
 
 import { MonsterBuilderState } from "monsterBuilder/reducers";
-import { ArmorType, AttributesState, DefensesState, HitDice } from "monsterBuilder/types";
+import { ArmorFormulaOption, ArmorType, AttributesState, DefensesState, HitDice,
+         MonsterTrait } from "monsterBuilder/types";
+
+import { getTraitArgs, getTraitsForMonster } from "redux/reducers";
 
 export function averageHitDice(hitDice: HitDice[], conMod: number): number
 {
@@ -81,6 +84,59 @@ export function calcACForUnarmoredDefense(defenses: DefensesState, attributes: A
     {
         ac += mod((attributes as any)[defenses.unarmoredACAttribute]);
     }
+
+    return ac;
+}
+
+export function getEffectiveACOutput(defenses: DefensesState, attributes: AttributesState, traits: MonsterTrait[]): string // tslint:disable-line
+{
+    const effectiveACBonusFromTraits = traits.reduce((acc, t) => acc + t.trait.effectiveACModifier, 0);
+    const total = calcEffectiveAC(defenses, attributes, traits);
+
+    return total.toString() +
+        (effectiveACBonusFromTraits !== 0 ? ` (${asBonus(effectiveACBonusFromTraits)} from Traits)` : "");
+}
+
+export function calcAC(defenses: DefensesState, attributes: AttributesState): number
+{
+    switch (defenses.armorFormula)
+    {
+        case ArmorFormulaOption.NaturalArmor:
+            return calcACForNaturalArmor(defenses, attributes);
+
+        case ArmorFormulaOption.StandardArmor:
+            return calcACForStandardArmor(defenses, attributes);
+
+        case ArmorFormulaOption.UnarmoredDefense:
+            return calcACForUnarmoredDefense(defenses, attributes);
+
+        default:
+            throw new Error();
+    }
+}
+
+export function calcEffectiveAC(defenses: DefensesState, attributes: AttributesState, traits: MonsterTrait[]): number
+{
+    let ac = 0;
+    switch (defenses.armorFormula)
+    {
+        case ArmorFormulaOption.NaturalArmor:
+            ac = calcACForNaturalArmor(defenses, attributes);
+            break;
+
+        case ArmorFormulaOption.StandardArmor:
+            ac = calcACForStandardArmor(defenses, attributes);
+            break;
+
+        case ArmorFormulaOption.UnarmoredDefense:
+            ac = calcACForUnarmoredDefense(defenses, attributes);
+            break;
+
+        default:
+            throw new Error();
+    }
+
+    ac = traits.reduce((acc, t) => acc + t.trait.effectiveACModifier, ac);
 
     return ac;
 }

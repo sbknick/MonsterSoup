@@ -12,6 +12,10 @@ h1, h2, h3, h4, legend {
                  'Bitstream Charter', Georgia, serif
 }
 
+label {
+    font-family: serif;
+}
+
 a {
     text-decoration: none;
 }

@@ -6,6 +6,7 @@ interface Props
     container?: string;
     contentContainer?: string;
     labelType?: string;
+    value?: any;
 
     className?: string;
     style?: any;
@@ -22,7 +23,7 @@ export const LabelledItem: React.StatelessComponent<Props> = (props) =>
             <Container className={props.className} style={props.style}>
                 <LabelType>{props.label}</LabelType>
                 <ContentContainer>
-                    {props.children}
+                    {props.value}{props.children}
                 </ContentContainer>
             </Container>
         );
@@ -30,7 +31,7 @@ export const LabelledItem: React.StatelessComponent<Props> = (props) =>
         return (
             <Container className={props.className} style={props.style}>
                 <LabelType>{props.label}</LabelType>
-                {props.children}
+                {props.value}{props.children}
             </Container>
         );
 };

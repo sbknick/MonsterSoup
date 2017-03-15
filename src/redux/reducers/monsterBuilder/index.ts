@@ -9,7 +9,7 @@ import proficiencyReducer, * as fromProficiency from "./proficiency.reducer";
 import savesReducer, * as fromSaves from "./saves.reducer";
 import traitsReducer, * as fromTraits from "./traits.reducer";
 
-import { AttributesState, DefensesState, SavesState } from "monsterBuilder/types";
+import { AttributesState, DefensesState, SavesState, TraitsState } from "monsterBuilder/types";
 
 const monsterBuilderReducer = Redux.combineReducers({
     attributes: attributesReducer,
@@ -27,7 +27,7 @@ export interface MonsterBuilderState
     description: fromDescription.State;
     proficiency: fromProficiency.State;
     saves: SavesState;
-    traits: fromTraits.State;
+    traits: TraitsState;
 };
 
 export default monsterBuilderReducer;
