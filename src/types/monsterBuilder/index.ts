@@ -1,7 +1,8 @@
-export { ArmorData, ArmorType } from "./armor";
-export { ArmorFormulaOption, DefensesState, HitDice, Size } from "./defenses";
-export { SavesState, SavesStateSingle } from "./saves";
-export { TraitArgs, TraitsState, MonsterTrait } from "./traits";
+export * from "./armor";
+export * from "./defenses";
+export * from "./offenses";
+export * from "./saves";
+export * from "./traits";
 
 export interface AttributesState
 {

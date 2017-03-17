@@ -1,2 +1,1 @@
-
-export { GlobalState } from './reducers';
+export * from "./reducers";

@@ -58,7 +58,7 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
             </div>
 
             <div className="defensive-cr-calculations">
-                <LabelledItem label="Defensive CR Calculations" labelType="h4">
+                <LabelledItem label="Defensive CR Details" labelType="h4">
                     <LabelledItem label="Expected CR for Average HP">
                         {CRUtil.getCRForHP(averageHp)}
                     </LabelledItem>
@@ -68,19 +68,18 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
                     </LabelledItem>
 
                     <EffectiveAC {...props} />
-                    <DefensiveCRCalcs averageHp={averageHp} {...props} />
                 </LabelledItem>
+                <DefensiveCRCalcs averageHp={averageHp} {...props} />
             </div>
 
             <div className="defensive-cr-outcome">
                 <LabelledItem label="Defensive CR Rating" labelType="h4">
                     {CRUtil.getDefensiveCR(averageHp, props.defenses.tempAC)}
                 </LabelledItem>
-                <div>
-                    <h4>AutoScale!</h4>
+                <LabelledItem label="AutoScale!" labelType="h4">
                     <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
                                           onDownClicked={e => console.log("'down clicked'")} />
-                </div>
+                </LabelledItem>
             </div>
         </div>
     );

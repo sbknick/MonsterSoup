@@ -1,3 +1,4 @@
+import { Condition, DamageType } from "types";
 import { ArmorData } from "./armor";
 
 export enum Size
@@ -28,6 +29,11 @@ export interface DefensesState
     size: Size;
     sizeOverridden: boolean;
     hitDice: HitDice[];
+
+    resistances?: DamageType[];
+    immunities?: DamageType[];
+    vulnerabilities?: DamageType[];
+    conditionImmunities?: Condition[];
 
     armorFormula: ArmorFormulaOption;
     armor?: ArmorData;

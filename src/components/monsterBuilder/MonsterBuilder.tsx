@@ -8,6 +8,7 @@ import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
          NumberInput, SelectList, UpDownLinks } from "../common";
 import Attributes from "./Attributes";
 import Defenses from "./Defenses";
+import Offenses from "./Offenses";
 import Proficiency from "./Proficiency";
 import Saves from "./Saves";
 import Traits from "./Traits";
@@ -20,16 +21,6 @@ interface MonsterStatsProps
 {
     monsterName: string;
 }
-
-// interface Defenses
-// {
-//     hitDieSize: number;
-//     hitDiceCount: number;
-//
-//     ACFormulaType: string;
-//
-//     tempAC: number;
-// }
 
 interface Offenses
 {
@@ -62,16 +53,12 @@ const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
 
 interface MonsterStatsState
 {
-    // attributes: AttributesSet;
-    // defenses: Defenses;
     offenses: Offenses;
     proficiency: number;
 
     isProficiencyChanged: boolean;
 }
 
-// const ATTRIBUTES: AttributesSet = { Str: 10, Dex: 10, Con: 10, Int: 10, Wis: 10, Cha: 10 };
-// const DEFENSES: Defenses = {hitDieSize: 8, hitDiceCount: 2, ACFormulaType: STANDARD_ARMOR, baseAC: 10, tempAC: 14};
 const ATTACKS: Attack[] = [
     {name: "Bite", reach: 5, damageDiceCount: 2, damageDieSize: 6, damageBonus: 2, description: "Nomnomnom."},
 ];
@@ -81,8 +68,6 @@ const OFFENSES: Offenses = {primaryStat: "Str", primarySpellStat: "Int",
 
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
-    // attributes: ATTRIBUTES,
-    // defenses: DEFENSES,
     offenses: OFFENSES,
     proficiency: 2,
     isProficiencyChanged: false,
@@ -100,16 +85,11 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.handleChangeACFormulaType = this.handleChangeACFormulaType.bind(this);
         this.handleChangePrimaryStat = this.handleChangePrimaryStat.bind(this);
         this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
-        // this.setTempAC = this.setTempAC.bind(this);
-        // this.setTempAverageDPR = this.setTempAverageDPR.bind(this);
     }
 
     public render()
     {
         const { monsterName } = this.props;
-        // const { hitDieSize, hitDiceCount } = this.state.defenses;
-
-        // const conMod = this.GetMod("Con");
 
         return (
             <div className="monster-stats">
@@ -127,6 +107,11 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                               displayOnCollapse={this.DefensiveCRSummary()}>
                         <Defenses />
                     </Fieldset>
+                    <Fieldset legend="Offensive CR" className="offensive-cr"
+                              displayOnCollapse={this.OffensiveCRSummary()}>
+                        <Offenses />
+                    </Fieldset>
+
                     <Fieldset legend="Offensive CR" className="offensive-cr"
                               displayOnCollapse={this.OffensiveCRSummary()}>
                         <div className="container">
@@ -246,12 +231,6 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         // return mod(value);
     }
 
-    // EffectiveAC(): number
-    // {
-    //     var ac = this.state.Defenses.BaseAC + this.Mod(this.state.Attributes.Dex);
-    //     return ac;
-    // }
-
     private hitDiceAverage(): number
     {
         // const { hitDieSize, hitDiceCount } = this.state.defenses;
@@ -269,14 +248,9 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         return this.state.offenses.averageDPR;
     }
 
-    private handleAttributeChange(e: any, attr: string): void
-    {
-        // this.setAttribute(attr, e.target.value as number);
-    }
-
     private handleChange(attr: string): (e: any) => void
     {
-        return e => {};
+        return e => {; };
         // return (e: any) => this.SetAttribute(attr, e.target.value);
     }
 
@@ -315,31 +289,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         // this.setState({offenses: off} as MonsterStatsState);
     }
 
-    private handleModifyProficiency(value: number)
-    {
-        // var newValue = this.state.Proficiency + value;
-        // newValue = Math.max(2, newValue);
-        // newValue = Math.min(10, newValue);
-        //
-        // if (newValue != this.state.Proficiency)
-        //     this.setState({proficiency: newValue, isProficiencyChanged: true} as MonsterStatsState);
-    }
-
-    // private setTempAC(value: number)
-    // {
-    //     // let def = this.state.Defenses;
-    //     // def.tempAC = value;
-    //     // this.setState({defenses: def} as MonsterStatsState);
-    // }
-    //
-    // private setTempAverageDPR(value: number)
-    // {
-    //     // let off = this.state.Offenses;
-    //     // off.averageDPR = value;
-    //     // this.setState({offenses: off} as MonsterStatsState);
-    // }
-
-    private EffectiveACBoostFromTraits() : number
+    private EffectiveACBoostFromTraits(): number
     {
         const effectiveACModifier = 0;
         // this.state.Traits.reduce((acc, tr) =>
@@ -368,7 +318,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         );
     }
 
-    private EffectiveABBoostFromTraits() : number
+    private EffectiveABBoostFromTraits(): number
     {
         const effectiveABModifier = 0;
         // this.state.Traits.reduce((acc, tr) =>
@@ -389,7 +339,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                 <i>  -DPR:</i> <b>{this.calcAverageDamagePerRound()}</b> (CR {
                     CRUtil.getCRForDPR(this.calcAverageDamagePerRound())})
                 <i>  -AB:</i> <b>{this.state.offenses.attackBonus}</b>
-                {effectiveABModifier != 0 && ("+" + effectiveABModifier + " Effective from Traits")}
+                {effectiveABModifier !== 0 && ("+" + effectiveABModifier + " Effective from Traits")}
                 <i>  -CR:</i> <b>{CRUtil.getOffensiveCR(this.calcAverageDamagePerRound(),
                                                         this.state.offenses.attackBonus)}</b>
             </div>

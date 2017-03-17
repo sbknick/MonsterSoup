@@ -117,25 +117,7 @@ export function calcAC(defenses: DefensesState, attributes: AttributesState): nu
 
 export function calcEffectiveAC(defenses: DefensesState, attributes: AttributesState, traits: MonsterTrait[]): number
 {
-    let ac = 0;
-    switch (defenses.armorFormula)
-    {
-        case ArmorFormulaOption.NaturalArmor:
-            ac = calcACForNaturalArmor(defenses, attributes);
-            break;
-
-        case ArmorFormulaOption.StandardArmor:
-            ac = calcACForStandardArmor(defenses, attributes);
-            break;
-
-        case ArmorFormulaOption.UnarmoredDefense:
-            ac = calcACForUnarmoredDefense(defenses, attributes);
-            break;
-
-        default:
-            throw new Error();
-    }
-
+    let ac = calcAC(defenses, attributes);
     ac = traits.reduce((acc, t) => acc + t.trait.effectiveACModifier, ac);
 
     return ac;

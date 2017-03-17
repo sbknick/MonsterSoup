@@ -1,4 +1,38 @@
 
+export enum Condition
+{
+    Blinded = 1,
+    Charmed,
+    Deafened,
+    Frightened,
+    Grappled,
+    Incapacitated,
+    Invisible,
+    Paralyzed,
+    Petrified,
+    Poisoned,
+    Prone,
+    Restrained,
+    Stunned,
+    Unconscious,
+}
+
+export enum DamageType
+{
+    Acid = 1,
+    Bludgeoning,
+    Cold,
+    Fire,
+    Force,
+    Lightning,
+    Necrotic,
+    Piercing,
+    Poison,
+    Psychic,
+    Radiant,
+    Slashing,
+    Thunder,
+}
 
 export interface Trait
 {
