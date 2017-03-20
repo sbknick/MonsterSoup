@@ -1,3 +1,4 @@
+import { Action } from "./monsterActions";
 
 export interface OffensesState
 {
@@ -6,24 +7,7 @@ export interface OffensesState
     attackBonus: number;
     saveDCBonus: number;
     multiattack?: Multiattack;
-    attacks: Attack[];
-}
-
-export interface Attack extends Action
-{
-    reach?: number;
-    rangeAccurate?: number;
-    rangeMax?: number;
-    damageDiceCount?: number;
-    damageDieSize?: number;
-    damageBonus?: number;
-    damageType?: string;
-}
-
-export interface Action
-{
-    name: string;
-    description: string;
+    attacks: Action[];
 }
 
 export interface Multiattack

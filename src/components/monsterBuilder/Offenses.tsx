@@ -2,8 +2,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { attributes } from "data";
-import * as Actions from "monsterBuilder/actions/defenses.actions";
-import { Action, Attack, AttributesState, HitDice, MonsterTrait, OffensesState, TraitArgs } from "monsterBuilder/types";
+import * as Actions from "monsterBuilder/actions/offenses.actions";
+import { Action, ActionType, Attack, AttributesState, HitDice, isAttack, MonsterAction, MonsterActionType, MonsterTrait,
+         OffensesState, TraitArgs } from "monsterBuilder/types";
 import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "redux/reducers";
 import { Trait } from "types";
 
@@ -13,6 +14,8 @@ import { asBonus, mod, modBonus } from "util/Mod";
 
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
     NumberInput, SelectList, UpDownLinks } from "common";
+
+import OffensesActions from "./OffensesActions";
 
     /* tslint:disable:no-console */
 
@@ -31,114 +34,79 @@ interface Props
 const Offenses: React.StatelessComponent<Props> = (props) =>
 {
     return (
-        <div className="container">
-            <div className="offensive-cr-details">
-                <LabelledItem label="Stats" labelType="h4">
-                    <LabelledItem label="Primary Attack Stat">
-                        <SelectList options={attributes}
-                                    value={props.offenses.primaryAttackStat}
-                                    onChange={e => props.setPrimaryAttackStat(e.target.value)}/>
-                    </LabelledItem>
-                    <LabelledItem label="Primary Spellcasting Stat">
-                        <SelectList options={attributes}
-                                    value={props.offenses.primarySpellStat}
-                                    onChange={props.setPrimarySpellStat} />
-                    </LabelledItem>
-                </LabelledItem>
-                <LabelledItem label="Attack Bonus" labelType="h4">
-                    <LabelledItem label="Misc Bonus">
-                        <NumberInput value={props.offenses.attackBonus}
-                                     onChange={e => props.setAttackBonusBonus(parseInt(e.target.value))} />
-                    </LabelledItem>
-                    <LabelledItem label="Total">
-                        {0}
-                    </LabelledItem>
-                </LabelledItem>
-                <LabelledItem label="Save DC" labelType="h4">
-                    <LabelledItem label="Misc Bonus">
-                        <NumberInput value={props.offenses.saveDCBonus}
-                                     onChange={e => props.setSaveDCBonus(parseInt(e.target.value))} />
-                    </LabelledItem>
-                    <LabelledItem label="Total">
-                       {0}
-                    </LabelledItem>
-                </LabelledItem>
-                <LabelledItem label="Actions" labelType="h4">
-                    <ActionSplats {...props} />
-                </LabelledItem>
-            </div>
-
-            <div className="offensive-cr-calculations">
-                <LabelledItem label="Offensive CR Details" labelType="h4">
-                    <LabelledItem label="Expected CR for Average DPR">
-                        {0}
-                    </LabelledItem>
-
-                    <LabelledItem label="Expected AttackBonus/Save DC for Average DPR">
-                        {"0-0"}
-                    </LabelledItem>
-
-                    {/*<EffectiveAC {...props} />*/}
-                    {"Effective AB/DC"}
-                </LabelledItem>
-                <LabelledItem label="Offensive CR Calculations" labelType="h4">
-                    CR from Average HP<br/>
-                    1/8<br/>
-                    Adjustment from eAC<br/>
-                    0<br/>
-                    Total<br/>
-                    1/8<br/>
-                </LabelledItem>
-            </div>
-
-            <div className="offensive-cr-outcomes">
-                <LabelledItem label="Offensive CR Rating" labelType="h4">
-                    {0}
-                </LabelledItem>
-                <LabelledItem label="AutoScale!" labelType="h4">
-                    <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
-                                          onDownClicked={e => console.log("'down clicked'")} />
-                </LabelledItem>
-            </div>
-        </div>
-    );
-};
-
-const ActionSplats: React.StatelessComponent<Props> = (props) =>
-{
-
-
-    return (
         <div>
-            <AttackSplat name="Attack Name" description="Attack Description"
-                damageDiceCount={2} damageDieSize={8} />
-            <ActionSplat name="Action Name" description="Action Description" />
+            <div className="container">
+                <div className="offensive-cr-details">
+                    <LabelledItem label="Stats" labelType="h4">
+                        <LabelledItem label="Primary Attack Stat">
+                            <SelectList options={attributes}
+                                        value={props.offenses.primaryAttackStat}
+                                        onChange={e => props.setPrimaryAttackStat(e.target.value)}/>
+                        </LabelledItem>
+                        <LabelledItem label="Primary Spellcasting Stat">
+                            <SelectList options={attributes}
+                                        value={props.offenses.primarySpellStat}
+                                        onChange={props.setPrimarySpellStat} />
+                        </LabelledItem>
+                    </LabelledItem>
+                    <LabelledItem label="Attack Bonus" labelType="h4">
+                        <LabelledItem label="Misc Bonus">
+                            <NumberInput value={props.offenses.attackBonus}
+                                         onChange={e => props.setAttackBonusBonus(parseInt(e.target.value))} />
+                        </LabelledItem>
+                        <LabelledItem label="Total">
+                            {0}
+                        </LabelledItem>
+                    </LabelledItem>
+                    <LabelledItem label="Save DC" labelType="h4">
+                        <LabelledItem label="Misc Bonus">
+                            <NumberInput value={props.offenses.saveDCBonus}
+                                         onChange={e => props.setSaveDCBonus(parseInt(e.target.value))} />
+                        </LabelledItem>
+                        <LabelledItem label="Total">
+                           {0}
+                        </LabelledItem>
+                    </LabelledItem>
+                </div>
+
+                <div className="offensive-cr-calculations">
+                    <LabelledItem label="Offensive CR Details" labelType="h4">
+                        <LabelledItem label="Expected CR for Average DPR">
+                            {0}
+                        </LabelledItem>
+
+                        <LabelledItem label="Expected AttackBonus/Save DC for Average DPR">
+                            {"0-0"}
+                        </LabelledItem>
+
+                        {/*<EffectiveAC {...props} />*/}
+                        {"Effective AB/DC"}
+                    </LabelledItem>
+                    <LabelledItem label="Offensive CR Calculations" labelType="h4">
+                        CR from Average HP<br/>
+                        1/8<br/>
+                        Adjustment from eAC<br/>
+                        0<br/>
+                        Total<br/>
+                        1/8<br/>
+                    </LabelledItem>
+                </div>
+
+                <div className="offensive-cr-outcomes">
+                    <LabelledItem label="Offensive CR Rating" labelType="h4">
+                        {0}
+                    </LabelledItem>
+                    <LabelledItem label="AutoScale!" labelType="h4">
+                        <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
+                                              onDownClicked={e => console.log("'down clicked'")} />
+                    </LabelledItem>
+                </div>
+            </div>
+
+            <OffensesActions />
         </div>
     );
 };
-
-const AttackSplat: React.StatelessComponent<Attack> = (attack) =>
-(
-    <ActionSplat {...attack}>
-        <p>{attack.damageDiceCount}d{attack.damageDieSize}</p>
-        {isAttack(attack) ? "Attack" : "Action"}
-    </ActionSplat>
-);
-
-const ActionSplat: React.StatelessComponent<Action> = (action) =>
-(
-    <div>
-        <h5>{action.name}.</h5>
-        <p>{action.description}</p>
-        {isAttack(action) ? "Attack" : "Action"}
-        {action.children}
-    </div>
-);
-
-function isAttack(action: Action): boolean
-{
-    return (action as Attack).damageDieSize !== undefined;
-}
 
 function mapStateToProps(state: GlobalState): Props
 {

@@ -40,15 +40,16 @@ export class Fieldset extends React.Component<Props, State>
     {
         return (
             <fieldset className={this.props.className} style={this.props.style}>
-                <legend onClick={this.toggleCollapse}>{this.props.legend}</legend>
+                <legend><a href="" onClick={this.toggleCollapse}>{this.props.legend}</a></legend>
                 {this.state.isCollapsed || this.props.children}
                 {this.state.isCollapsed && this.props.displayOnCollapse}
             </fieldset>
         );
     }
 
-    private toggleCollapse()
+    private toggleCollapse(e: any)
     {
+        e.preventDefault();
         this.setState({isCollapsed: !this.state.isCollapsed});
     }
 }
