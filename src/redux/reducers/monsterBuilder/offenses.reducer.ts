@@ -21,7 +21,7 @@ const initialState: OffensesState = {
     primarySpellStat: attributes[3],
     attackBonus: 0,
     saveDCBonus: 0,
-    attacks: [],
+    actions: [],
 };
 
 export default offensesReducer;

@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 
 import { attributes } from "data";
 import * as Actions from "monsterBuilder/actions/offenses.actions";
-import { Action, ActionType, Attack, isAttack, MonsterAction, MonsterActionType } from "monsterBuilder/types";
+import { MonsterAction } from "monsterBuilder/types";
 import { getMonsterBuilderData, GlobalState } from "redux/reducers";
+import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate,
+         MonsterActionType } from "types";
 
 import { Fieldset, Modal } from "common";
 import * as fromModal from "common/Modal";
@@ -59,20 +61,23 @@ class OffensesActions extends React.Component<Props, State>
 
 const ActionSplats: React.StatelessComponent<Props> = (props) =>
 {
-    const actions: ReadonlyArray<MonsterAction> = [
+    const actions: ReadonlyArray<MonsterActionTemplate> = [
         {
+            id: 1,
             type: MonsterActionType.None,
             name: "Bloom",
             description: "This unit can open up and squirt pollen at things.",
             actionType: ActionType.Action,
         },
         {
+            id: 2,
             type: MonsterActionType.None,
             name: "Action Name",
             description: "Action Description",
             actionType: ActionType.Action,
         },
         {
+            id: 3,
             type: MonsterActionType.Attack,
             name: "Attack Name",
             description: "Attack Description",
@@ -105,7 +110,7 @@ const ActionSplats: React.StatelessComponent<Props> = (props) =>
     );
 };
 
-const AttackSplat: React.StatelessComponent<Attack> = (attack) =>
+const AttackSplat: React.StatelessComponent<AttackTemplate> = (attack) =>
 (
     <ActionSplat {...attack}>
         <p>{attack.damageDiceCount}d{attack.damageDieSize}</p>
@@ -113,7 +118,7 @@ const AttackSplat: React.StatelessComponent<Attack> = (attack) =>
     </ActionSplat>
 );
 
-const ActionSplat: React.StatelessComponent<Action> = (action) =>
+const ActionSplat: React.StatelessComponent<ActionTemplate> = (action) =>
 (
     <div>
         <h5>{action.name}.</h5>
@@ -122,11 +127,6 @@ const ActionSplat: React.StatelessComponent<Action> = (action) =>
         {action.children}
     </div>
 );
-
-// function isAttack(action: Action): boolean
-// {
-//     return (action as Attack).damageDieSize !== undefined;
-// }
 
 interface Props
 {

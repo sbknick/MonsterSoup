@@ -65,3 +65,55 @@ export enum SpecialTraitType
 {
     Brute = 1,
 }
+
+export interface AttackTemplate extends ActionTemplate
+{
+    attackType: AttackType;
+    reach?: number;
+    rangeAccurate?: number;
+    rangeMax?: number;
+    damageDiceCount?: number;
+    damageDieSize?: number;
+    damageBonus?: number;
+    damageType?: string;
+    recharge?: number;
+}
+
+export interface ActionTemplate
+{
+    id: number;
+    type: MonsterActionType;
+    name: string;
+    description: string;
+    actionType: ActionType;
+}
+
+export enum MonsterActionType
+{
+    None = 1,
+    Attack,
+}
+
+export enum ActionType
+{
+    Action = 1,
+    BonusAction,
+    Reaction,
+    MoveAction,
+    FreeAction,
+}
+
+export enum AttackType
+{
+    MeleeWeaponAttack = 1,
+    RangedWeaponAttack,
+    MeleeSpellAttack,
+    RangedSpellAttack,
+}
+
+export type MonsterActionTemplate = ActionTemplate | AttackTemplate;
+
+export function isAttack(action: MonsterActionTemplate): boolean
+{
+    return action.type === MonsterActionType.Attack;
+}

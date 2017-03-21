@@ -1,6 +1,6 @@
 export * from "./armor";
 export * from "./defenses";
-export * from "./monsterActions";
+export * from "./actions";
 export * from "./offenses";
 export * from "./saves";
 export * from "./traits";

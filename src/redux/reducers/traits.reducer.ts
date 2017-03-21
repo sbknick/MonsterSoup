@@ -4,7 +4,7 @@ import defaultTraits from "data/traits";
 import { NormalisedData } from "redux/reducers";
 import { Trait } from "types";
 
-const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: any) =>
+const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: {type: string, traits: Trait[]}) =>
 {
     if (state.allIds.length === 0)
     {
@@ -15,8 +15,8 @@ const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action:
 
     switch (action.type)
     {
-        case "FETCH_TRAITS_SUCCESS":
-            newState = normalise(action.Traits);
+        case "TRAITS_FETCH_SUCCESS":
+            newState = normalise(action.traits);
             break;
 
         default:
@@ -25,6 +25,7 @@ const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action:
 
     return newState;
 };
+
 export default traitsReducer;
 
 export type TraitsState = NormalisedData<Trait>;

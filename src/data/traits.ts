@@ -42,7 +42,8 @@ const defaultTraits: Trait[] = [
 
 /* Replace-able flags:
  * {shortName} and {ShortName}: will get replaced with "the monster" and "The monster" respectively
- * {weapon} and {damage}: "hits it with a {weapon} attack and deals {damage} extra damage" => "hits it with a pike attack and deals 10 (3d6) extra damage"
+ * {weapon} and {damage}: "hits it with a {weapon} attack and deals {damage} extra damage"
+ *                     => "hits it with a pike attack and deals 10 (3d6) extra damage"
  * {damageType} and {DamageType}: "{DamageType} Absorption" => "Lightning Absorption"
  *
  *

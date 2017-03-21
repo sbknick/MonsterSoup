@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 
 import { attributes } from "data";
 import * as Actions from "monsterBuilder/actions/offenses.actions";
-import { Action, ActionType, Attack, AttributesState, HitDice, isAttack, MonsterAction, MonsterActionType, MonsterTrait,
+import { AttributesState, HitDice, MonsterTrait,
          OffensesState, TraitArgs } from "monsterBuilder/types";
 import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "redux/reducers";
-import { Trait } from "types";
+import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate, MonsterActionType } from "types";
 
 import * as Calc from "util/Calc";
 import * as CRUtil from "util/CRUtil";

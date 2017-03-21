@@ -1,4 +1,4 @@
-import { Action } from "./monsterActions";
+import { MonsterAction } from "./actions";
 
 export interface OffensesState
 {
@@ -7,7 +7,7 @@ export interface OffensesState
     attackBonus: number;
     saveDCBonus: number;
     multiattack?: Multiattack;
-    attacks: Action[];
+    actions: MonsterAction[];
 }
 
 export interface Multiattack
