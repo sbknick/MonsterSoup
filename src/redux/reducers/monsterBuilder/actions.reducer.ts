@@ -1,7 +1,7 @@
 import * as Redux from "redux";
 
-import * as Actions from "monsterBuilder/actions/traits.actions";
-import * as types from "redux/types/monsterBuilder/traits.types";
+// import * as Actions from "monsterBuilder/actions/actions.actions";
+// import * as types from "redux/types/monsterBuilder/actions.types";
 
 import { ActionsState } from "monsterBuilder/types";
 import { ActionTemplate, ActionType, AttackTemplate, MonsterActionTemplate } from "types";
@@ -22,3 +22,9 @@ const initialState: ActionsState = {
     appliedActionTemplateIds: [],
     actionArgs: {},
 };
+
+export const getAppliedActionIds = (state: ActionsState) =>
+    state.appliedActionTemplateIds;
+
+export const getActionArgs = (state: ActionsState, action: ActionTemplate) =>
+    state.actionArgs[action.id];

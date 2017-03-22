@@ -15,7 +15,6 @@ import Traits from "./Traits";
 import TraitSplat from "./TraitSplat";
 
 import { AttributesState } from "monsterBuilder/types";
-import { Trait } from "types";
 
 interface MonsterStatsProps
 {

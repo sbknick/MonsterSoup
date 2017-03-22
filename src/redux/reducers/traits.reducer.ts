@@ -2,9 +2,10 @@ import * as Redux from "redux";
 
 import defaultTraits from "data/traits";
 import { NormalisedData } from "redux/reducers";
-import { Trait } from "types";
+import { TraitTemplate } from "types";
 
-const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: {type: string, traits: Trait[]}) =>
+const traitsReducer: Redux.Reducer<TraitsState> =
+(state = initialState, action: {type: string, traits: TraitTemplate[]}) =>
 {
     if (state.allIds.length === 0)
     {
@@ -28,13 +29,13 @@ const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action:
 
 export default traitsReducer;
 
-export type TraitsState = NormalisedData<Trait>;
+export type TraitsState = NormalisedData<TraitTemplate>;
 
 const initialState: TraitsState = { byId: {}, allIds: [] };
 
-function normalise(items: Trait[]): NormalisedData<Trait>
+function normalise(items: TraitTemplate[]): NormalisedData<TraitTemplate>
 {
-    const results: NormalisedData<Trait> = { byId: {}, allIds: [] };
+    const results: NormalisedData<TraitTemplate> = { byId: {}, allIds: [] };
 
     return items.reduce((acc, tr) => {
         const id = tr.id;
@@ -44,7 +45,7 @@ function normalise(items: Trait[]): NormalisedData<Trait>
     }, results);
 };
 
-export function getAllTraits(state: TraitsState): Trait[]
+export function getAllTraits(state: TraitsState): TraitTemplate[]
 {
     return state.allIds.map(id => state.byId[id]);
 }

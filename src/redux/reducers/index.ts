@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 
-import { Trait } from "types";
+import { ActionTemplate, TraitTemplate } from "types";
 
 import entitiesReducer, * as fromEntities from "./entities.reducer";
 import uiReducer, * as fromUI from "./ui.reducer";
@@ -55,5 +55,22 @@ export const getTraitsForMonster = (state: GlobalState) =>
     return traits.filter(t => appliedTraits.indexOf(t.id) !== -1);
 };
 
-export const getTraitArgs = (state: GlobalState, trait: Trait) =>
+export const getTraitArgs = (state: GlobalState, trait: TraitTemplate) =>
     fromEntities.getTraitArgs(state.entities, trait);
+
+export const getAllActions = (state: GlobalState) =>
+    fromEntities.getAllActions(state.entities);
+
+export const getAppliedActionIds = (state: GlobalState) =>
+    fromEntities.getAppliedActionIds(state.entities);
+
+export const getActionsForMonster = (state: GlobalState) =>
+{
+    const actions = getAllActions(state);
+    const appliedActions = getAppliedActionIds(state);
+
+    return actions.filter(a => appliedActions.indexOf(a.id) !== -1);
+};
+
+export const getActionArgs = (state: GlobalState, action: ActionTemplate) =>
+    fromEntities.getActionArgs(state.entities, action);

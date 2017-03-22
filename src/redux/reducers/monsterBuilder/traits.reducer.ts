@@ -4,11 +4,11 @@ import * as Actions from "monsterBuilder/actions/traits.actions";
 import * as types from "redux/types/monsterBuilder/traits.types";
 
 import { TraitArgs, TraitsState } from "monsterBuilder/types";
-import { Trait } from "types";
+import { TraitTemplate } from "types";
 
 const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: Actions.TraitsAction) =>
 {
-    const newState = Object.assign({}, state);
+    const newState = {...state};
 
     switch (action.type)
     {
@@ -37,5 +37,5 @@ const initialState: TraitsState = {
 export const getAppliedTraitIds = (state: TraitsState) =>
     state.appliedTraitIds;
 
-export const getTraitArgs = (state: TraitsState, trait: Trait) =>
+export const getTraitArgs = (state: TraitsState, trait: TraitTemplate) =>
     state.traitArgs[trait.id];

@@ -1,4 +1,4 @@
-import { Trait } from "types";
+import { TraitTemplate } from "types";
 
 export interface TraitsState
 {
@@ -22,6 +22,6 @@ export interface TraitArgs
 
 export interface MonsterTrait
 {
-    trait: Trait;
+    trait: TraitTemplate;
     traitArgs: TraitArgs;
 }

@@ -1,7 +1,7 @@
 import { ActionTemplate, ActionType, AttackTemplate, AttackType, MonsterActionTemplate,
-         MonsterActionType } from "types";
+         MonsterActionType, TargetType } from "types";
 
-const defaultActions: MonsterActionTemplate[] = [
+export const defaultActions: MonsterActionTemplate[] = [
     {
         id: 1,
         type: MonsterActionType.None,
@@ -13,9 +13,10 @@ const defaultActions: MonsterActionTemplate[] = [
         id: 2,
         type: MonsterActionType.None,
         name: "Bite",
-        description: "The {shortName} can bite for {damage}",
+        description: "The {shortName} can bite for {Damage}",
         actionType: ActionType.Action,
         attackType: AttackType.MeleeWeaponAttack,
+        targetType: TargetType.OneTarget,
     },
 ];
 

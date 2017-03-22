@@ -2,16 +2,16 @@ import * as React from "react";
 
 import { MonsterBuilderState } from "monsterBuilder/reducers";
 import { TraitArgs } from "monsterBuilder/types";
-import { Trait } from "types";
+import { TraitTemplate } from "types";
 
 import * as Util from "util/MonsterTraitUtil";
 
 interface Props
 {
-    trait: Trait;
+    trait: TraitTemplate;
     monster: MonsterBuilderState;
     traitArgs?: TraitArgs;
-    onRemoveClicked: (t: Trait) => void;
+    onRemoveClicked: (t: TraitTemplate) => void;
 }
 
 const TraitSplat: React.StatelessComponent<Props> = (props) =>

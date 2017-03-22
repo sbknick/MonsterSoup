@@ -10,6 +10,7 @@
         "arrow-parens": false,
         "object-literal-sort-keys": false,
         "no-consecutive-blank-lines": false,
-        "switch-default": false
+        "switch-default": false,
+        "forin": false
     }
 }

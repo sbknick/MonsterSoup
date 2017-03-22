@@ -1,7 +1,8 @@
 import * as Redux from "redux";
 
-import { Trait } from "types";
+import { ActionTemplate, TraitTemplate } from "types";
 
+import actionsReducer, * as fromActions from "./actions.reducer";
 import attributesReducer, * as fromAttributes from "./attributes.reducer";
 import defensesReducer, * as fromDefenses from "./defenses.reducer";
 import descriptionReducer, * as fromDescription from "./description.reducer";
@@ -10,9 +11,11 @@ import proficiencyReducer, * as fromProficiency from "./proficiency.reducer";
 import savesReducer, * as fromSaves from "./saves.reducer";
 import traitsReducer, * as fromTraits from "./traits.reducer";
 
-import { AttributesState, DefensesState, OffensesState, SavesState, TraitsState } from "monsterBuilder/types";
+import { ActionsState, AttributesState, DefensesState, OffensesState, SavesState,
+         TraitsState } from "monsterBuilder/types";
 
 const monsterBuilderReducer = Redux.combineReducers({
+    actions: actionsReducer,
     attributes: attributesReducer,
     defenses: defensesReducer,
     description: descriptionReducer,
@@ -24,6 +27,7 @@ const monsterBuilderReducer = Redux.combineReducers({
 
 export interface MonsterBuilderState
 {
+    actions: ActionsState;
     attributes: AttributesState;
     defenses: DefensesState;
     offenses: OffensesState;
@@ -57,5 +61,12 @@ export const getSaveState = (state: MonsterBuilderState, attr: string) =>
 export const getAppliedTraitIds = (state: MonsterBuilderState) =>
     fromTraits.getAppliedTraitIds(state.traits);
 
-export const getTraitArgs = (state: MonsterBuilderState, trait: Trait) =>
+export const getTraitArgs = (state: MonsterBuilderState, trait: TraitTemplate) =>
     fromTraits.getTraitArgs(state.traits, trait);
+
+// -- Actions -- //
+export const getAppliedActionIds = (state: MonsterBuilderState) =>
+    fromActions.getAppliedActionIds(state.actions);
+
+export const getActionArgs = (state: MonsterBuilderState, action: ActionTemplate) =>
+    fromActions.getActionArgs(state.actions, action);

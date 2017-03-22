@@ -5,7 +5,6 @@ import * as Actions from "monsterBuilder/actions/defenses.actions";
 import { AttributesState, DefensesState, HitDice, MonsterTrait, Size, TraitArgs,
          TraitsState } from "monsterBuilder/types";
 import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "redux/reducers";
-import { Trait } from "types";
 
 import * as Calc from "util/Calc";
 import * as CRUtil from "util/CRUtil";

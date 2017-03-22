@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as Actions from "monsterBuilder/actions/traits.actions";
 import { getAllTraits, getAppliedTraitIds, GlobalState } from "redux/reducers";
 import { getTraitArgs, MonsterBuilderState } from "redux/reducers/monsterBuilder";
-import { Trait } from "types";
+import { TraitTemplate } from "types";
 
 import TraitSplat from "./TraitSplat";
 
@@ -66,13 +66,13 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
 
 interface Props
 {
-    allTraits: Trait[];
-    availableTraits: Trait[];
-    appliedTraits: Trait[];
+    allTraits: TraitTemplate[];
+    availableTraits: TraitTemplate[];
+    appliedTraits: TraitTemplate[];
     monster: MonsterBuilderState;
 
     applyTrait?: (id: number) => void;
-    removeTrait: (t: Trait) => void;
+    removeTrait: (t: TraitTemplate) => void;
 }
 
 function mapStateToProps(state: GlobalState): Props
@@ -107,7 +107,7 @@ function mapDispatchToProps(dispatch: any): Props
 {
     return {
         applyTrait: (id: number) => dispatch(Actions.applyTrait(id)),
-        removeTrait: (t: Trait) => dispatch(Actions.removeTrait(t.id)),
+        removeTrait: (t: TraitTemplate) => dispatch(Actions.removeTrait(t.id)),
     } as Props;
 }
 

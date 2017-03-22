@@ -34,7 +34,7 @@ export enum DamageType
     Thunder,
 }
 
-export interface Trait
+export interface TraitTemplate
 {
     id: number;
     name: string;
@@ -72,6 +72,7 @@ export interface AttackTemplate extends ActionTemplate
     reach?: number;
     rangeAccurate?: number;
     rangeMax?: number;
+    targetType: TargetType;
     damageDiceCount?: number;
     damageDieSize?: number;
     damageBonus?: number;
@@ -88,6 +89,8 @@ export interface ActionTemplate
     actionType: ActionType;
 }
 
+export type MonsterActionTemplate = ActionTemplate | AttackTemplate;
+
 export enum MonsterActionType
 {
     None = 1,
@@ -103,6 +106,12 @@ export enum ActionType
     FreeAction,
 }
 
+export enum TargetType
+{
+    OneTarget = 1,
+    OneCreature,
+}
+
 export enum AttackType
 {
     MeleeWeaponAttack = 1,
@@ -110,8 +119,6 @@ export enum AttackType
     MeleeSpellAttack,
     RangedSpellAttack,
 }
-
-export type MonsterActionTemplate = ActionTemplate | AttackTemplate;
 
 export function isAttack(action: MonsterActionTemplate): boolean
 {

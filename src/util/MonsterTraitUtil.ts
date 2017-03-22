@@ -1,8 +1,8 @@
 import { getDescription, getTraitArgs, MonsterBuilderState } from "monsterBuilder/reducers";
 import { TraitArgs } from "monsterBuilder/types";
-import { Trait } from "types";
+import { TraitTemplate } from "types";
 
-export const displayTraitDesc = (trait: Trait, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
+export const displayTraitDesc = (trait: TraitTemplate, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
 {
     const args = traitArgs || getTraitArgs(monster, trait);
     let desc = trait.desc;
@@ -35,7 +35,7 @@ export const displayTraitDesc = (trait: Trait, monster: MonsterBuilderState, tra
     return desc;
 };
 
-export const displayTraitName = (trait: Trait, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
+export const displayTraitName = (trait: TraitTemplate, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
 {
     const args = traitArgs || getTraitArgs(monster, trait);
     let name = trait.name;

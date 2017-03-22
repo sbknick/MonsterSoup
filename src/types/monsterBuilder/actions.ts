@@ -13,9 +13,12 @@ export interface ActionArgsMap
 
 export interface ActionArgs
 {
-    shortName: string;
-
     [key: string]: string;
+}
+
+export interface AttackArgs extends ActionArgs
+{
+    attackBonus: string;
 }
 
 export interface MonsterAction
