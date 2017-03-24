@@ -1,6 +1,6 @@
-import * as Redux from 'redux';
+import * as Redux from "redux";
 
-import * as types from '../../types/monsterBuilder/traits.types';
+import * as types from "redux/types/monsterBuilder/traits.types";
 
 interface TraitsActionPayload
 {
@@ -8,9 +8,9 @@ interface TraitsActionPayload
 }
 
 export const applyTrait: Redux.ActionCreator<TraitsActionPayload> =
-    (traitId: number) => ({ type: types.TRAIT_APPLY, traitId: traitId });
+    (traitId: number) => ({ type: types.TRAIT_APPLY, traitId });
 
 export const removeTrait: Redux.ActionCreator<TraitsActionPayload> =
-    (traitId: number) => ({ type: types.TRAIT_REMOVE, traitId: traitId });
+    (traitId: number) => ({ type: types.TRAIT_REMOVE, traitId });
 
 export type TraitsAction = Redux.Action & TraitsActionPayload;
