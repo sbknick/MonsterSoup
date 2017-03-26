@@ -4,7 +4,8 @@ import * as String from "util/String";
 
 import { getActionArgs, MonsterBuilderState } from "monsterBuilder/reducers";
 import { ActionArgs, AttackArgs, MonsterAction } from "monsterBuilder/types";
-import { ActionTemplate, AttackTemplate, AttackType, MonsterActionTemplate, TargetType } from "types";
+import { ActionTemplate, AttackTemplate, AttackType, MonsterActionTemplate, MonsterActionType,
+         TargetType } from "types";
 
 interface Props
 {
@@ -13,9 +14,31 @@ interface Props
 
 export const Action: React.StatelessComponent<Props> = (props) =>
 {
-    const Tag = Attack;
+    let Tag = null;
+
+    switch (props.action.template.type)
+    {
+        case MonsterActionType.Attack:
+            Tag = Attack;
+            break;
+
+        default:
+            Tag = Default;
+            break;
+    }
+
     return (
         <Tag {...props} />
+    );
+};
+
+const Default: React.StatelessComponent<Props> = (props) =>
+{
+    return (
+        <p>
+            <i><b>{props.action.template.name}. </b></i>
+            {String.parseTemplate(props.action.template.description, props.action.args)}
+        </p>
     );
 };
 

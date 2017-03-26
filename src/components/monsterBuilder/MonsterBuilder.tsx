@@ -1,11 +1,11 @@
 import * as React from "react";
-// import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 import * as CRUtil from "util/CRUtil";
 import { mod, modBonus } from "util/Mod";
 
-import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-         NumberInput, SelectList, UpDownLinks } from "../common";
+import { Fieldset, FieldsetConfigData, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
+         NumberInput, SelectList, UpDownLinks } from "common";
 import Attributes from "./Attributes";
 import Defenses from "./Defenses";
 import Offenses from "./Offenses";
@@ -15,10 +15,14 @@ import Traits from "./Traits";
 import TraitSplat from "./TraitSplat";
 
 import { AttributesState } from "monsterBuilder/types";
+import * as UIActions from "redux/actions/ui.actions";
+import { GlobalState } from "redux/reducers";
 
 interface MonsterStatsProps
 {
     monsterName: string;
+    fieldsetDecollapsed: {[key: string]: boolean};
+    toggleFieldsetCollapse: (key: string) => () => void;
 }
 
 interface Offenses
@@ -45,11 +49,6 @@ interface Attack
     damageBonus?: number;
 }
 
-
-const STANDARD_ARMOR: "STANDARD_ARMOR" = "STANDARD_ARMOR";
-const NATURAL_ARMOR: "NATURAL_ARMOR" = "NATURAL_ARMOR";
-const UNARMORED_DEFENSE: "UNARMORED_DEFENSE" = "UNARMORED_DEFENSE";
-
 interface MonsterStatsState
 {
     offenses: Offenses;
@@ -64,7 +63,6 @@ const ATTACKS: Attack[] = [
 const OFFENSES: Offenses = {primaryStat: "Str", primarySpellStat: "Int",
     attackBonus: 6, saveDCBonus: 0, multiattackCount: 1, attacks: ATTACKS,
     averageDPR: 12};
-
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
     offenses: OFFENSES,
@@ -86,6 +84,13 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
     }
 
+    public createFieldsetCollapseData = (key: string) =>
+    ({
+        legend: key,
+        isCollapsed: !this.props.fieldsetDecollapsed[key],
+        toggleCollapse: this.props.toggleFieldsetCollapse(key),
+    } as FieldsetConfigData)
+
     public render()
     {
         const { monsterName } = this.props;
@@ -99,20 +104,41 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     <Proficiency />
                     <Saves />
 
-                    <Fieldset legend="Traits" className="defensive-cr" displayOnCollapse={"(1)"}>
+                    <Fieldset
+                        // config={{
+                        //     legend: "Traits",
+                        //     isCollapsed: !this.props.fieldsetDecollapsed["Traits"],
+                        //     toggleCollapse: this.props.toggleFieldsetCollapse("Traits"),
+                        // }}
+                        legend="Traits"
+                        isCollapsed={!this.props.fieldsetDecollapsed["Traits"]}
+                        toggleCollapse={this.props.toggleFieldsetCollapse("Traits")}
+                        config={null}
+                        className="defensive-cr"
+                        displayOnCollapse={"(1)"}
+                    >
                         <Traits />
                     </Fieldset>
-                    <Fieldset legend="Defensive CR" className="defensive-cr"
-                              displayOnCollapse={this.DefensiveCRSummary()}>
+                    <Fieldset
+                        config={this.createFieldsetCollapseData("Defensive CR")}
+                        className="defensive-cr"
+                        displayOnCollapse={this.DefensiveCRSummary()}
+                    >
                         <Defenses />
                     </Fieldset>
-                    <Fieldset legend="Offensive CR" className="offensive-cr"
-                              displayOnCollapse={this.OffensiveCRSummary()}>
+                    <Fieldset
+                        config={this.createFieldsetCollapseData("Offensive CR")}
+                        className="offensive-cr"
+                        displayOnCollapse={this.OffensiveCRSummary()}
+                    >
                         <Offenses />
                     </Fieldset>
 
-                    <Fieldset legend="Offensive CR" className="offensive-cr"
-                              displayOnCollapse={this.OffensiveCRSummary()}>
+                    <Fieldset
+                        config={this.createFieldsetCollapseData("Offensive CR Old")}
+                        className="offensive-cr"
+                        displayOnCollapse={this.OffensiveCRSummary()}
+                    >
                         <div className="container">
                             <div className="offensive-cr-primarystats">
                                 <LabelledItem label="Primary Attack Stat">
@@ -210,7 +236,10 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                             </div>
                         </div>
                     </Fieldset>
-                    <Fieldset legend="Total CR" displayOnCollapse={this.TotalCRSummary()}>
+                    <Fieldset
+                        config={this.createFieldsetCollapseData("Total CR")}
+                        displayOnCollapse={this.TotalCRSummary()}
+                    >
                         {this.TotalCRSummary()}
                     </Fieldset>
                     <div style={{marginTop: "30px"}}>
@@ -358,5 +387,19 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     }
 }
 
-// export default connect(mapStateToProps, mapDispatchToProps)(MonsterBuilder);
-export default MonsterBuilder;
+function mapStateToProps(state: GlobalState): MonsterStatsProps
+{
+    return {
+        monsterName: "Test Monstah",
+        fieldsetDecollapsed: state.ui.fieldset.decollapsed,
+    } as MonsterStatsProps;
+}
+
+function mapDispatchToProps(dispatch: any): MonsterStatsProps
+{
+    return {
+        toggleFieldsetCollapse: (key: string) => () => dispatch(UIActions.toggleFieldsetCollapse(key)),
+    } as MonsterStatsProps;
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MonsterBuilder);

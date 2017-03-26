@@ -55,7 +55,7 @@ interface Props
     show: boolean;
     position?: Position;
 
-    onClose: () => void;
+    onClose: (e?: any) => void;
 }
 
 export interface Position

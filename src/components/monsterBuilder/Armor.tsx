@@ -18,7 +18,8 @@ export const Armor: React.StatelessComponent<Props> = (props) =>
     const armorSplat = getArmorSplat(props);
 
     const formulaOptions: any[] = [];
-    for (const opt in ArmorFormulaOption) {
+    for (const opt in ArmorFormulaOption)
+    {
         if (!parseInt(opt))
             continue;
         formulaOptions.push(<option key={opt} value={opt}>{titleize(ArmorFormulaOption[opt])}</option>);
@@ -26,8 +27,8 @@ export const Armor: React.StatelessComponent<Props> = (props) =>
 
     return (
         <div className="armor-formula">
-            <select value={props.defenses.armorFormula}
-                    onChange={e => props.setArmorFormula(parseInt(e.target.value) as ArmorFormulaOption)}>
+            <select value={props.defenses.armorFormula} // tslint:disable-next-line
+                    onChange={(e: any) => props.setArmorFormula(parseInt(e.target.value) as ArmorFormulaOption)}>
                 {formulaOptions}
             </select>
             {armorSplat}
@@ -80,7 +81,7 @@ const StandardArmor: React.StatelessComponent<Props> = (props) =>
         <div>
             <p>
                 <select value={props.defenses.armor.name}
-                        onChange={e => props.setArmor(e.target.value)}>
+                        onChange={(e: any) => props.setArmor(e.target.value)}>
                     {armorOptions}
                 </select>
                 <button title="Add custom armor type"> + </button>
@@ -125,7 +126,7 @@ const UnarmoredDefense: React.StatelessComponent<Props> = (props) =>
         <p>
             <label>AC from Attribute</label>
             <select value={props.defenses.unarmoredACAttribute}
-                    onChange={e => props.setUnarmoredACAttribute(e.target.value)}>
+                    onChange={(e: any) => props.setUnarmoredACAttribute(e.target.value)}>
                 <option>N/A</option>
                 {attributes.map(a => <option key={a}>{a}</option>)}
             </select>

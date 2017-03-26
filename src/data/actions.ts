@@ -11,7 +11,7 @@ export const defaultActions: MonsterActionTemplate[] = [
     },
     {
         id: 2,
-        type: MonsterActionType.None,
+        type: MonsterActionType.Attack,
         name: "Bite",
         description: "The {shortName} can bite for {Damage}",
         actionType: ActionType.Action,

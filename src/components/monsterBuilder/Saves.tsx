@@ -10,6 +10,7 @@ import { getAttributeScore, getSaveState } from "redux/reducers/monsterBuilder";
 
 import { Fieldset, HighlightBonusOnChange, LabelledItem } from "common";
 import * as Actions from "monsterBuilder/actions/saves.actions";
+import * as UIActions from "redux/actions/ui.actions";
 
 export const SaveSplat: React.StatelessComponent<SaveSplatProps> = (props) =>
 (
@@ -45,19 +46,28 @@ export const Saves: React.StatelessComponent<SavesProps> = (props) =>
         const idx = Attr.getAttributeOrdinal(a);
 
         return (
-            <SaveSplat key={a}
-                       attr={a}
-                       score={props.attributeScores[idx]}
-                       proficiencyBonus={props.proficiencyBonus}
-                       saveState={props.saveStates[idx]}
-                       toggleProficiency={props.toggleProficiencyDelegates[idx]}
-                       toggleExpertise={props.toggleExpertiseDelegates[idx]}
-                       modifyMiscBonus={props.modifyMiscBonusDelegates[idx]} />
+            <SaveSplat
+                key={a}
+                attr={a}
+                score={props.attributeScores[idx]}
+                proficiencyBonus={props.proficiencyBonus}
+                saveState={props.saveStates[idx]}
+                toggleProficiency={props.toggleProficiencyDelegates[idx]}
+                toggleExpertise={props.toggleExpertiseDelegates[idx]}
+                modifyMiscBonus={props.modifyMiscBonusDelegates[idx]}
+            />
         );
     });
 
     return (
-        <Fieldset legend="Saving Throws" className="saving-throws inline-children">
+        <Fieldset
+            config={{
+                legend: "Saving Throws",
+                isCollapsed: false,
+                toggleCollapse: () => props.toggleFieldsetCollapse("Saving Throws"),
+            }}
+            className="saving-throws inline-children"
+        >
             {splats}
         </Fieldset>
     );
@@ -72,6 +82,7 @@ interface SavesProps
     toggleProficiencyDelegates: Array<(() => void)>;
     toggleExpertiseDelegates: Array<(() => void)>;
     modifyMiscBonusDelegates: Array<((n: number) => void)>;
+    toggleFieldsetCollapse: (key: string) => void;
 }
 
 function mapStateToProps(state: GlobalState): SavesProps
@@ -91,6 +102,7 @@ function mapDispatchToProps(dispatch: any): SavesProps
         toggleProficiencyDelegates: [],
         toggleExpertiseDelegates: [],
         modifyMiscBonusDelegates: [],
+        toggleFieldsetCollapse: (key: string) => dispatch(UIActions.toggleFieldsetCollapse(key)),
     } as SavesProps;
 
     Attr.attributes.reduce((acc, attr) =>

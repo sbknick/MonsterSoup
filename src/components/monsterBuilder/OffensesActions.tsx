@@ -2,11 +2,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { attributes } from "data";
-import * as Actions from "monsterBuilder/actions/offenses.actions";
+import * as Actions from "monsterBuilder/actions/actions.actions";
+import * as UIActions from "redux/actions/ui.actions";
+
 import { MonsterAction } from "monsterBuilder/types";
-import { getActionArgs, getActionsForMonster, getMonsterBuilderData, GlobalState } from "redux/reducers";
+import { getActionArgs, getActionsForMonster, getAllActions, getMonsterBuilderData, GlobalState } from "redux/reducers";
 import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate,
          MonsterActionType } from "types";
+import * as String from "util/String";
 
 import { Action, Fieldset, LabelledItem, Modal } from "common";
 import * as fromModal from "common/Modal";
@@ -19,51 +22,43 @@ class OffensesActions extends React.Component<Props, State>
     {
         super(props);
         this.state = { showModal: false, clickPosition: undefined };
-
-        this.toggleModal = this.toggleModal.bind(this);
     }
 
     public render()
     {
-        const action: MonsterAction = {
-            template: defaultActions[1],
-            args: {shortName: "naaame", damage: "lots", attackBonus: "+4"},
-        };
-
         const actions = this.props.monsterActions.map(a =>
             <Action key={a.template.id} action={a} />);
 
+        const actionsLegend = "Actions";
+        const actionsCollapsed = !this.props.fieldsetDecollapsed[actionsLegend];
+        const toggleActionsCollapse = () => this.props.toggleFieldsetCollapse(actionsLegend);
+
         return (
-            <Fieldset legend="Actions">
-                <Action action={action} />
+            <Fieldset
+                config={{
+                    legend: actionsLegend,
+                    isCollapsed: actionsCollapsed,
+                    toggleCollapse: toggleActionsCollapse,
+                }}
+            >
                 {actions}
-                {/*<ActionSplats {...this.props} />*/}
 
-                <div>
-                    <button onClick={this.toggleModal}>
-                        Add Action
-                    </button>
-                </div>
+                <button onClick={this.toggleModal}>
+                    Add Action
+                </button>
 
-                <Modal show={this.state.showModal}
-                       position={this.state.clickPosition}
-                       onClose={() => this.toggleModal(null)}>
-                    <LabelledItem label="Add Action">
-                        <select>
-                        </select>
-                    </LabelledItem>
-                    <button>Add</button>
-                    <p></p>
-                    <button onClick={this.toggleModal}>
-                        New Custom Action
-                    </button>
-                    <p></p>
+                <Modal
+                    show={this.state.showModal}
+                    position={this.state.clickPosition}
+                    onClose={this.toggleModal}
+                >
+                    <AddActions {...this.props} toggleModal={this.toggleModal} />
                 </Modal>
             </Fieldset>
         );
     }
 
-    private toggleModal(e: any): void
+    private toggleModal = (e: any) =>
     {
         let position: fromModal.Position;
         if (e && e.clientX)
@@ -77,78 +72,57 @@ class OffensesActions extends React.Component<Props, State>
     }
 };
 
-// const ActionSplats: React.StatelessComponent<Props> = (props) =>
-// {
-//     // const actions: ReadonlyArray<MonsterActionTemplate> = [
-//     //     {
-//     //         id: 1,
-//     //         type: MonsterActionType.None,
-//     //         name: "Bloom",
-//     //         description: "This unit can open up and squirt pollen at things.",
-//     //         actionType: ActionType.Action,
-//     //     },
-//     //     {
-//     //         id: 2,
-//     //         type: MonsterActionType.None,
-//     //         name: "Action Name",
-//     //         description: "Action Description",
-//     //         actionType: ActionType.Action,
-//     //     },
-//     //     {
-//     //         id: 3,
-//     //         type: MonsterActionType.Attack,
-//     //         name: "Attack Name",
-//     //         description: "Attack Description",
-//     //         actionType: ActionType.Action,
-//     //
-//     //         damageDiceCount: 2,
-//     //         damageDieSize: 8,
-//     //     },
-//     // ];
-//
-//     const splats = props.monsterActions.map(a => {
-//         let Component = null;
-//
-//         if (isAttack(a.template))
-//         {
-//             Component = AttackSplat;
-//         }
-//         else
-//         {
-//             Component = ActionSplat;
-//         }
-//
-//         return <Component {...a} />;
-//     });
-//
-//     return (
-//         <div className="container">
-//             {splats}
-//         </div>
-//     );
-// };
-//
-// const AttackSplat: React.StatelessComponent<AttackTemplate> = (attack) =>
-// (
-//     <ActionSplat {...attack}>
-//         <p>{attack.damageDiceCount}d{attack.damageDieSize}</p>
-//         {isAttack(attack) ? "Attack" : "Action"}
-//     </ActionSplat>
-// );
-//
-// const ActionSplat: React.StatelessComponent<ActionTemplate> = (action) =>
-// (
-//     <div>
-//         <h5>{action.name}.</h5>
-//         <p>{action.description}</p>
-//         {isAttack(action) ? "Attack" : "Action"}
-//         {action.children}
-//     </div>
-// );
+// tslint:disable-next-line
+class AddActions extends React.Component<Props & {toggleModal: (e: any) => void}, {templateId: number}>
+{
+    constructor(props: Props)
+    {
+        super(props);
+        this.state = { templateId: undefined };
+    }
+
+    public render()
+    {
+        const availableActions = this.props.availableActions.map(a =>
+            <option key={a.id} value={a.id}>{String.titleize(a.name)}</option>);
+
+        return (
+            <div>
+                <LabelledItem label="Add Action">
+                    <select defaultValue="" onChange={this.handleChangeSelectedAction}>
+                        <option disabled value="">Select...</option>
+                        {availableActions}
+                    </select>
+                </LabelledItem>
+                <button onClick={this.handleAddAction}>Add</button>
+                <p></p>
+                <button>New Custom Action</button>
+                <p></p>
+            </div>
+        );
+    }
+
+    private handleChangeSelectedAction = (e: any) =>
+        this.setState({ templateId: parseInt(e.target.value) });
+
+    private handleAddAction = (e: any) =>
+    {
+        if (this.state.templateId)
+        {
+            this.props.applyAction(this.state.templateId);
+            this.props.toggleModal(e);
+        }
+    }
+};
 
 interface Props
 {
     monsterActions: MonsterAction[];
+    availableActions: ActionTemplate[];
+    fieldsetDecollapsed: {[key: string]: boolean};
+
+    applyAction: (actionTemplateId: number) => void;
+    toggleFieldsetCollapse: (key: string) => void;
 }
 
 interface State
@@ -160,12 +134,22 @@ interface State
 function mapStateToProps(state: GlobalState): Props
 {
     const actions = getActionsForMonster(state);
-
     const monsterActions: MonsterAction[] = actions.map(a => ({template: a, args: getActionArgs(state, a)}));
+    const appliedActionTemplateIds = monsterActions.map(a => a.template.id);
 
     return {
         monsterActions,
+        availableActions: getAllActions(state).filter(a => appliedActionTemplateIds.indexOf(a.id) === -1),
+        fieldsetDecollapsed: state.ui.fieldset.decollapsed,
     } as Props;
 }
 
-export default connect(mapStateToProps)(OffensesActions);
+function mapDispatchToProps(dispatch: any): Props
+{
+    return {
+        applyAction: (actionTemplateId) => dispatch(Actions.applyAction(actionTemplateId)),
+        toggleFieldsetCollapse: (key: string) => dispatch(UIActions.toggleFieldsetCollapse(key)),
+    } as Props;
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OffensesActions);

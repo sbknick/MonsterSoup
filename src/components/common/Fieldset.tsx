@@ -1,57 +1,53 @@
 import * as React from "react";
-import { connect } from "react-redux";
 
 interface Props
 {
-    legend: string;
+    legend?: string;
     displayOnCollapse?: any;
 
-    collapsed?: boolean;
+    isCollapsed?: boolean;
 
     className?: string;
     style?: any;
+
+    toggleCollapse?: () => void;
+
+    config?: FieldsetConfigData;
 }
 
-interface State
+export interface FieldsetConfigData
 {
+    legend: string;
     isCollapsed: boolean;
+    toggleCollapse: () => void;
 }
 
-export class Fieldset extends React.Component<Props, State>
+export const Fieldset: React.StatelessComponent<Props> = (props) =>
 {
-    constructor(props: Props)
-    {
-        super(props);
-
-        this.state = {isCollapsed: true};
-
-        this.toggleCollapse = this.toggleCollapse.bind(this);
-    }
-
-    public componentWillReceiveProps(props: Props)
-    {
-        if (props.collapsed != null)
-        {
-            this.setState({isCollapsed: props.collapsed});
-        }
-    }
-
-    public render()
-    {
-        return (
-            <fieldset className={this.props.className} style={this.props.style}>
-                <legend><a href="" onClick={this.toggleCollapse}>{this.props.legend}</a></legend>
-                {this.state.isCollapsed || this.props.children}
-                {this.state.isCollapsed && this.props.displayOnCollapse}
-            </fieldset>
-        );
-    }
-
-    private toggleCollapse(e: any)
+    const handleToggleCollapse = (e: any) =>
     {
         e.preventDefault();
-        this.setState({isCollapsed: !this.state.isCollapsed});
-    }
-}
+        // this.setState({isCollapsed: !this.state.isCollapsed});
+        if (props.config)
+        props.config.toggleCollapse();
+        else
+        props.toggleCollapse();
+    };
 
-export default Fieldset;
+    if (props.config)
+    return (
+        <fieldset className={props.className} style={props.style}>
+            <legend><a href="" onClick={handleToggleCollapse}>{props.config.legend}</a></legend>
+            {props.config.isCollapsed || props.children}
+            {props.config.isCollapsed && props.displayOnCollapse}
+        </fieldset>
+    );
+    else
+    return (
+        <fieldset className={props.className} style={props.style}>
+            <legend><a href="" onClick={handleToggleCollapse}>{props.legend}</a></legend>
+            {props.isCollapsed || props.children}
+            {props.isCollapsed && props.displayOnCollapse}
+        </fieldset>
+    );
+};

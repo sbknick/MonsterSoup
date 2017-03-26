@@ -1,16 +1,39 @@
-import * as Redux from 'redux';
-// import Types from '../types';
+import * as Redux from "redux";
 
-const uiReducer: Redux.Reducer<UIState> = (state = initialState, action: any) =>
+import * as types from "redux/types/ui";
+
+export interface FieldsetState
 {
-    return state;
+    decollapsed: {[key: string]: boolean};
+};
+
+const initialState: FieldsetState = {
+    decollapsed: {},
+};
+
+const fieldsetReducer: Redux.Reducer<FieldsetState> = (state = initialState, action: any) =>
+{
+    const newState = {...state};
+
+    switch (action.type)
+    {
+        case types.FIELDSET_COLLAPSE_TOGGLE:
+            newState.decollapsed[action.fieldsetKey] =
+                !newState.decollapsed[action.fieldsetKey];
+            break;
+
+        default:
+            return state;
+    }
+
+    return newState;
+};
+
+export default Redux.combineReducers({
+    fieldset: fieldsetReducer,
+});
+
+export interface UIState
+{
+    fieldset: FieldsetState;
 }
-export default uiReducer;
-
-export type UIState = {
-
-};
-
-var initialState: UIState = {
-    
-};
