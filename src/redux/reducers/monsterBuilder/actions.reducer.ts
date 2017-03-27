@@ -52,8 +52,8 @@ const monsterActionsReducer: Redux.Reducer<ActionsState> = (state = initialState
 export default monsterActionsReducer;
 
 const initialState: ActionsState = {
-    appliedActionTemplateIds: [],
-    actionArgs: {},
+    appliedActionTemplateIds: [2],
+    actionArgs: {2: {}},
 };
 
 export const getAppliedActionIds = (state: ActionsState) =>
