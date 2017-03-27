@@ -63,7 +63,7 @@ export const Saves: React.StatelessComponent<SavesProps> = (props) =>
         <Fieldset
             config={{
                 legend: "Saving Throws",
-                isCollapsed: false,
+                isCollapsed: props.isFieldsetCollapsed("Saving Throws"),
                 toggleCollapse: () => props.toggleFieldsetCollapse("Saving Throws"),
             }}
             className="saving-throws inline-children"
@@ -78,6 +78,7 @@ interface SavesProps
     proficiencyBonus: number;
     attributeScores: number[];
     saveStates: SavesStateSingle[];
+    isFieldsetCollapsed: (key: string) => boolean;
 
     toggleProficiencyDelegates: Array<(() => void)>;
     toggleExpertiseDelegates: Array<(() => void)>;
@@ -93,6 +94,7 @@ function mapStateToProps(state: GlobalState): SavesProps
         attributeScores: Attr.attributes.map(a => getAttributeScore(mb, a)),
         proficiencyBonus: mb.proficiency.proficiencyBonus,
         saveStates: Attr.attributes.map(a => getSaveState(mb, a)),
+        isFieldsetCollapsed: (key: string) => !state.ui.fieldset.decollapsed[key],
     } as SavesProps;
 }
 

@@ -8,7 +8,7 @@ export interface FieldsetState
 };
 
 const initialState: FieldsetState = {
-    decollapsed: {},
+    decollapsed: {"Offensive CR": true, "Actions": true},
 };
 
 const fieldsetReducer: Redux.Reducer<FieldsetState> = (state = initialState, action: any) =>

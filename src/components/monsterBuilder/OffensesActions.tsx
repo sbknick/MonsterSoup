@@ -72,10 +72,12 @@ class OffensesActions extends React.Component<Props, State>
     }
 };
 
+type AddActionsProps = Props & {toggleModal: (e: any) => void};
+
 // tslint:disable-next-line
-class AddActions extends React.Component<Props & {toggleModal: (e: any) => void}, {templateId: number}>
+class AddActions extends React.Component<AddActionsProps, {templateId: number}>
 {
-    constructor(props: Props)
+    constructor(props: AddActionsProps)
     {
         super(props);
         this.state = { templateId: undefined };

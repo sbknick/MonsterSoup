@@ -21,7 +21,9 @@ import { GlobalState } from "redux/reducers";
 interface MonsterStatsProps
 {
     monsterName: string;
-    fieldsetDecollapsed: {[key: string]: boolean};
+    // fieldsetDecollapsed: {[key: string]: boolean};
+
+    isFieldsetCollapse: (key: string) => boolean;
     toggleFieldsetCollapse: (key: string) => () => void;
 }
 
@@ -87,7 +89,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     public createFieldsetCollapseData = (key: string) =>
     ({
         legend: key,
-        isCollapsed: !this.props.fieldsetDecollapsed[key],
+        isCollapsed: this.props.isFieldsetCollapse(key),
         toggleCollapse: this.props.toggleFieldsetCollapse(key),
     } as FieldsetConfigData)
 
@@ -105,15 +107,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                     <Saves />
 
                     <Fieldset
-                        // config={{
-                        //     legend: "Traits",
-                        //     isCollapsed: !this.props.fieldsetDecollapsed["Traits"],
-                        //     toggleCollapse: this.props.toggleFieldsetCollapse("Traits"),
-                        // }}
-                        legend="Traits"
-                        isCollapsed={!this.props.fieldsetDecollapsed["Traits"]}
-                        toggleCollapse={this.props.toggleFieldsetCollapse("Traits")}
-                        config={null}
+                        config={this.createFieldsetCollapseData("Traits")}
                         className="defensive-cr"
                         displayOnCollapse={"(1)"}
                     >
@@ -162,17 +156,24 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                         <b>+</b>
                                         <div style={{display: "inline-block", textAlign: "center"}}>
                                             {this.state.offenses.primaryStat}<br />
-                                            <HighlightBonusOnChange value={this.GetMod(this.state.offenses.primaryStat)} />
+                                            <HighlightBonusOnChange
+                                                value={this.GetMod(this.state.offenses.primaryStat)} />
                                         </div>
                                         <b>=</b>
                                         <div style={{display: "inline-block", textAlign: "center"}}>
                                             Total<br />
-                                            <HighlightBonusOnChange value={this.state.proficiency + this.GetMod(this.state.offenses.primaryStat)} />
+                                            <HighlightBonusOnChange
+                                                value={this.state.proficiency + this.GetMod(this.state.offenses.primaryStat)} // tslint:disable-line
+                                                />
                                         </div>
                                     </LabelledItem>
                                     <br />
                                     <LabelledItem label="Expected CR Range for Effective AD">
-                                        {JSON.stringify(CRUtil.getCRRangeForAB(this.state.proficiency + this.GetMod(this.state.offenses.primaryStat)))}
+                                        {JSON.stringify(
+                                            CRUtil.getCRRangeForAB(
+                                                this.state.proficiency + this.GetMod(this.state.offenses.primaryStat),
+                                            ),
+                                        )}
                                     </LabelledItem>
                                 </LabelledItem>
                                 <div>
@@ -189,18 +190,25 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                             <div>
                                                 <HighlightOnChange value={this.state.offenses.primarySpellStat} />
                                                 <br />
-                                                <HighlightBonusOnChange value={this.GetMod(this.state.offenses.primarySpellStat)} />
+                                                <HighlightBonusOnChange
+                                                    value={this.GetMod(this.state.offenses.primarySpellStat)} />
                                             </div>
                                             <b>=</b>
                                             <div>
                                                 Total<br />
-                                                <HighlightBonusOnChange value={this.state.proficiency + this.GetMod(this.state.offenses.primarySpellStat)} />
+                                                <HighlightBonusOnChange
+                                                    value={this.state.proficiency + this.GetMod(this.state.offenses.primarySpellStat)} // tslint:disable-line
+                                                    />
                                             </div>
                                         </div>
                                     </div>
                                     <br />
                                     <LabelledItem label="Expected CR Range for Effective Save DC">
-                                        {JSON.stringify(CRUtil.getCRRangeForAB(this.state.proficiency + this.GetMod(this.state.offenses.primarySpellStat)))}
+                                        {JSON.stringify(
+                                            CRUtil.getCRRangeForAB(
+                                                this.state.proficiency + this.GetMod(this.state.offenses.primarySpellStat),  // tslint:disable-line
+                                            ),
+                                        )}
                                     </LabelledItem>
                                 </div>
                             </div>
@@ -226,11 +234,15 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                 <br />
                                 <LabelledItem label="Expected Attack Bonus / Save DC for Expected CR">
                                     <LabelledItem label="Attack Bonus">
-                                        {CRUtil.getExpectedABForCR(CRUtil.getCRForDPR(this.calcAverageDamagePerRound()))}
+                                        {CRUtil.getExpectedABForCR(
+                                            CRUtil.getCRForDPR(this.calcAverageDamagePerRound()),
+                                        )}
                                     </LabelledItem>
                                     <br />
                                     <LabelledItem label="Save DC">
-                                        {CRUtil.getExpectedDCForCR(CRUtil.getCRForDPR(this.calcAverageDamagePerRound()))}
+                                        {CRUtil.getExpectedDCForCR(
+                                            CRUtil.getCRForDPR(this.calcAverageDamagePerRound()),
+                                        )}
                                     </LabelledItem>
                                 </LabelledItem>
                             </div>
@@ -391,7 +403,8 @@ function mapStateToProps(state: GlobalState): MonsterStatsProps
 {
     return {
         monsterName: "Test Monstah",
-        fieldsetDecollapsed: state.ui.fieldset.decollapsed,
+        // fieldsetDecollapsed: state.ui.fieldset.decollapsed,
+        isFieldsetCollapse: (key) => !state.ui.fieldset.decollapsed[key],
     } as MonsterStatsProps;
 }
 
