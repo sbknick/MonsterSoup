@@ -1,5 +1,33 @@
+import * as Redux from "redux";
 
-export type OffensesAction = Redux.Action;
+// import { ArmorFormulaOption, Size } from "monsterBuilder/types";
+import * as types from "redux/types/monsterBuilder/offenses.types";
+
+export interface SetStatAction extends Redux.Action
+{
+    attr: string;
+}
+
+export const setPrimaryAttackStat: Redux.ActionCreator<SetStatAction> =
+    (attr) => ({ type: types.PRIMARY_ATTACK_STAT_SET, attr });
+
+export const setPrimarySpellStat: Redux.ActionCreator<SetStatAction> =
+    (attr) => ({ type: types.PRIMARY_SPELL_STAT_SET, attr });
+
+export interface SetValueAction extends Redux.Action
+{
+    value: number;
+}
+
+export const setMiscABBonus: Redux.ActionCreator<SetValueAction> =
+    (value) => ({ type: types.MISC_ATTACK_BONUS_SET, value });
+
+export const setMiscSaveDCBonus: Redux.ActionCreator<SetValueAction> =
+    (value) => ({ type: types.MISC_SAVE_DC_BONUS_SET, value });
+
+export type OffensesAction = Redux.Action
+                           | SetStatAction
+                           | SetValueAction;
                         //    | HitDiceModifyAction
                         //    | HitDieRemoveAction
                         //    | SizeSetAction

@@ -2,7 +2,7 @@ import { asBonus, mod } from "./Mod";
 
 import { MonsterBuilderState } from "monsterBuilder/reducers";
 import { ArmorFormulaOption, ArmorType, AttributesState, DefensesState, HitDice,
-         MonsterTrait } from "monsterBuilder/types";
+         MonsterTrait, OffensesState } from "monsterBuilder/types";
 
 import { getTraitArgs, getTraitsForMonster } from "redux/reducers";
 
@@ -121,4 +121,28 @@ export function calcEffectiveAC(defenses: DefensesState, attributes: AttributesS
     ac = traits.reduce((acc, t) => acc + t.trait.effectiveACModifier, ac);
 
     return ac;
+}
+
+export function getAttackBonus(offenses: OffensesState, attributes: AttributesState, proficiency: number): string
+{
+    const ab = calcAttackBonus(offenses, attributes, proficiency);
+    return asBonus(ab);
+}
+
+export function calcAttackBonus(offenses: OffensesState, attributes: AttributesState, proficiency: number): number
+{
+    const abMod = mod((attributes as any)[offenses.primaryAttackStat]);
+    return abMod + offenses.miscAttackBonus + proficiency;
+}
+
+export function getSaveDC(offenses: OffensesState, attributes: AttributesState, proficiency: number): string
+{
+    const dc = calcSaveDC(offenses, attributes, proficiency);
+    return dc.toString();
+}
+
+export function calcSaveDC(offenses: OffensesState, attributes: AttributesState, proficiency: number): number
+{
+    const abMod = mod((attributes as any)[offenses.primarySpellStat]);
+    return 8 + abMod + offenses.miscSaveDCBonus + proficiency;
 }

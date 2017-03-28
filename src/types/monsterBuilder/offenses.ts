@@ -4,8 +4,8 @@ export interface OffensesState
 {
     primaryAttackStat: string;
     primarySpellStat: string;
-    attackBonus: number;
-    saveDCBonus: number;
+    miscAttackBonus: number;
+    miscSaveDCBonus: number;
     multiattack?: Multiattack;
     actions: MonsterAction[];
 }

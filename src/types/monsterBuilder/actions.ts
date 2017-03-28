@@ -9,16 +9,32 @@ export interface ActionsState
 export interface ActionArgsMap
 {
     [key: number]: ActionArgs;
+    length: number;
 }
 
 export interface ActionArgs
 {
-    [key: string]: string;
+    [key: string]: ActionArg;
+}
+
+export interface ActionArg
+{
+    key: string;
+    argType: ActionArgType;
+    value: string;
+}
+
+export enum ActionArgType
+{
+    Text = 1,
+    Number,
+    DiceRoll,
+    DamageType,
 }
 
 export interface AttackArgs extends ActionArgs
 {
-    attackBonus: string;
+    attackBonus: ActionArg;
 }
 
 export interface MonsterAction

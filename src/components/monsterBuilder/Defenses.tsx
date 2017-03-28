@@ -34,6 +34,11 @@ interface Props
     setTempAC: (ac: number) => void;
 }
 
+interface PropsWithAverageHp extends Props
+{
+    averageHp: number;
+}
+
 const Defenses: React.StatelessComponent<Props> = (props) =>
 {
     const averageHp = Calc.averageHitDice(props.defenses.hitDice, props.conMod);
@@ -41,33 +46,12 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
     return (
         <div className="container">
             <div className="defensive-cr-details">
-                <LabelledItem label="Hit Dice" labelType="h4">
-                    <label title="The monster's Size will determine the default size of the hit die">Size</label>
-                    <SizeSelect {...props} />
-                    <HitDiceSplats {...props} />
-                    <button onClick={props.addNewHitDie}> + </button>
-                    <br /><br />
-                    <LabelledItem label="Average HP">
-                        <AverageHPSplat averageHp={averageHp} hitDice={props.defenses.hitDice} conMod={props.conMod} />
-                    </LabelledItem>
-                </LabelledItem>
-                <LabelledItem label="Armor Class" labelType="h4">
-                    <Armor />
-                </LabelledItem>
+                <SizeAndHitDice {...props} averageHp={averageHp} />
+                <Armor />
             </div>
 
             <div className="defensive-cr-calculations">
-                <LabelledItem label="Defensive CR Details" labelType="h4">
-                    <LabelledItem label="Expected CR for Average HP">
-                        {CRUtil.getCRForHP(averageHp)}
-                    </LabelledItem>
-
-                    <LabelledItem label="Expected AC for Average HP">
-                        {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(averageHp))}
-                    </LabelledItem>
-
-                    <EffectiveAC {...props} />
-                </LabelledItem>
+                <DefensiveCRDetails averageHp={averageHp} {...props} />
                 <DefensiveCRCalcs averageHp={averageHp} {...props} />
             </div>
 
@@ -83,6 +67,20 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
         </div>
     );
 };
+
+const SizeAndHitDice: React.StatelessComponent<PropsWithAverageHp> = (props) =>
+(
+    <LabelledItem label="Hit Dice" labelType="h4">
+        <label title="The monster's Size will determine the default size of the hit die">Size</label>
+        <SizeSelect {...props} />
+        <HitDiceSplats {...props} />
+        <button onClick={props.addNewHitDie}> + </button>
+        <br /><br />
+        <LabelledItem label="Average HP">
+            <AverageHPSplat averageHp={props.averageHp} hitDice={props.defenses.hitDice} conMod={props.conMod} />
+        </LabelledItem>
+    </LabelledItem>
+);
 
 const AverageHPSplat: React.StatelessComponent<{averageHp: number, hitDice: HitDice[], conMod: number}> =
 ({averageHp, hitDice, conMod}) =>
@@ -150,7 +148,22 @@ const EffectiveAC: React.StatelessComponent<Props> = (props) =>
     );
 };
 
-const DefensiveCRCalcs: React.StatelessComponent<Props & {averageHp: number}> = (props) =>
+const DefensiveCRDetails: React.StatelessComponent<PropsWithAverageHp> = (props) =>
+(
+    <LabelledItem label="Defensive CR Details" labelType="h4">
+        <LabelledItem label="Expected CR for Average HP">
+            {CRUtil.getCRForHP(props.averageHp)}
+        </LabelledItem>
+
+        <LabelledItem label="Expected AC for Average HP">
+            {CRUtil.getExpectedACForCR(CRUtil.getCRForHP(props.averageHp))}
+        </LabelledItem>
+
+        <EffectiveAC {...props} />
+    </LabelledItem>
+);
+
+const DefensiveCRCalcs: React.StatelessComponent<PropsWithAverageHp> = (props) =>
 {
     const diff = props.effectiveAC - props.ac;
 

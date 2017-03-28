@@ -9,7 +9,7 @@ import * as Types from "monsterBuilder/types";
 
 export const defensesReducer: Redux.Reducer<DefensesState> = (state = initialState, action: Actions.DefensesAction) =>
 {
-    const newState = Object.assign({}, state);
+    const newState = {...state};
 
     switch (action.type)
     {

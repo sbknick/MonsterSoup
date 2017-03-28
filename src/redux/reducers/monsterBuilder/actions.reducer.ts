@@ -3,7 +3,7 @@ import * as Redux from "redux";
 import * as Actions from "monsterBuilder/actions/actions.actions";
 import * as types from "redux/types/monsterBuilder/actions.types";
 
-import { ActionsState } from "monsterBuilder/types";
+import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "monsterBuilder/types";
 import { ActionTemplate, ActionType, AttackTemplate, MonsterActionTemplate } from "types";
 
 const monsterActionsReducer: Redux.Reducer<ActionsState> = (state = initialState, action: Actions.ActionsAction) =>
@@ -51,9 +51,19 @@ const monsterActionsReducer: Redux.Reducer<ActionsState> = (state = initialState
 
 export default monsterActionsReducer;
 
+const attackArgs: AttackArgs = {
+    attackBonus: { key: "attackBonus", argType: ActionArgType.Number, value: "+4" },
+    shortName: { key: "shortName", argType: ActionArgType.Text, value: "Test Monstah" },
+};
+
+const actionArgsMap: ActionArgsMap = {
+    2: attackArgs as ActionArgs,
+    length: 1,
+};
+
 const initialState: ActionsState = {
     appliedActionTemplateIds: [2],
-    actionArgs: {2: {}},
+    actionArgs: actionArgsMap,
 };
 
 export const getAppliedActionIds = (state: ActionsState) =>

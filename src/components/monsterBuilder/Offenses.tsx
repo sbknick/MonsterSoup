@@ -13,22 +13,22 @@ import * as CRUtil from "util/CRUtil";
 import { asBonus, mod, modBonus } from "util/Mod";
 
 import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-    NumberInput, SelectList, UpDownLinks } from "common";
+         NumberInput, SelectList, UpDownLinks } from "common";
 
 import OffensesActions from "./OffensesActions";
 
-    /* tslint:disable:no-console */
+/* tslint:disable:no-console */
 
 interface Props
 {
     attributes: AttributesState;
     offenses: OffensesState;
+    proficiencyBonus: number;
 
     setPrimaryAttackStat: (attr: string) => void;
     setPrimarySpellStat: (attr: string) => void;
     setAttackBonusBonus: (n: number) => void;
     setSaveDCBonus: (n: number) => void;
-    addAction: () => void;
 }
 
 const Offenses: React.StatelessComponent<Props> = (props) =>
@@ -37,36 +37,9 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
         <div>
             <div className="container">
                 <div className="offensive-cr-details">
-                    <LabelledItem label="Stats" labelType="h4">
-                        <LabelledItem label="Primary Attack Stat">
-                            <SelectList options={attributes}
-                                        value={props.offenses.primaryAttackStat}
-                                        onChange={e => props.setPrimaryAttackStat(e.target.value)}/>
-                        </LabelledItem>
-                        <LabelledItem label="Primary Spellcasting Stat">
-                            <SelectList options={attributes}
-                                        value={props.offenses.primarySpellStat}
-                                        onChange={props.setPrimarySpellStat} />
-                        </LabelledItem>
-                    </LabelledItem>
-                    <LabelledItem label="Attack Bonus" labelType="h4">
-                        <LabelledItem label="Misc Bonus">
-                            <NumberInput value={props.offenses.attackBonus}
-                                         onChange={e => props.setAttackBonusBonus(parseInt(e.target.value))} />
-                        </LabelledItem>
-                        <LabelledItem label="Total">
-                            {0}
-                        </LabelledItem>
-                    </LabelledItem>
-                    <LabelledItem label="Save DC" labelType="h4">
-                        <LabelledItem label="Misc Bonus">
-                            <NumberInput value={props.offenses.saveDCBonus}
-                                         onChange={e => props.setSaveDCBonus(parseInt(e.target.value))} />
-                        </LabelledItem>
-                        <LabelledItem label="Total">
-                           {0}
-                        </LabelledItem>
-                    </LabelledItem>
+                    <StatSelects {...props} />
+                    <AttackBonus {...props} />
+                    <SaveDC {...props} />
                 </div>
 
                 <div className="offensive-cr-calculations">
@@ -108,6 +81,62 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
     );
 };
 
+const StatSelects: React.StatelessComponent<Props> = (props) =>
+(
+    <LabelledItem label="Stats" labelType="h4">
+
+        <LabelledItem label="Primary Attack Stat">
+            <SelectList
+                options={attributes}
+                value={props.offenses.primaryAttackStat}
+                onChange={e => props.setPrimaryAttackStat(e.target.value)}
+            />
+        </LabelledItem>
+
+        <LabelledItem label="Primary Spellcasting Stat">
+            <SelectList
+                options={attributes}
+                value={props.offenses.primarySpellStat}
+                onChange={e => props.setPrimarySpellStat(e.target.value)}
+            />
+        </LabelledItem>
+
+    </LabelledItem>
+);
+
+const AttackBonus: React.StatelessComponent<Props> = (props) =>
+(
+    <LabelledItem label="Attack Bonus" labelType="h4">
+
+        <LabelledItem label="Misc Bonus">
+            <NumberInput
+                value={props.offenses.miscAttackBonus}
+                onChange={e => props.setAttackBonusBonus(parseInt(e.target.value))}
+            />
+        </LabelledItem>
+
+        <LabelledItem label="Total">
+            {Calc.getAttackBonus(props.offenses, props.attributes, props.proficiencyBonus)}
+        </LabelledItem>
+
+    </LabelledItem>
+);
+
+const SaveDC: React.StatelessComponent<Props> = (props) =>
+(
+    <LabelledItem label="Save DC" labelType="h4">
+        <LabelledItem label="Misc Bonus">
+            <NumberInput
+                value={props.offenses.miscSaveDCBonus}
+                onChange={e => props.setSaveDCBonus(parseInt(e.target.value))}
+            />
+        </LabelledItem>
+        <LabelledItem label="Total">
+           {Calc.getSaveDC(props.offenses, props.attributes, props.proficiencyBonus)}
+        </LabelledItem>
+    </LabelledItem>
+);
+
 function mapStateToProps(state: GlobalState): Props
 {
     const mb = getMonsterBuilderData(state);
@@ -115,17 +144,17 @@ function mapStateToProps(state: GlobalState): Props
     return {
         attributes: mb.attributes,
         offenses: mb.offenses,
+        proficiencyBonus: mb.proficiency.proficiencyBonus,
     } as Props;
 }
 
 function mapDispatchToProps(dispatch: any): Props
 {
     return {
-        setPrimaryAttackStat: (attr) => dispatch({ type: "HI", attr }),
-        setPrimarySpellStat: (attr) => dispatch({ type: "HI", attr }),
-        setAttackBonusBonus: (n) => dispatch({ type: "HI", n }),
-        setSaveDCBonus: (n) => dispatch({ type: "HI", n }),
-        addAction: () => dispatch({ type: "HI" }),
+        setPrimaryAttackStat: (attr) => dispatch(Actions.setPrimaryAttackStat(attr)),
+        setPrimarySpellStat: (attr) => dispatch(Actions.setPrimarySpellStat(attr)),
+        setAttackBonusBonus: (n) => dispatch(Actions.setMiscABBonus(n)),
+        setSaveDCBonus: (n) => dispatch(Actions.setMiscSaveDCBonus(n)),
     } as Props;
 }
 

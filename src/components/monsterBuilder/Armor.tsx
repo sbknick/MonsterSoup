@@ -26,13 +26,13 @@ export const Armor: React.StatelessComponent<Props> = (props) =>
     }
 
     return (
-        <div className="armor-formula">
+        <LabelledItem label="Armor Class" labelType="h4" className="armor-formula">
             <select value={props.defenses.armorFormula} // tslint:disable-next-line
                     onChange={(e: any) => props.setArmorFormula(parseInt(e.target.value) as ArmorFormulaOption)}>
                 {formulaOptions}
             </select>
             {armorSplat}
-        </div>
+        </LabelledItem>
     );
 };
 

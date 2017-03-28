@@ -1,5 +1,7 @@
 // import { Memoize } from "typescript-memoize";
 
+import { ActionArgs, ActionArgType } from "monsterBuilder/types";
+
 // camel-case conversion code found here:
 // http://stackoverflow.com/a/34680912
 // another possible alternative is to pull in SugarJS and use .titleize()
@@ -20,12 +22,12 @@ export function detitleize(input: string): string
 
 export const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
 
-interface Args
-{
-    [key: string]: string;
-}
+// interface Args
+// {
+//     [key: string]: string;
+// }
 
-export function parseTemplate(input: string, args: Args): string
+export function parseTemplate(input: string, args: ActionArgs): string
 {
     for (const key in args)
     {
@@ -35,8 +37,25 @@ export function parseTemplate(input: string, args: Args): string
             const lowerReg = regex.getLowerRegExp(key);
             const upperReg = regex.getUpperRegExp(key);
             const value = args[key];
-            input = input.replace(lowerReg, value)
-                         .replace(upperReg, capitalize(value));
+
+            switch (value.argType)
+            {
+                case ActionArgType.Text:
+                case ActionArgType.Number:
+                    input = input.replace(lowerReg, value.value)
+                                 .replace(upperReg, capitalize(value.value));
+                    break;
+
+                case ActionArgType.DiceRoll:
+                    input = input.replace(lowerReg, value.value)
+                                 .replace(upperReg, capitalize(value.value));
+                    break;
+
+                default:
+                    input = input.replace(lowerReg, value.value)
+                                 .replace(upperReg, capitalize(value.value));
+                    break;
+            }
         }
     }
 

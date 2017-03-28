@@ -10,35 +10,40 @@ import { ActionTemplate, AttackTemplate, MonsterActionType } from "types";
 
 export function getRequiredArgs(action: ActionTemplate)
 {
+    let args = [];
     switch (action.type)
     {
         case MonsterActionType.Attack:
-            return getRequiredArgs_Attack(action as AttackTemplate);
+            args = getRequiredArgs_Attack(action as AttackTemplate);
+            break;
 
         default:
-            return getRequiredArgs_Default(action);
+            args = getRequiredArgs_Default(action);
+            break;
     }
+
+    const results = args.map(a => a.split(":"));
+
+    console.log(JSON.stringify(results));
+
+    return results;
 }
+
+const templateArgRegex = /[^{}]+(?=\})/g; ///{(.*?)}/g;
 
 function getRequiredArgs_Attack(attack: AttackTemplate)
 {
     const args = getRequiredArgs_Default(attack);
-    var str = "The {thing} is a {Boop}";
 
-    const regex = /\{(.*?)\}/g;
-    const nameArgs = str.match(regex) || [];
-
-    console.log(nameArgs);
+    // attack.
 
     return args;
 }
 
 function getRequiredArgs_Default(action: ActionTemplate)
 {
-    const regex = /\{(.*?)\}/g;
-    const nameArgs = action.name.match(regex) || [];
-    const descArgs = action.description.match(regex) || [];
-    var str = "The {thing} is a {Boop}";
+    const nameArgs = action.name.match(templateArgRegex) || [];
+    const descArgs = action.description.match(templateArgRegex) || [];
 
     return [...nameArgs, ...descArgs];
 }

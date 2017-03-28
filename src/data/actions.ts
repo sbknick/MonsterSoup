@@ -13,7 +13,7 @@ export const defaultActions: MonsterActionTemplate[] = [
         id: 2,
         type: MonsterActionType.Attack,
         name: "Bite",
-        description: "The {shortName} can bite for {Damage}",
+        description: "The {shortName} can bite for {damage:DiceRoll}",
         actionType: ActionType.Action,
         attackType: AttackType.MeleeWeaponAttack,
         targetType: TargetType.OneTarget,
