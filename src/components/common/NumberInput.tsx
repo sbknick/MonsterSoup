@@ -14,6 +14,7 @@ interface NumberInputProps
     onFocus?: (e: any) => void;
     onBlur?: (e: any) => void;
     onChange?: (e: any) => void;
+    onChangeCapture?: (e: any) => void;
 }
 
 interface NumberInputState
@@ -29,6 +30,7 @@ const DEFAULT_PROPS: NumberInputProps = {
     onFocus: () => {},
     onBlur: () => {},
     onChange: () => {},
+    onChangeCapture: () => {},
 };
 
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState>
@@ -81,6 +83,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 type: "text",
                 pattern: "[0-9.]*",
                 onChange: this.onChange,
+                onChangeCapture: this.onChangeCapture,
                 onFocus: this.onFocus,
                 onBlur: this.onBlur,
                 value,
@@ -95,7 +98,19 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             {
                 value: e.target.value,
             } as NumberInputState,
-            () => this.props.onChange && this.props.onChange(e));
+            () => this.props.onChange && this.props.onChange(e),
+        );
+    }
+
+    private onChangeCapture(e: any)
+    {
+        e.persist();
+        this.setState(
+            {
+                value: e.target.value,
+            } as NumberInputState,
+            () => this.props.onChangeCapture && this.props.onChangeCapture(e),
+        );
     }
 
     private onBlur(e: any)
@@ -143,11 +158,13 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     {
         e.persist();
         const n = e.target.value as number;
-        this.setState({
-            focused: true,
-            value: n,
-        } as NumberInputState,
-        () => this.props.onFocus && this.props.onFocus(e));
+        this.setState(
+            {
+                focused: true,
+                value: n,
+            } as NumberInputState,
+            () => this.props.onFocus && this.props.onFocus(e),
+        );
     }
 
     private valueAsFormatted(): number

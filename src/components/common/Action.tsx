@@ -8,6 +8,8 @@ import { ActionTemplate, AttackTemplate, AttackType, MonsterActionTemplate, Mons
          TargetType } from "types";
 import { getRequiredArgs } from "util/MonsterActionUtil";
 
+import { NumberInput } from "common";
+
 interface Props
 {
     action: MonsterAction;
@@ -85,7 +87,7 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
                         padding: "2px",
                     }}>
                         {getRequiredArgs(this.props.action.template).map(a =>
-                            <AssignArg key={a[0]} {...this.props} arg={a[0]} />)
+                            <AssignArg key={a[0]} {...this.props} arg={a[0]} argType={a[1]} />)
                         }
                     </span>
                 </div>
@@ -94,18 +96,28 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
     }
 };
 
-const AssignArg: React.StatelessComponent<Props & {arg: string}> = (props) =>
+const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}> = (props) =>
 {
     let input: JSX.Element = <b>Hi</b>;
 
     const arg = props.action.args[props.arg];
+    const argType = (ActionArgType as any)[props.argType] as ActionArgType;
 
-    if (arg)
+    if (argType)
     {
-        switch (arg.argType)
+        switch (argType)
         {
+            default:
             case ActionArgType.Text:
-                input = <input onChangeCapture={() => {; }} />
+                input = <input onChangeCapture={() => {; }} />;
+                break;
+
+            case ActionArgType.Number:
+                input = <NumberInput value={0} onChangeCapture={() => {; }} />;
+                break;
+
+            case ActionArgType.DiceRoll:
+                input = <span>Dice Roll Input</span>;
                 break;
         }
     }
@@ -118,14 +130,17 @@ const AssignArg: React.StatelessComponent<Props & {arg: string}> = (props) =>
     return (
         <ul style={{padding: 0, margin: 0}}>
             <li style={liStyle}>{props.arg}</li>
-            <li style={liStyle}>
+            {argType || (<li style={liStyle}>
                 <select>
                     <option>{ActionArgType[ActionArgType.Text]}</option>
                     <option>{ActionArgType[ActionArgType.Number]}</option>
                     <option>{ActionArgType[ActionArgType.DiceRoll]}</option>
                 </select>
             </li>
-            <li style={liStyle}>{input}</li>
+            )}
+            <li style={liStyle}>
+                {input}
+            </li>
         </ul>
     );
 };
