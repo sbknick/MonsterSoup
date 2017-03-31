@@ -22,6 +22,8 @@ export interface ActionArg
     key: string;
     argType: ActionArgType;
     value: string;
+
+    inherited?: boolean;
 }
 
 export enum ActionArgType

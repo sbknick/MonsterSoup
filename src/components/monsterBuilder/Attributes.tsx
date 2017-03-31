@@ -1,13 +1,14 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import * as React from "react";
+import { connect } from "react-redux";
 
-import * as Util from '../../util/Mod';
+import * as Util from "util/Mod";
 
+import * as Actions from "monsterBuilder/actions/attributes.actions";
 import { AttributesState } from "monsterBuilder/types";
-import { GlobalState, getMonsterBuilderData } from '../../redux/reducers';
+import { getMonsterBuilderData, GlobalState } from "redux/reducers";
 // import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer';
-import * as Actions from '../../redux/actions/monsterBuilder/attributes.actions';
-import { HighlightOnChange, NumberInput } from '../common';
+
+import { HighlightOnChange, NumberInput } from "common";
 
 export class Attribute extends React.Component<AttributeProps, {}>
 {
@@ -18,18 +19,8 @@ export class Attribute extends React.Component<AttributeProps, {}>
         this.valueChanged = this.valueChanged.bind(this);
     }
 
-    private handleClick(e: any, value: number)
+    public render()
     {
-        e.preventDefault();
-        this.props.modifyAttribute(this.props.label, value);
-    }
-
-    valueChanged(e: any)
-    {
-        this.props.setAttribute(this.props.label, parseInt(e.target.value));
-    }
-
-    render() {
         const { label, value } = this.props;
 
         return (
@@ -54,12 +45,23 @@ export class Attribute extends React.Component<AttributeProps, {}>
             </div>
         );
     }
+
+    private handleClick(e: any, value: number)
+    {
+        e.preventDefault();
+        this.props.modifyAttribute(this.props.label, value);
+    }
+
+    private valueChanged(e: any)
+    {
+        this.props.setAttribute(this.props.label, parseInt(e.target.value));
+    }
 }
 
 interface AttributeProps
 {
-    label: string,
-    value: number,
+    label: string;
+    value: number;
     modifyAttribute: (label: string, value: number) => void;
     setAttribute: (label: string, value: number) => void;
 }
@@ -68,9 +70,14 @@ interface AttributeProps
 const Attributes: React.StatelessComponent<AttributesProps> = (props: AttributesProps) =>
 {
     const attr = props.attributes as any;
-    let attributes = Object.keys(attr).map(key =>
-        <Attribute key={key} label={key} value={attr[key]} modifyAttribute={props.modifyAttribute} setAttribute={props.setAttribute} />
-    );
+    const attributes = Object.keys(attr).map(key =>
+        <Attribute
+            key={key}
+            label={key}
+            value={attr[key]}
+            modifyAttribute={props.modifyAttribute}
+            setAttribute={props.setAttribute}
+        />);
 
     return (
         <div className="attributes">
@@ -78,7 +85,7 @@ const Attributes: React.StatelessComponent<AttributesProps> = (props: Attributes
             {attributes}
         </div>
     );
-}
+};
 
 interface AttributesProps
 {
@@ -91,7 +98,7 @@ interface AttributesProps
 function mapStateToProps(state: GlobalState): AttributesProps
 {
     return {
-        attributes: getMonsterBuilderData(state).attributes
+        attributes: getMonsterBuilderData(state).attributes,
     } as AttributesProps;
 }
 
@@ -99,7 +106,7 @@ function mapDispatchToProps(dispatch: any): AttributesProps
 {
     return {
         modifyAttribute: (a, v) => dispatch(Actions.modifyAttribute(a, v)),
-        setAttribute: (a, v) => dispatch(Actions.setAttribute(a, v))
+        setAttribute: (a, v) => dispatch(Actions.setAttribute(a, v)),
     } as AttributesProps;
 }
 

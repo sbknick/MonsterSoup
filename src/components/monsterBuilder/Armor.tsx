@@ -7,6 +7,7 @@ import { getMonsterBuilderData, GlobalState } from "redux/reducers";
 
 import { armors, attributes } from "data";
 import * as Calc from "util/Calc";
+import * as Enum from "util/Enum";
 import { mod } from "util/Mod";
 import { titleize } from "util/String";
 
@@ -17,13 +18,10 @@ export const Armor: React.StatelessComponent<Props> = (props) =>
 {
     const armorSplat = getArmorSplat(props);
 
-    const formulaOptions: any[] = [];
-    for (const opt in ArmorFormulaOption)
-    {
-        if (!parseInt(opt))
-            continue;
-        formulaOptions.push(<option key={opt} value={opt}>{titleize(ArmorFormulaOption[opt])}</option>);
-    }
+    const formulaOptions = Enum.map(ArmorFormulaOption, opt =>
+        <option key={opt} value={opt}>
+            {titleize((ArmorFormulaOption as any)[opt])}
+        </option>);
 
     return (
         <LabelledItem label="Armor Class" labelType="h4" className="armor-formula">

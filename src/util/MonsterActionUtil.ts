@@ -3,11 +3,6 @@ import { getActionArgs, MonsterBuilderState } from "monsterBuilder/reducers";
 import { ActionArgs } from "monsterBuilder/types";
 import { ActionTemplate, AttackTemplate, MonsterActionType } from "types";
 
-// const displayAttackText = (attack: AttackTemplate, monster: MonsterBuilderState, actionArgs?: ActionArgs) =>
-// {
-//     return "<span class=\"action-name\"></span>";
-// };
-
 export function getRequiredArgs(action: ActionTemplate)
 {
     let args = [];

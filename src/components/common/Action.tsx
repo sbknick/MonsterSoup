@@ -4,8 +4,10 @@ import * as String from "util/String";
 
 import { getActionArgs, MonsterBuilderState } from "monsterBuilder/reducers";
 import { ActionArgs, ActionArgType, AttackArgs, MonsterAction } from "monsterBuilder/types";
-import { ActionTemplate, AttackTemplate, AttackType, MonsterActionTemplate, MonsterActionType,
+import { ActionTemplate, AttackTemplate, AttackType, DamageType, MonsterActionTemplate, MonsterActionType,
          TargetType } from "types";
+
+import * as Enum from "util/Enum";
 import { getRequiredArgs } from "util/MonsterActionUtil";
 
 import { NumberInput } from "common";
@@ -13,11 +15,17 @@ import { NumberInput } from "common";
 interface Props
 {
     action: MonsterAction;
+    setActionArgType: (arg: string, argType: ActionArgType) => void;
+    setActionArg: (arg: string, argType: ActionArgType, value: string) => void;
 }
 
 export const Action: React.StatelessComponent<Props> = (props) =>
 {
     let Tag = null;
+
+    const requiredArgs = getRequiredArgs(props.action.template);
+    // const args = props.getInheritedArgs(requiredArgs);
+    // const args = props.getActionArgs(props.action.template.id, requiredArgs);
 
     switch (props.action.template.type)
     {
@@ -82,11 +90,13 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
                     <span style={{
                         display: this.state.assignOpen ? "block" : "none",
                         position: "absolute",
-                        backgroundColor: "grey",
+                        backgroundColor: "lightgrey",
                         borderRadius: "4px",
+                        border: "1px solid grey",
                         padding: "2px",
                     }}>
                         {getRequiredArgs(this.props.action.template).map(a =>
+                            a[2] !== "inherited" &&
                             <AssignArg key={a[0]} {...this.props} arg={a[0]} argType={a[1]} />)
                         }
                     </span>
@@ -98,45 +108,61 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
 
 const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}> = (props) =>
 {
-    let input: JSX.Element = <b>Hi</b>;
+    let input: JSX.Element;
 
     const arg = props.action.args[props.arg];
-    const argType = (ActionArgType as any)[props.argType] as ActionArgType;
+    if (arg && arg.inherited) return null;
 
-    if (argType)
+    let argType = (ActionArgType as any)[props.argType] as ActionArgType;
+
+    argType = argType || (arg && arg.argType);
+
+    const handleChangeArgValue = (e: any) => props.setActionArg(props.arg, argType, e.target.value);
+    switch (argType)
     {
-        switch (argType)
-        {
-            default:
-            case ActionArgType.Text:
-                input = <input onChangeCapture={() => {; }} />;
-                break;
+        default:
+        case ActionArgType.Text:
+            input = <input value={arg && arg.value} onChange={handleChangeArgValue} />;
+            break;
 
-            case ActionArgType.Number:
-                input = <NumberInput value={0} onChangeCapture={() => {; }} />;
-                break;
+        case ActionArgType.Number:
+            input = <NumberInput value={parseInt(arg && arg.value)} onChange={handleChangeArgValue} />;
+            break;
 
-            case ActionArgType.DiceRoll:
-                input = <span>Dice Roll Input</span>;
-                break;
-        }
+        case ActionArgType.DiceRoll:
+            input = <span>Dice Roll Input</span>;
+            break;
+
+        case ActionArgType.DamageType:
+            input = (
+                <select value={arg && arg.value} onChange={handleChangeArgValue}>
+                    {Enum.map(DamageType, dt =>
+                        <option key={dt} value={dt}>{(DamageType as any)[dt]}</option>)
+                    }
+                </select>
+            );
+            break;
     }
 
     const liStyle = {
         display: "inline",
         listStyleType: "none",
+        marginRight: "5px",
     };
 
     return (
         <ul style={{padding: 0, margin: 0}}>
             <li style={liStyle}>{props.arg}</li>
-            {argType || (<li style={liStyle}>
-                <select>
-                    <option>{ActionArgType[ActionArgType.Text]}</option>
-                    <option>{ActionArgType[ActionArgType.Number]}</option>
-                    <option>{ActionArgType[ActionArgType.DiceRoll]}</option>
-                </select>
-            </li>
+            {props.argType ? ActionArgType[argType] : (
+                <li style={liStyle}>
+                    <select
+                        value={argType}
+                        onChange={e => props.setActionArgType(props.arg, parseInt(e.target.value))}
+                    >
+                        {Enum.map(ActionArgType, art =>
+                            <option key={art} value={art}>{ActionArgType[art]}</option>)}
+                    </select>
+                </li>
             )}
             <li style={liStyle}>
                 {input}

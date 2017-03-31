@@ -33,11 +33,35 @@ const monsterActionsReducer: Redux.Reducer<ActionsState> = (state = initialState
             }
             break;
 
-        case types.ACTION_ARGS_SET:
+        // case types.ACTION_ARGS_SET:
+        //     {
+        //         const { actionTemplateId, args } = action as Actions.SetActionArgsAction;
+        //         newState.actionArgs[actionTemplateId] =
+        //             {...newState.actionArgs[actionTemplateId], ...args};
+        //     }
+        //     break;
+
+        case types.ACTION_ARG_SET:
             {
-                const { actionTemplateId, args } = action as Actions.SetActionArgAction;
-                newState.actionArgs[actionTemplateId] =
-                    {...newState.actionArgs[actionTemplateId], ...args};
+                const { actionTemplateId, arg, argType, value } = action as Actions.SetActionArgAction;
+                const ar = newState.actionArgs[actionTemplateId];
+                ar[arg] = {
+                    key: arg,
+                    argType,
+                    value,
+                };
+            }
+            break;
+
+        case types.ACTION_ARG_TYPE_SET:
+            {
+                const { actionTemplateId, arg, argType } = action as Actions.SetActionArgTypeAction;
+                const ar = newState.actionArgs[actionTemplateId];
+                ar[arg] = {
+                    key: arg,
+                    argType,
+                    value: ar[arg] ? ar[arg].value : null,
+                };
             }
             break;
 
@@ -53,7 +77,7 @@ export default monsterActionsReducer;
 
 const attackArgs: AttackArgs = {
     attackBonus: { key: "attackBonus", argType: ActionArgType.Number, value: "+4" },
-    shortName: { key: "shortName", argType: ActionArgType.Text, value: "Test Monstah" },
+    shortName: { key: "shortName", argType: ActionArgType.Text, value: "Test Monstah", inherited: true },
 };
 
 const actionArgsMap: ActionArgsMap = {

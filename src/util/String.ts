@@ -1,6 +1,7 @@
 // import { Memoize } from "typescript-memoize";
 
 import { ActionArgs, ActionArgType } from "monsterBuilder/types";
+import { DamageType } from "types";
 
 // camel-case conversion code found here:
 // http://stackoverflow.com/a/34680912
@@ -20,7 +21,7 @@ export function detitleize(input: string): string
     return titleize(input).toLowerCase();
 }
 
-export const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
+export const capitalize = (str: string) => str && (str[0].toUpperCase() + str.slice(1));
 
 // interface Args
 // {
@@ -32,12 +33,16 @@ export function parseTemplate(input: string, args: ActionArgs): string
     for (const key in args)
     {
         const testReg: RegExp = regex.getTestRegExp(key);
+        const value = args[key];
+
+        if (!value.value)
+            continue;
+
         if (testReg.test(input))
         {
+
             const lowerReg = regex.getLowerRegExp(key);
             const upperReg = regex.getUpperRegExp(key);
-            const value = args[key];
-
             switch (value.argType)
             {
                 case ActionArgType.Text:
@@ -50,6 +55,10 @@ export function parseTemplate(input: string, args: ActionArgs): string
                     input = input.replace(lowerReg, value.value)
                                  .replace(upperReg, capitalize(value.value));
                     break;
+
+                case ActionArgType.DamageType:
+                    input = input.replace(lowerReg, DamageType[parseInt(value.value)].toLowerCase())
+                                 .replace(upperReg, DamageType[parseInt(value.value)].toLowerCase());
 
                 default:
                     input = input.replace(lowerReg, value.value)
@@ -67,19 +76,19 @@ class Regex
     @Memoize()
     public getTestRegExp(key: string): RegExp
     {
-        return new RegExp(`{(${key[0].toLowerCase()}|${key[0].toUpperCase()})${key.slice(1)}}`);
+        return new RegExp(`{(${key[0].toLowerCase()}|${key[0].toUpperCase()})${key.slice(1)}.*?}`);
     }
 
     // @Memoize()
     public getLowerRegExp(key: string): RegExp
     {
-        return new RegExp(`{${key}}`);
+        return new RegExp(`{${key}.*?}`);
     }
 
     // @Memoize()
     public getUpperRegExp(key: string): RegExp
     {
-        return new RegExp(`{${capitalize(key)}}`);
+        return new RegExp(`{${capitalize(key)}.*?}`);
     }
 }
 

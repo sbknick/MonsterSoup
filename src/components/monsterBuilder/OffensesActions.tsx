@@ -5,7 +5,7 @@ import { attributes } from "data";
 import * as Actions from "monsterBuilder/actions/actions.actions";
 import * as UIActions from "redux/actions/ui.actions";
 
-import { MonsterAction } from "monsterBuilder/types";
+import { ActionArgType, MonsterAction } from "monsterBuilder/types";
 import { getActionArgs, getActionsForMonster, getAllActions, getMonsterBuilderData, GlobalState } from "redux/reducers";
 import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate,
          MonsterActionType } from "types";
@@ -27,7 +27,12 @@ class OffensesActions extends React.Component<Props, State>
     public render()
     {
         const actions = this.props.monsterActions.map(a =>
-            <Action key={a.template.id} action={a} />);
+            <Action
+                key={a.template.id}
+                action={a}
+                setActionArgType={this.props.setActionArgType(a.template.id)}
+                setActionArg={this.props.setActionArg(a.template.id)}
+            />);
 
         const actionsLegend = "Actions";
         const actionsCollapsed = !this.props.fieldsetDecollapsed[actionsLegend];
@@ -125,6 +130,8 @@ interface Props
 
     applyAction: (actionTemplateId: number) => void;
     toggleFieldsetCollapse: (key: string) => void;
+    setActionArgType: (actionTemplateId: number) => (arg: string, argType: ActionArgType) => void;
+    setActionArg: (actionTemplateId: number) => (arg: string, argType: ActionArgType, value: string) => void;
 }
 
 interface State
@@ -151,6 +158,10 @@ function mapDispatchToProps(dispatch: any): Props
     return {
         applyAction: (actionTemplateId) => dispatch(Actions.applyAction(actionTemplateId)),
         toggleFieldsetCollapse: (key: string) => dispatch(UIActions.toggleFieldsetCollapse(key)),
+        setActionArgType: (actionTemplateId) =>
+                          (arg, argType) => dispatch(Actions.setActionArgType(actionTemplateId, arg, argType)),
+        setActionArg: (actionTemplateId) =>
+                      (arg, argType, value) => dispatch(Actions.setActionArg(actionTemplateId, arg, argType, value)),
     } as Props;
 }
 
