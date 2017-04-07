@@ -135,7 +135,8 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
 
         case ActionArgType.DamageType:
             input = (
-                <select value={arg && arg.value} onChange={handleChangeArgValue}>
+                <select value={arg && arg.value || ""} onChange={handleChangeArgValue}>
+                    <option value={""} disabled>-- Select One --</option>
                     {Enum.map(DamageType, dt =>
                         <option key={dt} value={dt}>{(DamageType as any)[dt]}</option>)
                     }
