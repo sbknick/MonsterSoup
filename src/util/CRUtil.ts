@@ -9,7 +9,7 @@ This allows us to Increment or Decrement CR by "1", so that 1 goes down to 1/2,
 function getCRIdxForHP(average: number): number
 {
     const range = Data.HPCRRanges.find(r => r.low <= average && average <= r.high);
-    return range.CR;
+    return range ? range.CR : 0;
 }
 
 export function getCRForHP(average: number): string

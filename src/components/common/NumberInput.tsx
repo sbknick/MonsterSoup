@@ -48,6 +48,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         };
 
         this.onChange = this.onChange.bind(this);
+        this.onChangeCapture = this.onChangeCapture.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.onBlur = this.onBlur.bind(this);
     }

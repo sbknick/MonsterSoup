@@ -10,7 +10,7 @@ import * as Calc from "util/Calc";
 import * as CRUtil from "util/CRUtil";
 import { asBonus, mod, modBonus } from "util/Mod";
 
-import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
+import { DiceRollInput, Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
     NumberInput, SelectList, UpDownLinks } from "common";
 import Armor from "./Armor";
 
@@ -104,12 +104,17 @@ const HitDiceSplats: React.StatelessComponent<Props> = (props) =>
                 {key > 0 &&
                     <button onClick={e => props.removeHitDie(key)}> - </button>
                 }
-                <NumberInput min={1} max={40} value={hd.hitDiceCount}
-                             onBlur={e => props.setHitDiceCount(key, parseInt(e.target.value))} />
-                d
-                <NumberInput min={4} max={20} value={hd.hitDieSize}
-                             onBlur={e => props.setHitDieSize(key, parseInt(e.target.value))} />
-               {asBonus(props.conMod)}
+                <DiceRollInput
+                    diceCount={hd.hitDiceCount} dieSize={hd.hitDieSize}
+                    diceCountChanged={n => props.setHitDiceCount(key, n)}
+                    dieSizeChanged={n => props.setHitDieSize(key, n)}>
+                    {/*<NumberInput min={1} max={40} value={hd.hitDiceCount}
+                                 onBlur={e => props.setHitDiceCount(key, parseInt(e.target.value))} />
+                    d
+                    <NumberInput min={4} max={20} value={hd.hitDieSize}
+                                 onBlur={e => props.setHitDieSize(key, parseInt(e.target.value))} />*/}
+                   {asBonus(props.conMod)}
+               </DiceRollInput>
             </div>
         );
     });
