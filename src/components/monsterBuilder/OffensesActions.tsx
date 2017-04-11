@@ -11,7 +11,8 @@ import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemp
          MonsterActionType } from "types";
 import * as String from "util/String";
 
-import { Action, Fieldset, LabelledItem, Modal } from "common";
+import { Action } from "./Action";
+import { Fieldset, LabelledItem, Modal } from "common";
 import * as fromModal from "common/Modal";
 
 import { defaultActions } from "data/actions";
