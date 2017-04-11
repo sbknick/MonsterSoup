@@ -1,3 +1,4 @@
+export * from "./DiceRollInput";
 export * from "./Fieldset";
 export * from "./HighlightBonusOnChange";
 export * from "./HighlightOnChange";
