@@ -9,11 +9,12 @@ import { ActionArgType, MonsterAction } from "monsterBuilder/types";
 import { getActionArgs, getActionsForMonster, getAllActions, getMonsterBuilderData, GlobalState } from "redux/reducers";
 import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate,
          MonsterActionType } from "types";
+import * as Mod from "util/Mod";
 import * as String from "util/String";
 
-import { Action } from "./Action";
 import { Fieldset, LabelledItem, Modal } from "common";
 import * as fromModal from "common/Modal";
+import { Action } from "./Action";
 
 import { defaultActions } from "data/actions";
 
@@ -31,6 +32,7 @@ class OffensesActions extends React.Component<Props, State>
             <Action
                 key={a.template.id}
                 action={a}
+                statMod={this.props.attackStatMod}
                 setActionArgType={this.props.setActionArgType(a.template.id)}
                 setActionArg={this.props.setActionArg(a.template.id)}
             />);
@@ -128,6 +130,7 @@ interface Props
     monsterActions: MonsterAction[];
     availableActions: ActionTemplate[];
     fieldsetDecollapsed: {[key: string]: boolean};
+    attackStatMod: number;
 
     applyAction: (actionTemplateId: number) => void;
     toggleFieldsetCollapse: (key: string) => void;
@@ -147,8 +150,12 @@ function mapStateToProps(state: GlobalState): Props
     const monsterActions: MonsterAction[] = actions.map(a => ({template: a, args: getActionArgs(state, a)}));
     const appliedActionTemplateIds = monsterActions.map(a => a.template.id);
 
+    const mb = getMonsterBuilderData(state);
+    const attackStatMod = Mod.mod((mb.attributes as any)[mb.offenses.primaryAttackStat]);
+
     return {
         monsterActions,
+        attackStatMod,
         availableActions: getAllActions(state).filter(a => appliedActionTemplateIds.indexOf(a.id) === -1),
         fieldsetDecollapsed: state.ui.fieldset.decollapsed,
     } as Props;

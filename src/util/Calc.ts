@@ -1,7 +1,7 @@
 import { asBonus, mod } from "./Mod";
 
 import { MonsterBuilderState } from "monsterBuilder/reducers";
-import { ArmorFormulaOption, ArmorType, AttributesState, DefensesState, HitDice,
+import { ArmorFormulaOption, ArmorType, AttributesState, DamageArgs, DefensesState, HitDice,
          MonsterTrait, OffensesState } from "monsterBuilder/types";
 
 import { getTraitArgs, getTraitsForMonster } from "redux/reducers";
@@ -145,4 +145,10 @@ export function calcSaveDC(offenses: OffensesState, attributes: AttributesState,
 {
     const abMod = mod((attributes as any)[offenses.primarySpellStat]);
     return 8 + abMod + offenses.miscSaveDCBonus + proficiency;
+}
+
+export function calcAverageDamage(args: DamageArgs, bonus: number): number
+{
+    const aveRoll = args.dieSize / 2;
+    return aveRoll * args.diceCount + bonus;
 }

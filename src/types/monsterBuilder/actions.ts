@@ -21,7 +21,7 @@ export interface ActionArg
 {
     key: string;
     argType: ActionArgType;
-    value: string;
+    value: string | DamageArgs;
 
     inherited?: boolean;
 }
@@ -32,6 +32,14 @@ export enum ActionArgType
     Number,
     DiceRoll,
     DamageType,
+}
+
+export interface DamageArgs
+{
+    diceCount: number;
+    dieSize: number;
+    usePrimaryStatBonus: boolean;
+    miscBonus?: number;
 }
 
 export interface AttackArgs extends ActionArgs

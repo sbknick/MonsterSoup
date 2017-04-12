@@ -2,7 +2,7 @@ import * as Redux from "redux";
 
 import * as types from "redux/types/monsterBuilder/actions.types";
 
-import { ActionArg, ActionArgs, ActionArgType } from "monsterBuilder/types";
+import { ActionArg, ActionArgs, ActionArgType, DamageArgs } from "monsterBuilder/types";
 
 interface ActionsActionPayload
 {
@@ -29,7 +29,7 @@ interface ActionsArgActionPayload extends ActionsActionPayload
 {
     arg: string;
     argType: ActionArgType;
-    value: string;
+    value: string | DamageArgs;
 }
 
 export const setActionArg: Redux.ActionCreator<ActionsArgActionPayload> =

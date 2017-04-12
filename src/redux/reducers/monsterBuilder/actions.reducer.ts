@@ -33,14 +33,6 @@ const monsterActionsReducer: Redux.Reducer<ActionsState> = (state = initialState
             }
             break;
 
-        // case types.ACTION_ARGS_SET:
-        //     {
-        //         const { actionTemplateId, args } = action as Actions.SetActionArgsAction;
-        //         newState.actionArgs[actionTemplateId] =
-        //             {...newState.actionArgs[actionTemplateId], ...args};
-        //     }
-        //     break;
-
         case types.ACTION_ARG_SET:
             {
                 const { actionTemplateId, arg, argType, value } = action as Actions.SetActionArgAction;

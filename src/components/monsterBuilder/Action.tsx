@@ -1,20 +1,22 @@
 import * as React from "react";
 
 import * as String from "util/String";
+import * as Templates from "util/Templates";
 
 import { getActionArgs, MonsterBuilderState } from "monsterBuilder/reducers";
-import { ActionArgs, ActionArgType, AttackArgs, MonsterAction } from "monsterBuilder/types";
+import { ActionArg, ActionArgs, ActionArgType, AttackArgs, DamageArgs, MonsterAction } from "monsterBuilder/types";
 import { ActionTemplate, AttackTemplate, AttackType, DamageType, MonsterActionTemplate, MonsterActionType,
          TargetType } from "types";
 
 import * as Enum from "util/Enum";
 import { getRequiredArgs } from "util/MonsterActionUtil";
 
-import { NumberInput } from "common";
+import { DiceRollInput, NumberInput } from "common";
 
 interface Props
 {
     action: MonsterAction;
+    statMod: number;
     setActionArgType: (arg: string, argType: ActionArgType) => void;
     setActionArg: (arg: string, argType: ActionArgType, value: string) => void;
 }
@@ -48,7 +50,7 @@ const Default: React.StatelessComponent<Props> = (props) =>
     return (
         <p>
             <i><b>{props.action.template.name}. </b></i>
-            {String.parseTemplate(props.action.template.description, props.action.args)}
+            {Templates.parseTemplate(props.action.template.description, props.action.args, props.statMod)}
             <label>Assign Arguments</label>
             <span>{JSON.stringify(getRequiredArgs(props.action.template))}</span>
         </p>
@@ -78,7 +80,7 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
                     {attackArgs.attackBonus.value} to hit,
                     reach {attack.reach || 5} ft.,&nbsp;
                     {String.detitleize(TargetType[attack.targetType])}.&nbsp;
-                    <i>Hit:</i> {String.parseTemplate(attack.description, args)}
+                    <i>Hit:</i> {Templates.parseTemplate(attack.description, args, this.props.statMod)}
                 </div>
                 <div style={{position: "relative"}}>
                     <a href="" onClick={e => {
@@ -110,7 +112,7 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
 {
     let input: JSX.Element;
 
-    const arg = props.action.args[props.arg];
+    const arg = props.action.args[props.arg] || {} as ActionArg;
     if (arg && arg.inherited) return null;
 
     let argType = (ActionArgType as any)[props.argType] as ActionArgType;
@@ -118,24 +120,52 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
     argType = argType || (arg && arg.argType);
 
     const handleChangeArgValue = (e: any) => props.setActionArg(props.arg, argType, e.target.value);
+    const handleChangeDamageRollArgValue = (args: any) => {
+        const value = {...arg.value as DamageArgs, ...args};
+        props.setActionArg(props.arg, argType, value);
+    };
+
     switch (argType)
     {
         default:
         case ActionArgType.Text:
-            input = <input value={arg && arg.value} onChange={handleChangeArgValue} />;
+            input = <input value={arg && arg.value as string} onChange={handleChangeArgValue} />;
             break;
 
         case ActionArgType.Number:
-            input = <NumberInput value={parseInt(arg && arg.value)} onChange={handleChangeArgValue} />;
+            input = <NumberInput value={parseInt(arg && arg.value as string)} onChange={handleChangeArgValue} />;
             break;
 
         case ActionArgType.DiceRoll:
-            input = <span>Dice Roll Input</span>;
+            const damArgs = arg.value as DamageArgs;
+            if (!damArgs)
+            {
+                handleChangeDamageRollArgValue(defaultDamageArgs);
+                return null;
+            }
+
+            const { diceCount, dieSize, miscBonus, usePrimaryStatBonus } = damArgs;
+            input = (
+                <DiceRollInput useMiscBonus={true}
+                    containerType="span"
+                    diceCount={diceCount} dieSize={dieSize} miscBonus={miscBonus}
+                    diceCountChanged={n => handleChangeDamageRollArgValue({ diceCount: n })}
+                    dieSizeChanged={n => handleChangeDamageRollArgValue({ dieSize: n })}
+                    miscBonusChanged={n => handleChangeDamageRollArgValue({ miscBonus: n })}
+                >
+                    <label>Use Bonus from Primary:</label>
+                    <input type="checkbox" checked={usePrimaryStatBonus}
+                        onChange={() => handleChangeDamageRollArgValue({
+                            usePrimaryStatBonus: !damArgs.usePrimaryStatBonus,
+                        })}
+                    />
+                </DiceRollInput>
+            );
             break;
 
         case ActionArgType.DamageType:
             input = (
-                <select value={arg && arg.value || ""} onChange={handleChangeArgValue}>
+                <select value={arg && arg.value as string || ""} onChange={handleChangeArgValue}>
                     <option value={""} disabled>-- Select One --</option>
                     {Enum.map(DamageType, dt =>
                         <option key={dt} value={dt}>{(DamageType as any)[dt]}</option>)
@@ -170,6 +200,12 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
             </li>
         </ul>
     );
+};
+
+const defaultDamageArgs: DamageArgs = {
+    diceCount: 1,
+    dieSize: 4,
+    usePrimaryStatBonus: false,
 };
 
 export default Action;
