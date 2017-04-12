@@ -136,7 +136,7 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
             input = <NumberInput value={parseInt(arg && arg.value as string)} onChange={handleChangeArgValue} />;
             break;
 
-        case ActionArgType.DiceRoll:
+        case ActionArgType.DamageRoll:
             const damArgs = arg.value as DamageArgs;
             if (!damArgs)
             {
@@ -146,9 +146,12 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
 
             const { diceCount, dieSize, miscBonus, usePrimaryStatBonus } = damArgs;
             input = (
-                <DiceRollInput useMiscBonus={true}
+                <DiceRollInput
+                    useMiscBonus={true}
                     containerType="span"
-                    diceCount={diceCount} dieSize={dieSize} miscBonus={miscBonus}
+                    diceCount={diceCount}
+                    dieSize={dieSize}
+                    miscBonus={miscBonus}
                     diceCountChanged={n => handleChangeDamageRollArgValue({ diceCount: n })}
                     dieSizeChanged={n => handleChangeDamageRollArgValue({ dieSize: n })}
                     miscBonusChanged={n => handleChangeDamageRollArgValue({ miscBonus: n })}
@@ -205,7 +208,7 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
 const defaultDamageArgs: DamageArgs = {
     diceCount: 1,
     dieSize: 4,
-    usePrimaryStatBonus: false,
+    usePrimaryStatBonus: true,
 };
 
 export default Action;

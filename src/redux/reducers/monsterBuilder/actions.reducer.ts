@@ -70,6 +70,12 @@ export default monsterActionsReducer;
 const attackArgs: AttackArgs = {
     attackBonus: { key: "attackBonus", argType: ActionArgType.Number, value: "+4" },
     shortName: { key: "shortName", argType: ActionArgType.Text, value: "Test Monstah", inherited: true },
+    damage: { key: "damage", argType: ActionArgType.DamageRoll , value: {
+        diceCount: 2,
+        dieSize: 6,
+        usePrimaryStatBonus: true,
+    } },
+    damageType: { key: "damageType", argType: ActionArgType.DamageType, value: "8" }, // 8: Piercing
 };
 
 const actionArgsMap: ActionArgsMap = {

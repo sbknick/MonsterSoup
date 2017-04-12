@@ -24,7 +24,7 @@ export function parseTemplate(input: string, args: ActionArgs, statMod: number):
                 let strValue: string;
                 switch (value.argType)
                 {
-                    case ActionArgType.DiceRoll:
+                    case ActionArgType.DamageRoll:
                         throw new Error();
 
                     case ActionArgType.DamageType:

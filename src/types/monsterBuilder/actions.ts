@@ -30,7 +30,7 @@ export enum ActionArgType
 {
     Text = 1,
     Number,
-    DiceRoll,
+    DamageRoll,
     DamageType,
 }
 
