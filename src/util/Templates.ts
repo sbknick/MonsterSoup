@@ -1,5 +1,5 @@
 import { ActionArgs, ActionArgType, DamageArgs } from "monsterBuilder/types";
-import { DamageType } from "types";
+import { DamageType, Range } from "types";
 
 import * as Calc from "util/Calc";
 import * as String from "util/String";
@@ -45,6 +45,12 @@ export function parseTemplate(input: string, args: ActionArgs, statMod: number):
                 {
                     input = parseTemplate_DamageArgs(input, lowerReg, upperReg, damArgs, statMod);
                 }
+
+                // const rangeArgs = value.value as Range;
+                // if (rangeArgs)
+                // {
+                //     input = parseTemplate_Range(input, lowerReg, upperReg, rangeArgs);
+                // }
             }
         }
     }

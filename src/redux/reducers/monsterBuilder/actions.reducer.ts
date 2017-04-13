@@ -6,9 +6,37 @@ import * as types from "redux/types/monsterBuilder/actions.types";
 import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "monsterBuilder/types";
 import { ActionTemplate, ActionType, AttackTemplate, MonsterActionTemplate } from "types";
 
+const t1 = {
+    type: types.ACTION_APPLY,
+    action: (newState: ActionsState, action: Actions.ActionApplyRemoveAction) =>
+    {
+        const { actionTemplateId } = action;
+        newState.appliedActionTemplateIds.push(actionTemplateId);
+        if (!newState.actionArgs[actionTemplateId])
+        {
+            newState.actionArgs[actionTemplateId] = {};
+        }
+    },
+};
+
+// const lookup: {[key: string]: (newState: ActionsState, action: Actions.ActionsAction) => void} = {
+//     [types.ACTION_APPLY]:
+//     (newState: ActionsState, action: Actions.ActionApplyRemoveAction) =>
+//     {
+//         const { actionTemplateId } = action;
+//         newState.appliedActionTemplateIds.push(actionTemplateId);
+//         if (!newState.actionArgs[actionTemplateId])
+//         {
+//             newState.actionArgs[actionTemplateId] = {};
+//         }
+//     },
+// };
+
 const monsterActionsReducer: Redux.Reducer<ActionsState> = (state = initialState, action: Actions.ActionsAction) =>
 {
     const newState = {...state};
+
+    // lookup[action.type](newState, action);
 
     switch (action.type)
     {

@@ -1,4 +1,4 @@
-import { ActionTemplate } from "types";
+import { ActionTemplate, Range } from "types";
 
 export interface ActionsState
 {
@@ -21,7 +21,7 @@ export interface ActionArg
 {
     key: string;
     argType: ActionArgType;
-    value: string | DamageArgs;
+    value: string | DamageArgs | Range;
 
     inherited?: boolean;
 }
@@ -45,6 +45,7 @@ export interface DamageArgs
 export interface AttackArgs extends ActionArgs
 {
     attackBonus: ActionArg;
+    recharge?: ActionArg;
 }
 
 export interface MonsterAction
