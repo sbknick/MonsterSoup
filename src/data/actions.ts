@@ -22,11 +22,16 @@ export const defaultActions: MonsterActionTemplate[] = [
         id: 3,
         type: MonsterActionType.Attack,
         name: "Lightning Breath",
-        description: "The {shortName} can exhales lightning in a 30-foot line that is 5 feet wide. Each creature in that line must make a DC {saveDC} Dexterity saving throw, taking {damage:DiceRoll:usePrimaryStatBonus=false} lightning damage on a failed save, or half as much damage on a successful one.",
+        description: "The {shortName} can exhale lightning in a 30-foot \
+                      line that is 5 feet wide. Each creature in that line \
+                      must make a DC {saveDC} Dexterity saving throw, taking \
+                      {damage:DiceRoll:usePrimaryStatBonus=false} lightning \
+                      damage on a failed save, or half as much damage on a successful one.",
         actionType: ActionType.Action,
         attackType: AttackType.Special,
         targetType: TargetType.Area,
-    }
+        recharge: { low: 5, high: 6 },
+    },
 ];
 
 // This has been taken straight from the Traits data stuff.

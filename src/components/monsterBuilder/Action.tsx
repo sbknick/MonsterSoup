@@ -75,9 +75,11 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
         return (
             <div>
                 <div>
-                    <i><b>{attack.name}. </b>
+                    <i><b>
+                        {attack.name}{attack.recharge && ` (Recharge ${attack.recharge.low}-${attack.recharge.high})`}.
+                    </b>&nbsp;
                     {String.titleize(AttackType[attack.attackType])}: </i>
-                    {attackArgs.attackBonus.value} to hit,
+                    {attackArgs.attackBonus ? attackArgs.attackBonus.value : 0} to hit,
                     reach {attack.reach || 5} ft.,&nbsp;
                     {String.detitleize(TargetType[attack.targetType])}.&nbsp;
                     <i>Hit:</i> {Templates.parseTemplate(attack.description, args, this.props.statMod)}

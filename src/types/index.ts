@@ -83,7 +83,7 @@ export interface AttackTemplate extends ActionTemplate
     damageDieSize?: number;
     damageBonus?: number;
     damageType?: string;
-    recharge?: number;
+    recharge?: Range;
 }
 
 export interface ActionTemplate
