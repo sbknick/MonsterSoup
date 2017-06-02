@@ -1,8 +1,9 @@
 import { asBonus, mod } from "./Mod";
 
 import { MonsterBuilderState } from "monsterBuilder/reducers";
-import { ArmorFormulaOption, ArmorType, AttributesState, DamageArgs, DefensesState, HitDice,
-         MonsterTrait, OffensesState } from "monsterBuilder/types";
+import { ActionArgs, ActionsState, ArmorFormulaOption, ArmorType, AttributesState, DamageArgs, DefensesState, HitDice,
+         MonsterAction, MonsterTrait, OffensesState } from "monsterBuilder/types";
+import { AttackTemplate, MonsterActionType } from "types";
 
 import { getTraitArgs, getTraitsForMonster } from "redux/reducers";
 
@@ -151,4 +152,49 @@ export function calcAverageDamage(args: DamageArgs, bonus: number): number
 {
     const aveRoll = args.dieSize / 2;
     return aveRoll * args.diceCount + bonus;
+}
+
+export function calcDPRForAttack(attack: AttackTemplate, ...theRest: any[]): number
+{
+    return 0;
+}
+
+export function getDPR(actions: MonsterAction[], offenses: OffensesState, attributes: AttributesState): string
+{
+    const dpr: number[] = [];
+    const attacks = actions.filter(act => act.template.type === MonsterActionType.Attack);
+
+    const filterDamageArgs: (args: ActionArgs) => DamageArgs[]
+        = (args) =>
+        {
+            const damArgs: DamageArgs[] = [];
+            for (const key in args)
+            {
+                const dam = args[key].value as DamageArgs;
+                if (dam)
+                    damArgs.push(dam);
+            }
+            return damArgs;
+        };
+
+    const getDamageSum: (args: DamageArgs[], bonus: number) => number
+        = (args, bonus) => sum(args, arg => calcAverageDamage(arg, bonus));
+
+    dpr.concat(attacks
+                .filter(atk => (atk.template as AttackTemplate).recharge)
+                .map(atk => getDamageSum(filterDamageArgs(atk.args), 0)),
+                // {
+                //     return 0;
+                //     // atk.args.filter(arg => typeof arg === "DamageArgs")
+                //     //    .sum(arg => calcAverageDamage(arg, bonus))))
+                // })// calcAverageDamage(atk.args)),
+            );
+
+    return "";
+}
+
+function sum<T>(items: T[], delegate: (t: T) => number): number
+{
+    const value = items.map(x => delegate(x)).reduce((a, b) => a + b, 0);
+    return value;
 }

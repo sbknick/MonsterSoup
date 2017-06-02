@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 
 import { attributes } from "data";
 import * as Actions from "monsterBuilder/actions/offenses.actions";
-import { AttributesState, HitDice, MonsterTrait,
+import { ActionsState, AttributesState, HitDice, MonsterAction, MonsterTrait,
          OffensesState, TraitArgs } from "monsterBuilder/types";
-import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "redux/reducers";
+import { getCollatedMonsterActions, getMonsterBuilderData, getTraitArgs, getTraitsForMonster,
+         GlobalState } from "redux/reducers";
 import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate, MonsterActionType } from "types";
 
 import * as Calc from "util/Calc";
@@ -21,6 +22,7 @@ import OffensesActions from "./OffensesActions";
 
 interface Props
 {
+    actions: MonsterAction[];
     attributes: AttributesState;
     offenses: OffensesState;
     proficiencyBonus: number;
@@ -45,7 +47,7 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
                 <div className="offensive-cr-calculations">
                     <LabelledItem label="Offensive CR Details" labelType="h4">
                         <LabelledItem label="Expected CR for Average DPR">
-                            {0}
+                            {Calc.getDPR(props.actions, props.offenses, props.attributes)}
                         </LabelledItem>
 
                         <LabelledItem label="Expected AttackBonus/Save DC for Average DPR">
@@ -142,6 +144,7 @@ function mapStateToProps(state: GlobalState): Props
     const mb = getMonsterBuilderData(state);
 
     return {
+        actions: getCollatedMonsterActions(state),
         attributes: mb.attributes,
         offenses: mb.offenses,
         proficiencyBonus: mb.proficiency.proficiencyBonus,

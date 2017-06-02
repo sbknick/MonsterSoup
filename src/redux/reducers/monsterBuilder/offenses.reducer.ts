@@ -53,7 +53,6 @@ const initialState: OffensesState = {
     primarySpellStat: attributes[3],
     miscAttackBonus: 0,
     miscSaveDCBonus: 0,
-    actions: [],
 };
 
 export default offensesReducer;

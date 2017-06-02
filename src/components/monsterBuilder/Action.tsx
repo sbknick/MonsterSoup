@@ -8,6 +8,7 @@ import { ActionArg, ActionArgs, ActionArgType, AttackArgs, DamageArgs, MonsterAc
 import { ActionTemplate, AttackTemplate, AttackType, DamageType, MonsterActionTemplate, MonsterActionType,
          TargetType } from "types";
 
+import * as Calc from "util/Calc";
 import * as Enum from "util/Enum";
 import { getRequiredArgs } from "util/MonsterActionUtil";
 
@@ -74,6 +75,7 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
 
         return (
             <div>
+                {/* Render attack details */}
                 <div>
                     <i><b>
                         {attack.name}{attack.recharge && ` (Recharge ${attack.recharge.low}-${attack.recharge.high})`}.
@@ -84,6 +86,8 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
                     {String.detitleize(TargetType[attack.targetType])}.&nbsp;
                     <i>Hit:</i> {Templates.parseTemplate(attack.description, args, this.props.statMod)}
                 </div>
+
+                {/* Assign argument values */}
                 <div style={{position: "relative"}}>
                     <a href="" onClick={e => {
                         e.preventDefault();
