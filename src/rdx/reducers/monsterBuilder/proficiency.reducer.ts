@@ -1,14 +1,15 @@
-import * as Redux from 'redux';
-import * as types from '../../types/monsterBuilder/proficiency.types';
-import * as Actions from '../../actions/monsterBuilder/proficiency.actions';
+import * as Actions from "rdx/actions/monsterBuilder/proficiency.actions";
+import * as types from "rdx/types/monsterBuilder/proficiency.types";
+import * as Redux from "redux";
 
 
-const proficiencyReducer: Redux.Reducer<{}> = (state = initialState, action: Actions.ProficiencyAction) =>
+const proficiencyReducer: Redux.Reducer<{ proficiencyBonus: number }> =
+(state = initialState, action: Actions.ProficiencyAction) =>
 {
     const MIN_PROFICIENCY = 2;
     const MAX_PROFICIENCY = 9;
 
-    var newState = Object.assign({}, state);
+    const newState = {...state};
 
     switch (action.type)
     {
@@ -31,7 +32,7 @@ export interface State
 }
 
 const initialState: State = {
-    proficiencyBonus: 2
+    proficiencyBonus: 2,
 };
 
 export default proficiencyReducer;

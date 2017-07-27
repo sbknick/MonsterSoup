@@ -21,7 +21,7 @@ export interface ActionArg
 {
     key: string;
     argType: ActionArgType;
-    value: string | DamageArgs;
+    value: string | DamageArgs | null;
 
     inherited?: boolean;
 }

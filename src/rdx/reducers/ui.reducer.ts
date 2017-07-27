@@ -1,11 +1,11 @@
 import * as Redux from "redux";
 
-import * as types from "redux/types/ui";
+import * as types from "rdx/types/ui";
 
 export interface FieldsetState
 {
     decollapsed: {[key: string]: boolean};
-};
+}
 
 const initialState: FieldsetState = {
     decollapsed: {"Offensive CR": true, "Actions": true},

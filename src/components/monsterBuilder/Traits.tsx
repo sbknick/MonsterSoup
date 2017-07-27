@@ -1,9 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "monsterBuilder/actions/traits.actions";
-import { getAllTraits, getAppliedTraitIds, GlobalState } from "redux/reducers";
-import { getTraitArgs, MonsterBuilderState } from "redux/reducers/monsterBuilder";
+import * as Actions from "rdx/actions/monsterBuilder/traits.actions";
+import { getAllTraits, getAppliedTraitIds, GlobalState } from "rdx/reducers";
+import { getTraitArgs, MonsterBuilderState } from "rdx/reducers/monsterBuilder";
 import { TraitTemplate } from "types";
 
 import TraitSplat from "./TraitSplat";
@@ -57,8 +57,10 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
         this.setState({selectedTraitId: id});
     }
 
-    private handleAddTrait(e: any)
+    private handleAddTrait()
     {
+        if (this.props.applyTrait === undefined) return;
+
         this.props.applyTrait(this.state.selectedTraitId);
         this.setSelectedTraitId(0);
     }
@@ -77,11 +79,11 @@ interface Props
 
 function mapStateToProps(state: GlobalState): Props
 {
-    const props: Props = {
+    const props: any = {
         allTraits: [],
         availableTraits: [],
         appliedTraits: [],
-    } as Props;
+    };
 
     props.monster = state.entities.monsterBuilder;
 
@@ -100,11 +102,12 @@ function mapStateToProps(state: GlobalState): Props
         return acc;
     }, props);
 
-    return props;
+    return props as Props;
 }
 
 function mapDispatchToProps(dispatch: any): Props
 {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         applyTrait: (id: number) => dispatch(Actions.applyTrait(id)),
         removeTrait: (t: TraitTemplate) => dispatch(Actions.removeTrait(t.id)),

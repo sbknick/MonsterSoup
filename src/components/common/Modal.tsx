@@ -21,7 +21,7 @@ export const Modal: React.StatelessComponent<Props> = (props) =>
       alignItems: "center",
     };
 
-    const innerHeight = window.innerHeight;
+    // const innerHeight = window.innerHeight;
 
     // The modal "window"
     const modalStyle = {

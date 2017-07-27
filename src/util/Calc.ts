@@ -1,10 +1,10 @@
 import { asBonus, mod } from "./Mod";
 
-import { MonsterBuilderState } from "monsterBuilder/reducers";
+// import { MonsterBuilderState } from "rdx/reducers/monsterBuilder";
 import { ArmorFormulaOption, ArmorType, AttributesState, DamageArgs, DefensesState, HitDice,
-         MonsterTrait, OffensesState } from "monsterBuilder/types";
+         MonsterTrait, OffensesState } from "types/monsterBuilder";
 
-import { getTraitArgs, getTraitsForMonster } from "redux/reducers";
+// import { getTraitArgs, getTraitsForMonster } from "rdx/reducers";
 
 export function averageHitDice(hitDice: HitDice[], conMod: number): number
 {
@@ -24,6 +24,8 @@ export function averageHitDie(hitDie: HitDice, conMod: number): number
 
 export function getACOutputForStandardArmor(defenses: DefensesState, attributes: AttributesState): string
 {
+    if (defenses.armor === undefined) return "unknown";
+
     const ac = calcACForStandardArmor(defenses, attributes);
     return `${ac} (${defenses.armor.name.toLowerCase()}${(defenses.useShield ? ", shield" : "")})`;
 }
@@ -42,6 +44,8 @@ export function getACOutputForUnarmoredDefense(defenses: DefensesState, attribut
 
 export function calcACForStandardArmor(defenses: DefensesState, attributes: AttributesState): number
 {
+    if (defenses.armor === undefined) return -1;
+
     const dexMod = mod(attributes.Dex);
     let ac = defenses.armor.value + defenses.miscACBonus;
     ac += defenses.useShield ? 2 : 0;
@@ -90,7 +94,7 @@ export function calcACForUnarmoredDefense(defenses: DefensesState, attributes: A
 
 export function getEffectiveACOutput(defenses: DefensesState, attributes: AttributesState, traits: MonsterTrait[]): string // tslint:disable-line
 {
-    const effectiveACBonusFromTraits = traits.reduce((acc, t) => acc + t.trait.effectiveACModifier, 0);
+    const effectiveACBonusFromTraits = traits.reduce((acc, t) => acc + (t.trait.effectiveACModifier || 0), 0);
     const total = calcEffectiveAC(defenses, attributes, traits);
 
     return total.toString() +
@@ -118,7 +122,7 @@ export function calcAC(defenses: DefensesState, attributes: AttributesState): nu
 export function calcEffectiveAC(defenses: DefensesState, attributes: AttributesState, traits: MonsterTrait[]): number
 {
     let ac = calcAC(defenses, attributes);
-    ac = traits.reduce((acc, t) => acc + t.trait.effectiveACModifier, ac);
+    ac = traits.reduce((acc, t) => acc + (t.trait.effectiveACModifier || 0), ac);
 
     return ac;
 }

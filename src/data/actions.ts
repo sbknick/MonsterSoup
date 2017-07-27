@@ -1,4 +1,4 @@
-import { ActionTemplate, ActionType, AttackTemplate, AttackType, MonsterActionTemplate,
+import { /* ActionTemplate, */ ActionType, /* AttackTemplate, */ AttackType, MonsterActionTemplate,
          MonsterActionType, TargetType } from "types";
 
 export const defaultActions: MonsterActionTemplate[] = [

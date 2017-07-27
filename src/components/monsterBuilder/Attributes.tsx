@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 
 import * as Util from "util/Mod";
 
-import * as Actions from "monsterBuilder/actions/attributes.actions";
-import { AttributesState } from "monsterBuilder/types";
-import { getMonsterBuilderData, GlobalState } from "redux/reducers";
+import * as Actions from "rdx/actions/monsterBuilder/attributes.actions";
+import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
+import { AttributesState } from "types/monsterBuilder";
 // import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer';
 
-import { HighlightOnChange, NumberInput } from "common";
+import { HighlightOnChange, NumberInput } from "components/common";
 
 export class Attribute extends React.Component<AttributeProps, {}>
 {
@@ -97,6 +97,7 @@ interface AttributesProps
 
 function mapStateToProps(state: GlobalState): AttributesProps
 {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         attributes: getMonsterBuilderData(state).attributes,
     } as AttributesProps;
@@ -104,6 +105,7 @@ function mapStateToProps(state: GlobalState): AttributesProps
 
 function mapDispatchToProps(dispatch: any): AttributesProps
 {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         modifyAttribute: (a, v) => dispatch(Actions.modifyAttribute(a, v)),
         setAttribute: (a, v) => dispatch(Actions.setAttribute(a, v)),

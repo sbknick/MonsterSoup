@@ -10,22 +10,22 @@ interface Props
 
 interface State
 {
-    timer: number;
+    timer: NodeJS.Timer;
     highlightClass: string;
 }
 
 export class HighlightBonusOnChange extends React.Component<Props, State>
 {
-    private static defaultProps: Props = {
-        duration: 0.5,
-    } as Props;
+    // private static defaultProps: Props = {
+    //     duration: 0.5,
+    // } as Props;
 
     constructor(props: Props)
     {
         super(props);
 
         this.state = ({
-            timer: 0,
+            timer: {} as NodeJS.Timer,
             highlightClass: "",
         });
 
@@ -59,7 +59,7 @@ export class HighlightBonusOnChange extends React.Component<Props, State>
 
         this.setState({
             highlightClass: "highlight-change",
-            timer: setTimeout(this.clearHighlightClass, this.props.duration * 1000),
+            timer: setTimeout(this.clearHighlightClass, (this.props.duration || 0) * 1000),
         });
     }
 }

@@ -11,6 +11,8 @@
         "object-literal-sort-keys": false,
         "no-consecutive-blank-lines": false,
         "switch-default": false,
-        "forin": false
+        "forin": false,
+        "no-console": false,
+        "no-object-literal-type-assertion": false
     }
 }

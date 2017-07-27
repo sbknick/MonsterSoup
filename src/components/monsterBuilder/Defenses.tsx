@@ -1,17 +1,22 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "monsterBuilder/actions/defenses.actions";
-import { AttributesState, DefensesState, HitDice, MonsterTrait, Size, TraitArgs,
-         TraitsState } from "monsterBuilder/types";
-import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "redux/reducers";
+import * as Actions from "rdx/actions/monsterBuilder/defenses.actions";
+import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "rdx/reducers";
+import { AttributesState, DefensesState, HitDice, MonsterTrait, Size,
+    // TraitArgs, TraitsState
+} from "types/monsterBuilder";
 
 import * as Calc from "util/Calc";
 import * as CRUtil from "util/CRUtil";
-import { asBonus, mod, modBonus } from "util/Mod";
+import { asBonus, mod/*, modBonus*/ } from "util/Mod";
 
-import { DiceRollInput, Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-    NumberInput, SelectList, UpDownLinks } from "common";
+import { DiceRollInput,
+    // Fieldset, HighlightBonusOnChange, HighlightOnChange,
+    LabelledItem,
+    // NumberInput, SelectList,
+    UpDownLinks,
+} from "components/common";
 import Armor from "./Armor";
 
 /* tslint:disable:no-console */
@@ -60,8 +65,8 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
                     {CRUtil.getDefensiveCR(averageHp, props.defenses.tempAC)}
                 </LabelledItem>
                 <LabelledItem label="AutoScale!" labelType="h4">
-                    <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
-                                          onDownClicked={e => console.log("'down clicked'")} />
+                    <UpDownLinks size={2} onUpClicked={() => console.log("'up clicked'")}
+                                          onDownClicked={() => console.log("'down clicked'")} />
                 </LabelledItem>
             </div>
         </div>
@@ -89,7 +94,7 @@ const AverageHPSplat: React.StatelessComponent<{averageHp: number, hitDice: HitD
     return (<p>{averageHp} ({
         hitDice.map(hd => `${hd.hitDiceCount}d${hd.hitDieSize}`).join(" + ")
         + " + " +
-        hitDice.reduce((acc, hd) => acc + hd.hitDiceCount, sum)
+        hitDice.reduce((acc, hd) => acc + (hd.hitDiceCount * conMod), sum)
     })</p>);
 };
 
@@ -102,7 +107,7 @@ const HitDiceSplats: React.StatelessComponent<Props> = (props) =>
         return  (
             <div key={key} className="hit-dice-box">
                 {key > 0 &&
-                    <button onClick={e => props.removeHitDie(key)}> - </button>
+                    <button onClick={() => props.removeHitDie(key)}> - </button>
                 }
                 <DiceRollInput
                     diceCount={hd.hitDiceCount} dieSize={hd.hitDieSize}
@@ -170,7 +175,7 @@ const DefensiveCRDetails: React.StatelessComponent<PropsWithAverageHp> = (props)
 
 const DefensiveCRCalcs: React.StatelessComponent<PropsWithAverageHp> = (props) =>
 {
-    const diff = props.effectiveAC - props.ac;
+    // const diff = props.effectiveAC - props.ac;
 
     return (
         <LabelledItem label="Defensive CR Calculations" labelType="h4" style={{marginTop: "20px"}}>

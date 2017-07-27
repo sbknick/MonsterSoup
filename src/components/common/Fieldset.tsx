@@ -29,9 +29,9 @@ export const Fieldset: React.StatelessComponent<Props> = (props) =>
         e.preventDefault();
         // this.setState({isCollapsed: !this.state.isCollapsed});
         if (props.config)
-        props.config.toggleCollapse();
-        else
-        props.toggleCollapse();
+            props.config.toggleCollapse();
+        else if (props.toggleCollapse)
+            props.toggleCollapse();
     };
 
     if (props.config)

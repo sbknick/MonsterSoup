@@ -1,7 +1,7 @@
 import * as Redux from "redux";
 
 import defaultTraits from "data/traits";
-import { NormalisedData } from "redux/reducers";
+import { NormalisedData } from "rdx/reducers";
 import { TraitTemplate } from "types";
 
 const traitsReducer: Redux.Reducer<TraitsState> =
@@ -12,7 +12,7 @@ const traitsReducer: Redux.Reducer<TraitsState> =
         state = normalise(defaultTraits);
     }
 
-    let newState = Object.assign({}, state);
+    let newState = {...state};
 
     switch (action.type)
     {
@@ -43,7 +43,7 @@ function normalise(items: TraitTemplate[]): NormalisedData<TraitTemplate>
         acc.allIds.push(id);
         return acc;
     }, results);
-};
+}
 
 export function getAllTraits(state: TraitsState): TraitTemplate[]
 {

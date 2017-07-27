@@ -1,11 +1,11 @@
 import * as Redux from "redux";
 
-import * as Actions from "monsterBuilder/actions/defenses.actions";
-import * as types from "redux/types/monsterBuilder/defenses.types";
+import * as Actions from "rdx/actions/monsterBuilder/defenses.actions";
+import * as types from "rdx/types/monsterBuilder/defenses.types";
 
 import { armors } from "data/armor";
-import { ArmorData, ArmorFormulaOption, DefensesState, Size } from "monsterBuilder/types";
-import * as Types from "monsterBuilder/types";
+import { ArmorFormulaOption, DefensesState, Size } from "types/monsterBuilder";
+// import * as Types from "types/monsterBuilder";
 
 export const defensesReducer: Redux.Reducer<DefensesState> = (state = initialState, action: Actions.DefensesAction) =>
 {
@@ -103,7 +103,7 @@ export const defensesReducer: Redux.Reducer<DefensesState> = (state = initialSta
         case types.MISC_AC_BONUS_SET:
             {
                 const { value } = action as {value: number};
-                newState.miscACBonus = (action as {value: number}).value;
+                newState.miscACBonus = value;
             }
             break;
 

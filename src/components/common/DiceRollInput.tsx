@@ -53,8 +53,8 @@ export const DiceRollInput: React.StatelessComponent<Props> = (props) =>
                         min={props.minBonus || -20}
                         max={props.maxBonus || 20}
                         value={props.miscBonus || 0}
-                        onChange={handleEvent(props.miscBonusChanged)}
-                        onBlur={handleEvent(props.miscBonusChanged)}
+                        onChange={props.miscBonusChanged && handleEvent(props.miscBonusChanged)}
+                        onBlur={props.miscBonusChanged && handleEvent(props.miscBonusChanged)}
                     />
                 </span>
             )}

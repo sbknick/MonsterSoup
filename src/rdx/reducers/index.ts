@@ -14,7 +14,7 @@ export interface GlobalState
 {
     entities: fromEntities.EntitiesState;
     ui: fromUI.UIState;
-};
+}
 
 export default rootReducer;
 
@@ -22,7 +22,7 @@ export interface NormalisedData<T>
 {
     byId: {[key: number]: T};
     allIds: number[];
-};
+}
 
 type IdAccessor<T> = (e: T) => number;
 
@@ -36,7 +36,7 @@ export function normalise<T>(items: T[], idAccessor: IdAccessor<T>): NormalisedD
         acc.allIds.push(id);
         return acc;
     }, results);
-};
+}
 
 export const getAllTraits = (state: GlobalState) =>
     fromEntities.getAllTraits(state.entities);

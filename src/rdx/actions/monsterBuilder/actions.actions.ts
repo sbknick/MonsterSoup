@@ -1,8 +1,8 @@
 import * as Redux from "redux";
 
-import * as types from "redux/types/monsterBuilder/actions.types";
+import * as types from "rdx/types/monsterBuilder/actions.types";
 
-import { ActionArg, ActionArgs, ActionArgType, DamageArgs } from "monsterBuilder/types";
+import { ActionArgType, DamageArgs } from "types/monsterBuilder";
 
 interface ActionsActionPayload
 {

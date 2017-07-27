@@ -2,18 +2,20 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { attributes } from "data";
-import * as Actions from "monsterBuilder/actions/offenses.actions";
-import { AttributesState, HitDice, MonsterTrait,
-         OffensesState, TraitArgs } from "monsterBuilder/types";
-import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "redux/reducers";
-import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate, MonsterActionType } from "types";
+import * as Actions from "rdx/actions/monsterBuilder/offenses.actions";
+import { getMonsterBuilderData, /* getTraitArgs, getTraitsForMonster, */ GlobalState } from "rdx/reducers";
+// import { ActionTemplate, ActionType, AttackTemplate, isAttack,
+//          MonsterActionTemplate, MonsterActionType } from "types";
+import { AttributesState, /* HitDice, MonsterTrait, */
+         OffensesState /* TraitArgs */ } from "types/monsterBuilder";
 
 import * as Calc from "util/Calc";
-import * as CRUtil from "util/CRUtil";
-import { asBonus, mod, modBonus } from "util/Mod";
+// import * as CRUtil from "util/CRUtil";
+// import { asBonus, mod, modBonus } from "util/Mod";
 
-import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-         NumberInput, SelectList, UpDownLinks } from "common";
+import { // Fieldset, HighlightBonusOnChange, HighlightOnChange,
+    LabelledItem, NumberInput, SelectList, UpDownLinks,
+} from "components/common";
 
 import OffensesActions from "./OffensesActions";
 
@@ -70,8 +72,8 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
                         {0}
                     </LabelledItem>
                     <LabelledItem label="AutoScale!" labelType="h4">
-                        <UpDownLinks size={2} onUpClicked={e => console.log("'up clicked'")}
-                                              onDownClicked={e => console.log("'down clicked'")} />
+                        <UpDownLinks size={2} onUpClicked={() => console.log("'up clicked'")}
+                                              onDownClicked={() => console.log("'down clicked'")} />
                     </LabelledItem>
                 </div>
             </div>

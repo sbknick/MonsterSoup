@@ -2,7 +2,7 @@ import * as Redux from "redux";
 
 const descriptionReducer: Redux.Reducer<State> = (state = initialState, action: any) =>
 {
-    var newState = Object.assign({}, state);
+    let newState = {...state};
 
     switch (action.type)
     {

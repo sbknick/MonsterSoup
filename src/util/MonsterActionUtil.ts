@@ -1,7 +1,7 @@
 
-import { getActionArgs, MonsterBuilderState } from "monsterBuilder/reducers";
-import { ActionArgs } from "monsterBuilder/types";
+// import { getActionArgs, MonsterBuilderState } from "rdx/reducers/monsterBuilder";
 import { ActionTemplate, AttackTemplate, MonsterActionType } from "types";
+// import { ActionArgs } from "types/monsterBuilder";
 
 export function getRequiredArgs(action: ActionTemplate)
 {
@@ -24,7 +24,7 @@ export function getRequiredArgs(action: ActionTemplate)
     return results;
 }
 
-const templateArgRegex = /[^{}]+(?=\})/g; ///{(.*?)}/g;
+const templateArgRegex = /[^{}]+(?=\})/g; // /{(.*?)}/g;
 
 function getRequiredArgs_Attack(attack: AttackTemplate)
 {

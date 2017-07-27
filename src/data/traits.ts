@@ -1,4 +1,6 @@
-import { MiscTextApplyType, SpecialTraitType, TraitTemplate } from "types";
+import {
+    // MiscTextApplyType, SpecialTraitType,
+    TraitTemplate } from "types";
 
 const defaultTraits: TraitTemplate[] = [
     {

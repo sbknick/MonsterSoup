@@ -4,15 +4,15 @@ import { ActionTemplate, TraitTemplate } from "types";
 
 import actionsReducer, * as fromActions from "./actions.reducer";
 import attributesReducer, * as fromAttributes from "./attributes.reducer";
-import defensesReducer, * as fromDefenses from "./defenses.reducer";
+import defensesReducer from "./defenses.reducer";
 import descriptionReducer, * as fromDescription from "./description.reducer";
-import offensesReducer, * as fromOffenses from "./offenses.reducer";
+import offensesReducer from "./offenses.reducer";
 import proficiencyReducer, * as fromProficiency from "./proficiency.reducer";
 import savesReducer, * as fromSaves from "./saves.reducer";
 import traitsReducer, * as fromTraits from "./traits.reducer";
 
 import { ActionsState, AttributesState, DefensesState, OffensesState, SavesState,
-         TraitsState } from "monsterBuilder/types";
+         TraitsState } from "types/monsterBuilder";
 
 const monsterBuilderReducer = Redux.combineReducers({
     actions: actionsReducer,
@@ -35,7 +35,7 @@ export interface MonsterBuilderState
     proficiency: fromProficiency.State;
     saves: SavesState;
     traits: TraitsState;
-};
+}
 
 export default monsterBuilderReducer;
 

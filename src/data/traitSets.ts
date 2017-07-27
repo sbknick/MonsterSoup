@@ -1,5 +1,5 @@
 import { TraitTemplate } from "types";
-import defaultTraits from "./traits";
+// import defaultTraits from "./traits";
 
 interface TraitSet
 {
