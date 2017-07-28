@@ -1,10 +1,10 @@
 import * as Redux from "redux";
 
-import * as Actions from "monsterBuilder/actions/actions.actions";
-import * as types from "redux/types/monsterBuilder/actions.types";
+import * as Actions from "rdx/actions/monsterBuilder/actions.actions";
+import * as types from "rdx/types/monsterBuilder/actions.types";
 
-import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "monsterBuilder/types";
-import { ActionTemplate, ActionType, AttackTemplate, MonsterActionTemplate } from "types";
+import { ActionTemplate } from "types";
+import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "types/monsterBuilder";
 
 const t1 = {
     type: types.ACTION_APPLY,
@@ -18,6 +18,8 @@ const t1 = {
         }
     },
 };
+// tslint:disable-next-line:no-unused-expression
+t1;
 
 // const lookup: {[key: string]: (newState: ActionsState, action: Actions.ActionsAction) => void} = {
 //     [types.ACTION_APPLY]:

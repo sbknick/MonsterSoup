@@ -1,6 +1,6 @@
-import { getDescription, getTraitArgs, MonsterBuilderState } from "monsterBuilder/reducers";
-import { TraitArgs } from "monsterBuilder/types";
+import { getDescription, getTraitArgs, MonsterBuilderState } from "rdx/reducers/monsterBuilder";
 import { TraitTemplate } from "types";
+import { TraitArgs } from "types/monsterBuilder";
 
 export const displayTraitDesc = (trait: TraitTemplate, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
 {
@@ -11,7 +11,7 @@ export const displayTraitDesc = (trait: TraitTemplate, monster: MonsterBuilderSt
 
     if (/{(s|S)hortName}/.test(desc))
     {
-        const shortName = getDescription(monster).shortName;
+        const shortName = getDescription(monster).shortName || "Name";
         desc = desc.replace(/{shortName}/g, shortName)
                    .replace(/{ShortName}/g, capitalize(shortName));
     }
@@ -47,8 +47,10 @@ export const displayTraitName = (trait: TraitTemplate, monster: MonsterBuilderSt
 
     if (/{(d|D)amageType}/.test(name))
     {
-        name = name.replace(/{damageType}/g, args.damageType)
-                   .replace(/{DamageType}/g, capitalize(args.damageType));
+        const damageType = args.damageType || "";
+
+        name = name.replace(/{damageType}/g, damageType)
+                   .replace(/{DamageType}/g, capitalize(damageType));
     }
 
     return name;

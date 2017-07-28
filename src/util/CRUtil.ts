@@ -23,13 +23,9 @@ function getCRIdxRangeForAC(effectiveAC: number): Range
 {
     let range = Data.ACCRRanges.find(r => r.AC === effectiveAC);
 
-    if (range == null)
-    {
-        if (effectiveAC <= 12)
-            range = Data.ACCRRanges[0];
-        else
-            range = Data.ACCRRanges[7];
-    }
+    range = range || effectiveAC <= 12
+                     ? Data.ACCRRanges[0]
+                     : Data.ACCRRanges[7];
 
     return range;
 }
@@ -57,7 +53,7 @@ function getIdxForCR(cr: number | string): number
 function getExpectedACForCRIdx(idx: number): number
 {
     const range = Data.ACCRRanges.find(r => r.low <= idx && idx <= r.high);
-    return range.AC;
+    return range ? range.AC : -1;
 }
 
 export function getExpectedACForCR(cr: number | string): number
@@ -98,7 +94,7 @@ export function getDefensiveCR(averageHp: number, effectiveAC: number): string
 function getCRIdxForDPR(average: number): number
 {
     const range = Data.DPRCRRanges.find(r => r.low <= average && average <= r.high);
-    return range.CR;
+    return range ? range.CR : -1;
 }
 
 export function getCRForDPR(average: number): string
@@ -110,7 +106,7 @@ export function getCRForDPR(average: number): string
 function getExpectedABForCRIdx(idx: number): number
 {
     const range = Data.ABCRRanges.find(r => r.low <= idx && idx <= r.high);
-    return range.AB;
+    return range ? range.AB : -1;
 }
 
 export function getExpectedABForCR(cr: number | string): number
@@ -122,7 +118,7 @@ export function getExpectedABForCR(cr: number | string): number
 function getExpectedDCForCRIdx(idx: number): number
 {
     const range = Data.DCCRRanges.find(r => r.low <= idx && idx <= r.high);
-    return range.DC;
+    return range ? range.DC : -1;
 }
 
 export function getExpectedDCForCR(cr: number | string): number
@@ -135,13 +131,9 @@ function getCRIdxRangeForAB(effectiveAB: number): Range
 {
     let range = Data.ABCRRanges.find(r => r.AB === effectiveAB);
 
-    if (range == null)
-    {
-        if (effectiveAB <= 2)
-            range = Data.ABCRRanges[0];
-        else
-            range = Data.ABCRRanges[12];
-    }
+    range = range || effectiveAB <= 2
+                     ? Data.ABCRRanges[0]
+                     : Data.ABCRRanges[12];
 
     return range;
 }
@@ -226,7 +218,7 @@ export function getAverageCR(averageHp: number, effectiveAC: number, averageDPR:
 function getCRIdxRangeForProficiency(proficiencyBonus: number): Range
 {
     const range = Data.ProficiencyCRRanges.find(r => r.proficiency === proficiencyBonus);
-    return range;
+    return range || { low: -1, high: -1 };
 }
 
 export function getCRRangeForProficiency(proficiencyBonus: number): any

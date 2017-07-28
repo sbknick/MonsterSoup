@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import * as Attr from "data/attributes";
 import * as Util from "util/Mod";
 
-import { AttributesState, SavesStateSingle } from "monsterBuilder/types";
-import { getMonsterBuilderData, GlobalState } from "redux/reducers";
-import { getAttributeScore, getSaveState } from "redux/reducers/monsterBuilder";
+import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
+import { getAttributeScore, getSaveState } from "rdx/reducers/monsterBuilder";
+import { SavesStateSingle } from "types/monsterBuilder";
 
-import { Fieldset, HighlightBonusOnChange, LabelledItem } from "common";
-import * as Actions from "monsterBuilder/actions/saves.actions";
-import * as UIActions from "redux/actions/ui.actions";
+import { Fieldset, HighlightBonusOnChange, LabelledItem } from "components/common";
+import * as Actions from "rdx/actions/monsterBuilder/saves.actions";
+import * as UIActions from "rdx/actions/ui.actions";
 
 export const SaveSplat: React.StatelessComponent<SaveSplatProps> = (props) =>
 (
@@ -90,6 +90,7 @@ function mapStateToProps(state: GlobalState): SavesProps
 {
     const mb = getMonsterBuilderData(state);
 
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         attributeScores: Attr.attributes.map(a => getAttributeScore(mb, a)),
         proficiencyBonus: mb.proficiency.proficiencyBonus,
@@ -100,18 +101,18 @@ function mapStateToProps(state: GlobalState): SavesProps
 
 function mapDispatchToProps(dispatch: any): SavesProps
 {
-    const newProps = {
+    const newProps: any = {
         toggleProficiencyDelegates: [],
         toggleExpertiseDelegates: [],
         modifyMiscBonusDelegates: [],
         toggleFieldsetCollapse: (key: string) => dispatch(UIActions.toggleFieldsetCollapse(key)),
-    } as SavesProps;
+    };
 
     Attr.attributes.reduce((acc, attr) =>
     {
         acc.toggleProficiencyDelegates.push(() => dispatch(Actions.toggleSaveProficiency(attr)));
         acc.toggleExpertiseDelegates.push(() => dispatch(Actions.toggleSaveExpertise(attr)));
-        acc.modifyMiscBonusDelegates.push((n) => dispatch(Actions.modifySaveBonus(attr, n)));
+        acc.modifyMiscBonusDelegates.push((n: any) => dispatch(Actions.modifySaveBonus(attr, n)));
         return acc;
     }, newProps);
 

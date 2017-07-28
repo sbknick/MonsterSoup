@@ -1,11 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "monsterBuilder/actions/proficiency.actions";
-import { getMonsterBuilderData, GlobalState } from "redux/reducers";
+import * as Actions from "rdx/actions/monsterBuilder/proficiency.actions";
+import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
 import * as CRUtil from "util/CRUtil";
 
-import { HighlightBonusOnChange, LabelledItem, UpDownLinks } from "common";
+import { HighlightBonusOnChange, LabelledItem, UpDownLinks } from "components/common";
 
 const Proficiency: React.StatelessComponent<Props> = (props: Props) =>
 (
@@ -28,6 +28,7 @@ interface Props
 
 function mapStateToProps(state: GlobalState): Props
 {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         proficiency: getMonsterBuilderData(state).proficiency.proficiencyBonus,
     } as Props;
@@ -35,6 +36,7 @@ function mapStateToProps(state: GlobalState): Props
 
 function mapDispatchToProps(dispatch: any): Props
 {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         modifyProficiency: (v) => dispatch(Actions.modifyProficiency(v)),
     } as Props;

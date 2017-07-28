@@ -1,29 +1,28 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { attributes } from "data";
-import * as Actions from "monsterBuilder/actions/actions.actions";
-import * as UIActions from "redux/actions/ui.actions";
+import * as Actions from "rdx/actions/monsterBuilder/actions.actions";
+import * as UIActions from "rdx/actions/ui.actions";
 
-import { ActionArgType, MonsterAction } from "monsterBuilder/types";
-import { getActionArgs, getActionsForMonster, getAllActions, getMonsterBuilderData, GlobalState } from "redux/reducers";
-import { ActionTemplate, ActionType, AttackTemplate, isAttack, MonsterActionTemplate,
-         MonsterActionType } from "types";
+import { getActionArgs, getActionsForMonster, getAllActions, getMonsterBuilderData, GlobalState } from "rdx/reducers";
+import { ActionTemplate, /* ActionType, AttackTemplate, isAttack, MonsterActionTemplate, */
+         /* MonsterActionType */ } from "types";
+import { ActionArgType, MonsterAction } from "types/monsterBuilder";
 import * as Mod from "util/Mod";
 import * as String from "util/String";
 
-import { Fieldset, LabelledItem, Modal } from "common";
-import * as fromModal from "common/Modal";
+import { Fieldset, LabelledItem, Modal } from "components/common";
+import * as fromModal from "components/common/Modal";
 import { Action } from "./Action";
 
-import { defaultActions } from "data/actions";
+// import { defaultActions } from "data/actions";
 
 class OffensesActions extends React.Component<Props, State>
 {
     constructor(props: Props)
     {
         super(props);
-        this.state = { showModal: false, clickPosition: undefined };
+        this.state = { showModal: false, clickPosition: { x: 0, y: 0 } };
     }
 
     public render()
@@ -68,17 +67,16 @@ class OffensesActions extends React.Component<Props, State>
 
     private toggleModal = (e: any) =>
     {
-        let position: fromModal.Position;
-        if (e && e.clientX)
-        {
-            position = { x: e.clientX, y: e.clientY };
-        }
+        const position = e && e.clientX
+                    ? { x: e.clientX, y: e.clientY }
+                    : { x: 0, y: 0 };
+
         this.setState({
             showModal: !this.state.showModal,
             clickPosition: position,
         } as State);
     }
-};
+}
 
 type AddActionsProps = Props & {toggleModal: (e: any) => void};
 
@@ -88,7 +86,7 @@ class AddActions extends React.Component<AddActionsProps, {templateId: number}>
     constructor(props: AddActionsProps)
     {
         super(props);
-        this.state = { templateId: undefined };
+        this.state = { templateId: 0 };
     }
 
     public render()
@@ -113,7 +111,7 @@ class AddActions extends React.Component<AddActionsProps, {templateId: number}>
     }
 
     private handleChangeSelectedAction = (e: any) =>
-        this.setState({ templateId: parseInt(e.target.value) });
+        this.setState({ templateId: parseInt(e.target.value) })
 
     private handleAddAction = (e: any) =>
     {
@@ -123,7 +121,7 @@ class AddActions extends React.Component<AddActionsProps, {templateId: number}>
             this.props.toggleModal(e);
         }
     }
-};
+}
 
 interface Props
 {

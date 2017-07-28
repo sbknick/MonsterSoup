@@ -1,34 +1,31 @@
 {
   "name": "MonsterSoup",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "webpack && echo 'Build Completed at ' && time /t",
-    "watch": "webpack --watch",
-    "build": "webpack -d --config webpack.config.js --colors",
-    "build-prod": "SET NODE_ENV=production&&webpack -p --config webpack.config.js --colors"
-  },
   "keywords": [],
   "author": "Blair Knickerbocker",
   "license": "ISC",
-  "devDependencies": {
-    "@types/immutable": "^3.8.7",
-    "@types/react": "^15.0.0",
-    "@types/react-dom": "^0.14.20",
+  "dependencies": {
+    "@types/jest": "^20.0.4",
+    "@types/node": "^8.0.14",
+    "@types/react": "^15.0.38",
+    "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.35",
     "@types/redux": "^3.6.31",
-    "awesome-typescript-loader": "^3.0.8",
     "immutable": "^3.8.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
-    "redux": "^3.6.0",
-    "source-map-loader": "^0.1.6",
-    "ts-loader": "^2.0.1",
-    "typescript": "^2.1.4",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "react-scripts-ts": "^2.4.0",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.4.2"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
   }
 }

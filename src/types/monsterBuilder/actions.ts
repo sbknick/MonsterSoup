@@ -14,14 +14,14 @@ export interface ActionArgsMap
 
 export interface ActionArgs
 {
-    [key: string]: ActionArg;
+    [key: string]: ActionArg | undefined;
 }
 
 export interface ActionArg
 {
     key: string;
     argType: ActionArgType;
-    value: string | DamageArgs | Range;
+    value: string | DamageArgs | Range | null;
 
     inherited?: boolean;
 }

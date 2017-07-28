@@ -2,7 +2,7 @@ import * as Redux from "redux";
 import * as Actions from "../../actions/monsterBuilder/attributes.actions";
 import * as types from "../../types/monsterBuilder/attributes.types";
 
-import { AttributesState } from "monsterBuilder/types";
+import { AttributesState } from "types/monsterBuilder";
 // import { AttributesState } from "../../../types/monsterBuilder";
 
 const attributesReducer: Redux.Reducer<AttributesState> = (state = initialState, action: Actions.AttributesAction) =>

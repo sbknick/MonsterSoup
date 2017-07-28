@@ -1,5 +1,5 @@
 
-export function forEach<T>(myEnum: any, action: (key: number) => void): void
+export function forEach<T>(myEnum: T, action: (key: number) => void): void
 {
     let i = 0;
     for (const e in myEnum)
@@ -9,7 +9,7 @@ export function forEach<T>(myEnum: any, action: (key: number) => void): void
     }
 }
 
-export function map(myEnum: any, fn: (key: number) => any): any[]
+export function map<T>(myEnum: T, fn: (key: number) => any): any[]
 {
     const results = [];
 

@@ -24,7 +24,7 @@ interface NumberInputState
 }
 
 const DEFAULT_PROPS: NumberInputProps = {
-    value: null,
+    value: 0,
     format: DEFAULT_NUMBER_FORMAT,
 
     onFocus: () => {},
@@ -70,7 +70,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     public render()
     {
-        let value: number = this.state.focused ? this.state.value : this.valueAsFormatted();
+        let value: number | undefined = this.state.focused ? this.state.value : this.valueAsFormatted();
         if (Number.isNaN(value))
         {
             value = this.props.min;
@@ -78,7 +78,8 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
         return React.createElement(
             "input",
-            Object.assign({}, this.props, {
+            {
+                ...this.props,
                 ref: "input",
                 className: "small-input",
                 type: "text",
@@ -88,7 +89,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 onFocus: this.onFocus,
                 onBlur: this.onBlur,
                 value,
-            }),
+            },
         );
     }
 

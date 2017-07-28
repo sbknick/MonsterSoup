@@ -1,7 +1,7 @@
 import * as Redux from "redux";
 
-import { MonsterAction } from "monsterBuilder/types";
 import { ActionTemplate, TraitTemplate } from "types";
+import { MonsterAction } from "types/monsterBuilder";
 
 import entitiesReducer, * as fromEntities from "./entities.reducer";
 import uiReducer, * as fromUI from "./ui.reducer";
@@ -15,7 +15,7 @@ export interface GlobalState
 {
     entities: fromEntities.EntitiesState;
     ui: fromUI.UIState;
-};
+}
 
 export default rootReducer;
 
@@ -23,7 +23,7 @@ export interface NormalisedData<T>
 {
     byId: {[key: number]: T};
     allIds: number[];
-};
+}
 
 type IdAccessor<T> = (e: T) => number;
 
@@ -37,7 +37,7 @@ export function normalise<T>(items: T[], idAccessor: IdAccessor<T>): NormalisedD
         acc.allIds.push(id);
         return acc;
     }, results);
-};
+}
 
 export const getAllTraits = (state: GlobalState) =>
     fromEntities.getAllTraits(state.entities);

@@ -8,29 +8,26 @@ export class UpDownLinks extends React.Component<Props, State>
     {
         super(props);
 
-        if (props.size)
-            this.state = { size: props.size };
-        else
-            this.state = { size: 1 };
+        this.state = { size: props.size || 1 };
 
         this.handleClick = this.handleClick.bind(this);
     }
 
     public render()
     {
-        const arrowParentStyle = {
+        const arrowParentStyle: any = {
             position: "relative",
             // top: "2",
             marginLeft: "8px",
             fontSize: this.state.size + "em",
         };
 
-        const downArrowStyle = {
+        const downArrowStyle: any = {
             position: "absolute",
             top: "0.25em",
         };
 
-        const upArrowStyle = {
+        const upArrowStyle: any = {
             position: "absolute",
             top: "-0.25em",
         };

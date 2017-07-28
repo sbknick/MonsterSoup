@@ -1,18 +1,20 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "monsterBuilder/actions/defenses.actions";
-import { ArmorData, ArmorFormulaOption, ArmorType, AttributesState, DefensesState } from "monsterBuilder/types";
-import { getMonsterBuilderData, GlobalState } from "redux/reducers";
+import * as Actions from "rdx/actions/monsterBuilder/defenses.actions";
+import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
+import { ArmorData, ArmorFormulaOption, ArmorType, AttributesState, DefensesState } from "types/monsterBuilder";
 
 import { armors, attributes } from "data";
 import * as Calc from "util/Calc";
 import * as Enum from "util/Enum";
-import { mod } from "util/Mod";
+// import { mod } from "util/Mod";
 import { titleize } from "util/String";
 
-import { Fieldset, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-         NumberInput, SelectList, UpDownLinks } from "common";
+import { // Fieldset, HighlightBonusOnChange, HighlightOnChange,
+    LabelledItem, NumberInput,
+    // SelectList, UpDownLinks
+} from "components/common";
 
 export const Armor: React.StatelessComponent<Props> = (props) =>
 {
@@ -78,7 +80,7 @@ const StandardArmor: React.StatelessComponent<Props> = (props) =>
     return (
         <div>
             <p>
-                <select value={props.defenses.armor.name}
+                <select value={props.defenses.armor && props.defenses.armor.name}
                         onChange={(e: any) => props.setArmor(e.target.value)}>
                     {armorOptions}
                 </select>
@@ -175,6 +177,6 @@ function mapDispatchToProps(dispatch: any): Props
         toggleUseShield: () => dispatch(Actions.toggleUseShield()),
         setMiscACBonus: (value) => dispatch(Actions.setMiscACBonus(value)),
     } as Props;
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Armor);

@@ -1,13 +1,14 @@
-import * as Redux from 'redux';
-import rootReducer from './redux/reducers';
+import * as Redux from "redux";
+
+import rootReducer from "rdx/reducers";
 
 function initStore()
 {
     const store = Redux.createStore(
-        rootReducer
+        rootReducer,
     );
 
-    //_enableHotLoader(store);
+    // _enableHotLoader(store);
     return store;
 }
 

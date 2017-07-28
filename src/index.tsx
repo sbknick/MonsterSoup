@@ -6,8 +6,8 @@ import { Provider } from "react-redux";
 import initStore from "./initStore";
 
 // components
-import MonsterBuilder from "./components/monsterBuilder/MonsterBuilder";
-import Nav from "./components/Nav";
+import MonsterBuilder from "components/monsterBuilder/MonsterBuilder";
+import Nav from "components/Nav";
 
 const store = initStore();
 

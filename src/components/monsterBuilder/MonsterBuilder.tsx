@@ -2,21 +2,23 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import * as CRUtil from "util/CRUtil";
-import { mod, modBonus } from "util/Mod";
+// import { mod, modBonus } from "util/Mod";
 
 import { Fieldset, FieldsetConfigData, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
-         NumberInput, SelectList, UpDownLinks } from "common";
+         NumberInput, SelectList,
+        //  UpDownLinks
+    } from "components/common";
 import Attributes from "./Attributes";
 import Defenses from "./Defenses";
 import Offenses from "./Offenses";
 import Proficiency from "./Proficiency";
 import Saves from "./Saves";
 import Traits from "./Traits";
-import TraitSplat from "./TraitSplat";
+// import TraitSplat from "./TraitSplat";
 
-import { AttributesState } from "monsterBuilder/types";
-import * as UIActions from "redux/actions/ui.actions";
-import { GlobalState } from "redux/reducers";
+// import { AttributesState } from "types/monsterBuilder";
+import * as UIActions from "rdx/actions/ui.actions";
+import { GlobalState } from "rdx/reducers";
 
 interface MonsterStatsProps
 {
@@ -63,8 +65,8 @@ const ATTACKS: Attack[] = [
     {name: "Bite", reach: 5, damageDiceCount: 2, damageDieSize: 6, damageBonus: 2, description: "Nomnomnom."},
 ];
 const OFFENSES: Offenses = {primaryStat: "Str", primarySpellStat: "Int",
-    attackBonus: 6, saveDCBonus: 0, multiattackCount: 1, attacks: ATTACKS,
-    averageDPR: 12};
+                            attackBonus: 6, saveDCBonus: 0, multiattackCount: 1, attacks: ATTACKS,
+                            averageDPR: 12};
 
 const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
     offenses: OFFENSES,
@@ -86,12 +88,12 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
     }
 
-    public createFieldsetCollapseData = (key: string) =>
+    public createFieldsetCollapseData: (key: string) => FieldsetConfigData = (key: string) =>
     ({
         legend: key,
         isCollapsed: this.props.isFieldsetCollapse(key),
         toggleCollapse: this.props.toggleFieldsetCollapse(key),
-    } as FieldsetConfigData)
+    })
 
     public render()
     {
@@ -224,7 +226,11 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                     {this.calcAverageDamagePerRound()}
                                 </LabelledItem>
                                 <NumberInput value={this.state.offenses.averageDPR}
-                                             onChange={e => {; } /* this.setTempAverageDPR(e.target.value)*/} />
+                                             onChange={e => {
+                                                 console.log(e); }
+                                                 /* this.setTempAverageDPR(e.target.value)*/
+                                                 }
+                                             />
                             </div>
                             <div>
                                 <h4>Offensive CR</h4>
@@ -266,6 +272,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
     private GetMod(attr: string): number
     {
+        console.log(attr);
         return 0;
         // var value = (this.state.attributes as any)[attr];
         // return mod(value);
@@ -288,14 +295,15 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         return this.state.offenses.averageDPR;
     }
 
-    private handleChange(attr: string): (e: any) => void
-    {
-        return e => {; };
-        // return (e: any) => this.SetAttribute(attr, e.target.value);
-    }
+    // private handleChange(attr: string): (e: any) => void
+    // {
+    //     return e => {; };
+    //     // return (e: any) => this.SetAttribute(attr, e.target.value);
+    // }
 
     private modifyHitDiceCount(e: any)
     {
+        console.log(e);
         // const def = this.state.Defenses;
         // def.hitDiceCount = e.target.value;
         // this.setState({defenses: def} as MonsterStatsState);
@@ -303,6 +311,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
     private  modifyHitDieSize(e: any)
     {
+        console.log(e);
         // const def = this.state.Defenses;
         // def.hitDieSize = e.target.value;
         // this.setState({defenses: def} as MonsterStatsState);
@@ -310,6 +319,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
     private handleChangeACFormulaType(e: any)
     {
+        console.log(e);
         // const def = this.state.Defenses;
         // def.ACFormulaType = e.target.value;
         // this.setState({defenses: def} as MonsterStatsState);
@@ -317,6 +327,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
     private handleChangePrimaryStat(e: any)
     {
+        console.log(e);
         // const off = this.state.Offenses;
         // off.primaryStat = e.target.value;
         // this.setState({offenses: off} as MonsterStatsState);
@@ -324,6 +335,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
     private handleChangePrimarySpellStat(e: any)
     {
+        console.log(e);
         // const off = this.state.Offenses;
         // off.primarySpellStat = e.target.value;
         // this.setState({offenses: off} as MonsterStatsState);
@@ -391,7 +403,12 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         const defCR = CRUtil.getDefensiveCR(this.hitDiceAverage(), 12);
         const offCR = CRUtil.getOffensiveCR(this.calcAverageDamagePerRound(), this.state.offenses.attackBonus);
 
-        const average = CRUtil.getAverageCR(this.hitDiceAverage(), 12, this.calcAverageDamagePerRound(), this.state.offenses.attackBonus);
+        const average = CRUtil.getAverageCR(
+            this.hitDiceAverage(),
+            12,
+            this.calcAverageDamagePerRound(),
+            this.state.offenses.attackBonus,
+        );
 
         return (
             <div>{defCR} & {offCR} => {average}</div>
@@ -401,6 +418,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
 
 function mapStateToProps(state: GlobalState): MonsterStatsProps
 {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         monsterName: "Test Monstah",
         // fieldsetDecollapsed: state.ui.fieldset.decollapsed,
@@ -410,6 +428,7 @@ function mapStateToProps(state: GlobalState): MonsterStatsProps
 
 function mapDispatchToProps(dispatch: any): MonsterStatsProps
 {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         toggleFieldsetCollapse: (key: string) => () => dispatch(UIActions.toggleFieldsetCollapse(key)),
     } as MonsterStatsProps;

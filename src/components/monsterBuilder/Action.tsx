@@ -3,16 +3,18 @@ import * as React from "react";
 import * as String from "util/String";
 import * as Templates from "util/Templates";
 
-import { getActionArgs, MonsterBuilderState } from "monsterBuilder/reducers";
-import { ActionArg, ActionArgs, ActionArgType, AttackArgs, DamageArgs, MonsterAction } from "monsterBuilder/types";
-import { ActionTemplate, AttackTemplate, AttackType, DamageType, MonsterActionTemplate, MonsterActionType,
+// import { getActionArgs, MonsterBuilderState } from "rdx/reducers/monsterBuilder";
+import { /* ActionTemplate, */ AttackTemplate, AttackType, DamageType,
+         /* MonsterActionTemplate, */ MonsterActionType,
          TargetType } from "types";
+import { ActionArg, /* ActionArgs, */
+    ActionArgType, AttackArgs, DamageArgs, MonsterAction } from "types/monsterBuilder";
 
-import * as Calc from "util/Calc";
+// import * as Calc from "util/Calc";
 import * as Enum from "util/Enum";
 import { getRequiredArgs } from "util/MonsterActionUtil";
 
-import { DiceRollInput, NumberInput } from "common";
+import { DiceRollInput, NumberInput } from "components/common";
 
 interface Props
 {
@@ -26,9 +28,9 @@ export const Action: React.StatelessComponent<Props> = (props) =>
 {
     let Tag = null;
 
-    const requiredArgs = getRequiredArgs(props.action.template);
-    // const args = props.getInheritedArgs(requiredArgs);
-    // const args = props.getActionArgs(props.action.template.id, requiredArgs);
+    // const requiredArgs = getRequiredArgs(props.action.template);
+    // // const args = props.getInheritedArgs(requiredArgs);
+    // // const args = props.getActionArgs(props.action.template.id, requiredArgs);
 
     switch (props.action.template.type)
     {
@@ -112,12 +114,13 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
             </div>
         );
     }
-};
+}
 
 const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}> = (props) =>
 {
     let input: JSX.Element;
 
+    // tslint:disable-next-line:no-object-literal-type-assertion
     const arg = props.action.args[props.arg] || {} as ActionArg;
     if (arg && arg.inherited) return null;
 
