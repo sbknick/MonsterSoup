@@ -1,7 +1,7 @@
 import * as Redux from "redux";
 
-import { ArmorFormulaOption, Size } from "types/monsterBuilder";
 import * as types from "rdx/types/monsterBuilder/defenses.types";
+import { ArmorFormulaOption, Size } from "types/monsterBuilder";
 
 interface IdxPayload
 {

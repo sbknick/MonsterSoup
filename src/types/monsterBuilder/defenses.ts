@@ -22,7 +22,7 @@ export enum ArmorFormulaOption
     StandardArmor = 1,
     NaturalArmor,
     UnarmoredDefense,
-};
+}
 
 export interface DefensesState
 {

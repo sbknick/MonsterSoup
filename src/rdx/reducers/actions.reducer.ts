@@ -38,7 +38,7 @@ function normalise(items: ActionTemplate[]): NormalisedData<ActionTemplate>
         acc.allIds.push(id);
         return acc;
     }, results);
-};
+}
 
 export function getAllActions(state: ActionsState): ActionTemplate[]
 {

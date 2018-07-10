@@ -13,6 +13,8 @@
         "switch-default": false,
         "forin": false,
         "no-console": false,
-        "no-object-literal-type-assertion": false
+        "no-object-literal-type-assertion": false,
+        "no-submodule-imports": false,
+        "no-implicit-dependencies": false
     }
 }

@@ -21,8 +21,7 @@ export function averageHitDice(hitDice: HitDice[], conMod: number): number
 export function averageHitDie(hitDie: HitDice, conMod: number): number
 {
     const averageRoll = Math.floor(hitDie.hitDieSize / 2);
-    const sum = (averageRoll + conMod) * hitDie.hitDiceCount;
-    return sum;
+    return (averageRoll + conMod) * hitDie.hitDiceCount;
 }
 
 export function getACOutputForStandardArmor(defenses: DefensesState, attributes: AttributesState): string

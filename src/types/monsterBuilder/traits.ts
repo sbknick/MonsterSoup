@@ -9,7 +9,7 @@ export interface TraitsState
 interface TraitArgsMap
 {
     [key: number]: TraitArgs;
-};
+}
 
 export interface TraitArgs
 {

@@ -7,7 +7,7 @@ import { AttributesState } from "types/monsterBuilder";
 
 const attributesReducer: Redux.Reducer<AttributesState> = (state = initialState, action: Actions.AttributesAction) =>
 {
-    const newState = Object.assign({}, state);
+    const newState = {...state};
     let newValue = 0;
 
     switch (action.type)
