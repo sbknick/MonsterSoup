@@ -1,11 +1,11 @@
 import { asBonus, mod } from "./Mod";
 
 // import { MonsterBuilderState } from "rdx/reducers/monsterBuilder";
-import { AttackTemplate, MonsterActionType } from "types";
+import { AttackTemplate, MonsterActionType } from "src/types";
 import {
     ActionArgs, /* ActionsState, */ ArmorFormulaOption, ArmorType, AttributesState, DamageArgs, DefensesState,
     HitDice, MonsterAction, MonsterTrait, OffensesState,
-} from "types/monsterBuilder";
+} from "src/types/monsterBuilder";
 
 // import { getTraitArgs, getTraitsForMonster } from "rdx/reducers";
 

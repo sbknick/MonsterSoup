@@ -1,24 +1,18 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { attributes } from "data";
-import * as Actions from "rdx/actions/monsterBuilder/offenses.actions";
-import { getCollatedMonsterActions, getMonsterBuilderData, // getTraitArgs, getTraitsForMonster,
-         GlobalState } from "rdx/reducers";
-// import { ActionTemplate, ActionType, AttackTemplate, isAttack,
-//     MonsterActionTemplate, MonsterActionType } from "types";
 import {
-    /* ActionsState, */ AttributesState, /*HitDice,*/ MonsterAction, /*MonsterTrait,*/
-    OffensesState, // TraitArgs,
-} from "types/monsterBuilder";
-
-import * as Calc from "util/Calc";
-// import * as CRUtil from "util/CRUtil";
-// import { asBonus, mod, modBonus } from "util/Mod";
-
-import { // Fieldset, HighlightBonusOnChange, HighlightOnChange,
-    LabelledItem, NumberInput, SelectList, UpDownLinks,
-} from "components/common";
+    InputEvent, LabelledItem, NumberInput, SelectList, UpDownLinks
+} from "src/components/common";
+import { attributes } from "src/data";
+import * as Actions from "src/rdx/actions/monsterBuilder/offenses.actions";
+import { getCollatedMonsterActions, getMonsterBuilderData,
+         GlobalState } from "src/rdx/reducers";
+import {
+    AttributesState, MonsterAction,
+    OffensesState
+} from "src/types/monsterBuilder";
+import * as Calc from "src/util/Calc";
 
 import OffensesActions from "./OffensesActions";
 
@@ -39,6 +33,9 @@ interface Props
 
 const Offenses: React.StatelessComponent<Props> = (props) =>
 {
+    const handleUpClicked = () => console.log("'up clicked'");
+    const handleDownClicked = () => console.log("'down clicked'");
+
     return (
         <div>
             <div className="container">
@@ -50,7 +47,7 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
 
                 <div className="offensive-cr-calculations">
                     <LabelledItem label="Offensive CR Details" labelType="h4">
-                        <LabelledItem label="Expected CR for Average DPR">
+                        export <LabelledItem label="Expected CR for Average DPR">
                             {Calc.getDPR(props.actions, props.offenses, props.attributes)}
                         </LabelledItem>
 
@@ -76,8 +73,8 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
                         {0}
                     </LabelledItem>
                     <LabelledItem label="AutoScale!" labelType="h4">
-                        <UpDownLinks size={2} onUpClicked={() => console.log("'up clicked'")}
-                                              onDownClicked={() => console.log("'down clicked'")} />
+                        <UpDownLinks size={2} onUpClicked={handleUpClicked}
+                                              onDownClicked={handleDownClicked} />
                     </LabelledItem>
                 </div>
             </div>
@@ -88,60 +85,73 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
 };
 
 const StatSelects: React.StatelessComponent<Props> = (props) =>
-(
-    <LabelledItem label="Stats" labelType="h4">
+{
+    const handlePrimaryAttackStatChanged = (e: InputEvent) => props.setPrimaryAttackStat(e.currentTarget.value);
+    const handlePrimarySpellStatChanged = (e: InputEvent) => props.setPrimarySpellStat(e.currentTarget.value);
 
-        <LabelledItem label="Primary Attack Stat">
-            <SelectList
-                options={attributes}
-                value={props.offenses.primaryAttackStat}
-                onChange={e => props.setPrimaryAttackStat(e.target.value)}
-            />
+    return (
+        <LabelledItem label="Stats" labelType="h4">
+
+            <LabelledItem label="Primary Attack Stat">
+                <SelectList
+                    options={attributes}
+                    value={props.offenses.primaryAttackStat}
+                    onChange={handlePrimaryAttackStatChanged}
+                />
+            </LabelledItem>
+
+            export <LabelledItem label="Primary Spellcasting Stat">
+                <SelectList
+                    options={attributes}
+                    value={props.offenses.primarySpellStat}
+                    onChange={handlePrimarySpellStatChanged}
+                />
+            </LabelledItem>
+
         </LabelledItem>
-
-        <LabelledItem label="Primary Spellcasting Stat">
-            <SelectList
-                options={attributes}
-                value={props.offenses.primarySpellStat}
-                onChange={e => props.setPrimarySpellStat(e.target.value)}
-            />
-        </LabelledItem>
-
-    </LabelledItem>
 );
+};
 
 const AttackBonus: React.StatelessComponent<Props> = (props) =>
-(
-    <LabelledItem label="Attack Bonus" labelType="h4">
+{
+    const handleAttackBonusBonusChanged = (e: InputEvent) => props.setAttackBonusBonus(parseInt(e.currentTarget.value));
 
-        <LabelledItem label="Misc Bonus">
-            <NumberInput
-                value={props.offenses.miscAttackBonus}
-                onChange={e => props.setAttackBonusBonus(parseInt(e.target.value))}
-            />
+    return (
+        <LabelledItem label="Attack Bonus" labelType="h4">
+
+            <LabelledItem label="Misc Bonus">
+                <NumberInput
+                    value={props.offenses.miscAttackBonus}
+                    onChange={handleAttackBonusBonusChanged}
+                />
+            </LabelledItem>
+
+            <LabelledItem label="Total">
+                {Calc.getAttackBonus(props.offenses, props.attributes, props.proficiencyBonus)}
+            </LabelledItem>
+
         </LabelledItem>
-
-        <LabelledItem label="Total">
-            {Calc.getAttackBonus(props.offenses, props.attributes, props.proficiencyBonus)}
-        </LabelledItem>
-
-    </LabelledItem>
-);
+    );
+};
 
 const SaveDC: React.StatelessComponent<Props> = (props) =>
-(
-    <LabelledItem label="Save DC" labelType="h4">
-        <LabelledItem label="Misc Bonus">
-            <NumberInput
-                value={props.offenses.miscSaveDCBonus}
-                onChange={e => props.setSaveDCBonus(parseInt(e.target.value))}
-            />
+{
+    const handleSaveDCBonusChanged = (e: InputEvent) => props.setSaveDCBonus(parseInt(e.currentTarget.value));
+
+    return (
+        <LabelledItem label="Save DC" labelType="h4">
+            <LabelledItem label="Misc Bonus">
+                <NumberInput
+                    value={props.offenses.miscSaveDCBonus}
+                    onChange={handleSaveDCBonusChanged}
+                />
+            </LabelledItem>
+            <LabelledItem label="Total">
+            {Calc.getSaveDC(props.offenses, props.attributes, props.proficiencyBonus)}
+            </LabelledItem>
         </LabelledItem>
-        <LabelledItem label="Total">
-           {Calc.getSaveDC(props.offenses, props.attributes, props.proficiencyBonus)}
-        </LabelledItem>
-    </LabelledItem>
-);
+    );
+};
 
 function mapStateToProps(state: GlobalState): Props
 {

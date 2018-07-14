@@ -1,10 +1,10 @@
 import * as Redux from "redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/defenses.actions";
-import * as types from "rdx/types/monsterBuilder/defenses.types";
+import * as Actions from "src/rdx/actions/monsterBuilder/defenses.actions";
+import * as types from "src/rdx/types/monsterBuilder/defenses.types";
 
-import { armors } from "data/armor";
-import { ArmorFormulaOption, DefensesState, Size } from "types/monsterBuilder";
+import { armors } from "src/data/armor";
+import { ArmorFormulaOption, DefensesState, Size } from "src/types/monsterBuilder";
 // import * as Types from "types/monsterBuilder";
 
 export const defensesReducer: Redux.Reducer<DefensesState> = (state = initialState, action: Actions.DefensesAction) =>

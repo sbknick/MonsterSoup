@@ -1,4 +1,4 @@
-import { TraitTemplate } from "types";
+import { TraitTemplate } from "src/types";
 
 export interface TraitsState
 {

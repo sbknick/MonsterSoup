@@ -1,4 +1,4 @@
-import { ActionTemplate, Range } from "types";
+import { ActionTemplate, Range } from "src/types";
 
 export interface ActionsState
 {

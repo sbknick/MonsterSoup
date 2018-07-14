@@ -1,7 +1,7 @@
 import * as Redux from "redux";
 
 // import { ArmorFormulaOption, Size } from "types/monsterBuilder";
-import * as types from "rdx/types/monsterBuilder/offenses.types";
+import * as types from "src/rdx/types/monsterBuilder/offenses.types";
 
 export interface SetStatAction extends Redux.Action
 {

@@ -1,20 +1,20 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/defenses.actions";
-import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
-import { ArmorData, ArmorFormulaOption, ArmorType, AttributesState, DefensesState } from "types/monsterBuilder";
+import * as Actions from "src/rdx/actions/monsterBuilder/defenses.actions";
+import { getMonsterBuilderData, GlobalState } from "src/rdx/reducers";
+import { ArmorData, ArmorFormulaOption, ArmorType, AttributesState, DefensesState } from "src/types/monsterBuilder";
 
-import { armors, attributes } from "data";
-import * as Calc from "util/Calc";
-import * as Enum from "util/Enum";
-// import { mod } from "util/Mod";
-import { titleize } from "util/String";
+import { armors, attributes } from "src/data";
+import * as Calc from "src/util/Calc";
+import * as Enum from "src/util/Enum";
+// import { mod } from "src/util/Mod";
+import { titleize } from "src/util/String";
 
 import { // Fieldset, HighlightBonusOnChange, HighlightOnChange,
     LabelledItem, NumberInput,
     // SelectList, UpDownLinks
-} from "components/common";
+} from "src/components/common";
 
 export const Armor: React.StatelessComponent<Props> = (props) =>
 {
@@ -62,13 +62,13 @@ function compileArmorOptions(): void
     {
         const map = (aa: ArmorData[]) => aa.map(a => <option key={a.name}>{a.name}</option>);
 
-        armorOptions.push(<option key={"light"} disabled>- Light Armor -</option>);
+        armorOptions.push(<option key={"light"} disabled={true}>- Light Armor -</option>);
         armorOptions = armorOptions.concat(map(armors.filter(a => a.type === ArmorType.Light)));
 
-        armorOptions.push(<option key={"medium"} disabled>- Medium Armor -</option>);
+        armorOptions.push(<option key={"medium"} disabled={true}>- Medium Armor -</option>);
         armorOptions = armorOptions.concat(map(armors.filter(a => a.type === ArmorType.Medium)));
 
-        armorOptions.push(<option key={"heavy"} disabled>- Heavy Armor -</option>);
+        armorOptions.push(<option key={"heavy"} disabled={true}>- Heavy Armor -</option>);
         armorOptions = armorOptions.concat(map(armors.filter(a => a.type === ArmorType.Heavy)));
     }
 }
@@ -77,11 +77,14 @@ const StandardArmor: React.StatelessComponent<Props> = (props) =>
 {
     compileArmorOptions();
 
+    const handleArmorChanged = (e: any) => props.setArmor(e.target.value);
+    const handleMiscACBonusChanged = (e: any) => props.setMiscACBonus(parseInt(e.target.value));
+
     return (
         <div>
             <p>
                 <select value={props.defenses.armor && props.defenses.armor.name}
-                        onChange={(e: any) => props.setArmor(e.target.value)}>
+                        onChange={handleArmorChanged}>
                     {armorOptions}
                 </select>
                 <button title="Add custom armor type"> + </button>
@@ -92,7 +95,7 @@ const StandardArmor: React.StatelessComponent<Props> = (props) =>
             </p>
             <label>Bonus</label>
             <NumberInput value={props.defenses.miscACBonus}
-                         onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
+                         onChange={handleMiscACBonusChanged} />
             <p>
                 <label>AC</label>
                 <br />
@@ -103,48 +106,57 @@ const StandardArmor: React.StatelessComponent<Props> = (props) =>
 };
 
 const NaturalArmor: React.StatelessComponent<Props> = (props) =>
-(
-    <div>
-        <p>
-            <input type="checkbox" checked={props.defenses.useShield}
-                   onChange={props.toggleUseShield} /> Include a Shield
-        </p>
-        <label>Bonus</label>
-        <NumberInput value={props.defenses.miscACBonus}
-                     onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
-        <p>
-            <label>AC</label>
-            <br />
-            {Calc.getACOutputForNaturalArmor(props.defenses, props.attributes)}
-        </p>
-    </div>
-);
+{
+    const handleMiscACBonusChanged = (e: any) => props.setMiscACBonus(parseInt(e.target.value));
+
+    return (
+        <div>
+            <p>
+                <input type="checkbox" checked={props.defenses.useShield}
+                    onChange={props.toggleUseShield} /> Include a Shield
+            </p>
+            <label>Bonus</label>
+            <NumberInput value={props.defenses.miscACBonus}
+                        onChange={handleMiscACBonusChanged} />
+            <p>
+                <label>AC</label>
+                <br />
+                {Calc.getACOutputForNaturalArmor(props.defenses, props.attributes)}
+            </p>
+        </div>
+    );
+};
 
 const UnarmoredDefense: React.StatelessComponent<Props> = (props) =>
-(
-    <div>
-        <p>
-            <label>AC from Attribute</label>
-            <select value={props.defenses.unarmoredACAttribute}
-                    onChange={(e: any) => props.setUnarmoredACAttribute(e.target.value)}>
-                <option>N/A</option>
-                {attributes.map(a => <option key={a}>{a}</option>)}
-            </select>
-        </p>
-        <p>
-            <input type="checkbox" checked={props.defenses.useShield}
-                   onChange={props.toggleUseShield} /> Include a Shield
-        </p>
-        <label>Bonus</label>
-        <NumberInput value={props.defenses.miscACBonus}
-                     onChange={e => props.setMiscACBonus(parseInt(e.target.value))} />
-        <p>
-            <label>AC</label>
-            <br />
-            {Calc.getACOutputForUnarmoredDefense(props.defenses, props.attributes)}
-        </p>
-    </div>
-);
+{
+    const handleUnarmoredACAttributeChanged = (e: any) => props.setUnarmoredACAttribute(e.target.value);
+    const handleMiscACBonusChanged = (e: any) => props.setMiscACBonus(parseInt(e.target.value));
+
+    return (
+        <div>
+            <p>
+                <label>AC from Attribute</label>
+                <select value={props.defenses.unarmoredACAttribute}
+                        onChange={handleUnarmoredACAttributeChanged}>
+                    <option>N/A</option>
+                    {attributes.map(a => <option key={a}>{a}</option>)}
+                </select>
+            </p>
+            <p>
+                <input type="checkbox" checked={props.defenses.useShield}
+                    onChange={props.toggleUseShield} /> Include a Shield
+            </p>
+            <label>Bonus</label>
+            <NumberInput value={props.defenses.miscACBonus}
+                        onChange={handleMiscACBonusChanged} />
+            <p>
+                <label>AC</label>
+                <br />
+                {Calc.getACOutputForUnarmoredDefense(props.defenses, props.attributes)}
+            </p>
+        </div>
+    );
+};
 
 interface Props
 {

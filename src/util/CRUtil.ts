@@ -1,5 +1,5 @@
-import * as Data from "data/cr";
-import { Range } from "types";
+import * as Data from "src/data/cr";
+import { Range } from "src/types";
 
 /* tslint:disable:no-bitwise */
 

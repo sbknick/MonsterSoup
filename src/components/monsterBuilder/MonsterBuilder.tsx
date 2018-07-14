@@ -1,13 +1,13 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as CRUtil from "util/CRUtil";
-// import { mod, modBonus } from "util/Mod";
+import * as CRUtil from "src/util/CRUtil";
+// import { mod, modBonus } from "src/util/Mod";
 
 import { Fieldset, FieldsetConfigData, HighlightBonusOnChange, HighlightOnChange, LabelledItem,
          NumberInput, SelectList,
         //  UpDownLinks
-    } from "components/common";
+    } from "src/components/common";
 import Attributes from "./Attributes";
 import Defenses from "./Defenses";
 import Offenses from "./Offenses";
@@ -17,8 +17,8 @@ import Traits from "./Traits";
 // import TraitSplat from "./TraitSplat";
 
 // import { AttributesState } from "types/monsterBuilder";
-import * as UIActions from "rdx/actions/ui.actions";
-import { GlobalState } from "rdx/reducers";
+import * as UIActions from "src/rdx/actions/ui.actions";
+import { GlobalState } from "src/rdx/reducers";
 
 interface MonsterStatsProps
 {
@@ -226,10 +226,11 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
                                     {this.calcAverageDamagePerRound()}
                                 </LabelledItem>
                                 <NumberInput value={this.state.offenses.averageDPR}
-                                             onChange={e => {
-                                                 console.log(e); }
-                                                 /* this.setTempAverageDPR(e.target.value)*/
-                                                 }
+                                             onChange={console.log}
+                                                //  e => {
+                                                //  console.log(e); }
+                                                //  /* this.setTempAverageDPR(e.target.value)*/
+                                                //  }
                                              />
                             </div>
                             <div>

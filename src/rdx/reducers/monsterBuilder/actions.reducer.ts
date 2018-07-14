@@ -1,10 +1,10 @@
 import * as Redux from "redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/actions.actions";
-import * as types from "rdx/types/monsterBuilder/actions.types";
+import * as Actions from "src/rdx/actions/monsterBuilder/actions.actions";
+import * as types from "src/rdx/types/monsterBuilder/actions.types";
 
-import { ActionTemplate } from "types";
-import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "types/monsterBuilder";
+import { ActionTemplate } from "src/types";
+import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "src/types/monsterBuilder";
 
 const t1 = {
     type: types.ACTION_APPLY,

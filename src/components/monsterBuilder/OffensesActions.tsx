@@ -1,18 +1,18 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/actions.actions";
-import * as UIActions from "rdx/actions/ui.actions";
+import * as Actions from "src/rdx/actions/monsterBuilder/actions.actions";
+import * as UIActions from "src/rdx/actions/ui.actions";
 
-import { getActionArgs, getActionsForMonster, getAllActions, getMonsterBuilderData, GlobalState } from "rdx/reducers";
+import { getActionArgs, getActionsForMonster, getAllActions, getMonsterBuilderData, GlobalState } from "src/rdx/reducers";
 import { ActionTemplate, /* ActionType, AttackTemplate, isAttack, MonsterActionTemplate, */
-         /* MonsterActionType */ } from "types";
-import { ActionArgType, MonsterAction } from "types/monsterBuilder";
-import * as Mod from "util/Mod";
-import * as String from "util/String";
+         /* MonsterActionType */ } from "src/types";
+import { ActionArgType, MonsterAction } from "src/types/monsterBuilder";
+import * as Mod from "src/util/Mod";
+import * as String from "src/util/String";
 
-import { Fieldset, LabelledItem, Modal } from "components/common";
-import * as fromModal from "components/common/Modal";
+import { Fieldset, LabelledItem, Modal } from "src/components/common";
+import * as fromModal from "src/components/common/Modal";
 import { Action } from "./Action";
 
 // import { defaultActions } from "data/actions";
@@ -98,14 +98,14 @@ class AddActions extends React.Component<AddActionsProps, {templateId: number}>
             <div>
                 <LabelledItem label="Add Action">
                     <select defaultValue="" onChange={this.handleChangeSelectedAction}>
-                        <option disabled value="">Select...</option>
+                        <option disabled={true} value="">Select...</option>
                         {availableActions}
                     </select>
                 </LabelledItem>
                 <button onClick={this.handleAddAction}>Add</button>
-                <p></p>
+                <p />
                 <button>New Custom Action</button>
-                <p></p>
+                <p />
             </div>
         );
     }

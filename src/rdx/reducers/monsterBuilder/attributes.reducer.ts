@@ -1,8 +1,8 @@
 import * as Redux from "redux";
-import * as Actions from "../../actions/monsterBuilder/attributes.actions";
-import * as types from "../../types/monsterBuilder/attributes.types";
+import * as Actions from "src/rdx/actions/monsterBuilder/attributes.actions";
+import * as types from "src/rdx/types/monsterBuilder/attributes.types";
 
-import { AttributesState } from "types/monsterBuilder";
+import { AttributesState } from "src/types/monsterBuilder";
 // import { AttributesState } from "../../../types/monsterBuilder";
 
 const attributesReducer: Redux.Reducer<AttributesState> = (state = initialState, action: Actions.AttributesAction) =>

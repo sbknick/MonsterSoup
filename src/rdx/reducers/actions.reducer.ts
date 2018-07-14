@@ -1,8 +1,8 @@
 import * as Redux from "redux";
 
-import defaultActions from "data/actions";
-import { NormalisedData } from "rdx/reducers";
-import { ActionTemplate } from "types";
+import defaultActions from "src/data/actions";
+import { NormalisedData } from "src/rdx/reducers";
+import { ActionTemplate } from "src/types";
 
 const actionsReducer: Redux.Reducer<ActionsState> =
 (state = initialState, action: {type: string, actionTemplates: ActionTemplate[]}) =>

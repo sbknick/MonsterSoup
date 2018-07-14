@@ -1,4 +1,4 @@
-import { TraitTemplate } from "types";
+import { TraitTemplate } from "src/types";
 // import defaultTraits from "./traits";
 
 interface TraitSet

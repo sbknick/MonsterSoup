@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 
-import { ActionTemplate, TraitTemplate } from "types";
+import { ActionTemplate, TraitTemplate } from "src/types";
 
 import actionsReducer, * as fromActions from "./actions.reducer";
 import monsterBuilderReducer, * as fromMonsterBuilder from "./monsterBuilder";

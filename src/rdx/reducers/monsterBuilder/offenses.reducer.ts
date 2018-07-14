@@ -1,11 +1,11 @@
 import * as Redux from "redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/offenses.actions";
-import * as types from "rdx/types/monsterBuilder/offenses.types";
+import * as Actions from "src/rdx/actions/monsterBuilder/offenses.actions";
+import * as types from "src/rdx/types/monsterBuilder/offenses.types";
 
-import { attributes } from "data";
-import { OffensesState } from "types/monsterBuilder";
-// import * as Types from "types/monsterBuilder";
+import { attributes } from "src/data";
+import { OffensesState } from "src/types/monsterBuilder";
+// import * as Types from "src/types/monsterBuilder";
 
 export const offensesReducer: Redux.Reducer<OffensesState> = (state = initialState, action: Actions.OffensesAction) =>
 {

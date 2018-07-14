@@ -1,4 +1,4 @@
-import { Condition, DamageType } from "types";
+import { Condition, DamageType } from "src/types";
 import { ArmorData } from "./armor";
 
 export enum Size

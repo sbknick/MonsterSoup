@@ -1,22 +1,22 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/defenses.actions";
-import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "rdx/reducers";
+import * as Actions from "src/rdx/actions/monsterBuilder/defenses.actions";
+import { getMonsterBuilderData, getTraitArgs, getTraitsForMonster, GlobalState } from "src/rdx/reducers";
 import { AttributesState, DefensesState, HitDice, MonsterTrait, Size,
     // TraitArgs, TraitsState
-} from "types/monsterBuilder";
+} from "src/types/monsterBuilder";
 
-import * as Calc from "util/Calc";
-import * as CRUtil from "util/CRUtil";
-import { asBonus, mod/*, modBonus*/ } from "util/Mod";
+import * as Calc from "src/util/Calc";
+import * as CRUtil from "src/util/CRUtil";
+import { asBonus, mod/*, modBonus*/ } from "src/util/Mod";
 
 import { DiceRollInput,
     // Fieldset, HighlightBonusOnChange, HighlightOnChange,
     LabelledItem,
     // NumberInput, SelectList,
     UpDownLinks,
-} from "components/common";
+} from "src/components/common";
 import Armor from "./Armor";
 
 /* tslint:disable:no-console */
@@ -48,6 +48,9 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
 {
     const averageHp = Calc.averageHitDice(props.defenses.hitDice, props.conMod);
 
+    const handleAutoScaleUp = () => console.log("'auto-scale up clicked'");
+    const handleAutoScaleDOwn = () => console.log("'auto-scale down clicked'");
+
     return (
         <div className="container">
             <div className="defensive-cr-details">
@@ -65,8 +68,8 @@ const Defenses: React.StatelessComponent<Props> = (props) =>
                     {CRUtil.getDefensiveCR(averageHp, props.defenses.tempAC)}
                 </LabelledItem>
                 <LabelledItem label="AutoScale!" labelType="h4">
-                    <UpDownLinks size={2} onUpClicked={() => console.log("'up clicked'")}
-                                          onDownClicked={() => console.log("'down clicked'")} />
+                    <UpDownLinks size={2} onUpClicked={handleAutoScaleUp}
+                                          onDownClicked={handleAutoScaleDOwn} />
                 </LabelledItem>
             </div>
         </div>
@@ -101,18 +104,23 @@ const AverageHPSplat: React.StatelessComponent<{averageHp: number, hitDice: HitD
 const HitDiceSplats: React.StatelessComponent<Props> = (props) =>
 {
     let idx = 0;
+
+    const handleRemoveHitDie = (key: number) => () => props.removeHitDie(key);
+    const handleHitDiceCountChanged = (key: number) => (value: number) => props.setHitDiceCount(key, value);
+    const handleHitDieSizeChanged = (key: number) => (value: number) => props.setHitDieSize(key, value);
+
     const hitDiceSplats = props.defenses.hitDice.map(hd =>
     {
         const key = idx++;
         return  (
             <div key={key} className="hit-dice-box">
                 {key > 0 &&
-                    <button onClick={() => props.removeHitDie(key)}> - </button>
+                    <button onClick={handleRemoveHitDie(key)}> - </button>
                 }
                 <DiceRollInput
                     diceCount={hd.hitDiceCount} dieSize={hd.hitDieSize}
-                    diceCountChanged={n => props.setHitDiceCount(key, n)}
-                    dieSizeChanged={n => props.setHitDieSize(key, n)}>
+                    diceCountChanged={handleHitDiceCountChanged(key)}
+                    dieSizeChanged={handleHitDieSizeChanged(key)}>
                     {/*<NumberInput min={1} max={40} value={hd.hitDiceCount}
                                  onBlur={e => props.setHitDiceCount(key, parseInt(e.target.value))} />
                     d
@@ -136,9 +144,11 @@ const SizeSelect: React.StatelessComponent<Props> = (props) =>
         sizeOptions.push(<option key={size}>{size}</option>);
     }
 
+    const handleSizeChanged = (e: any) => props.setSize((Size as any)[e.target.value]);
+
     return (
         <select defaultValue="Medium"
-                onChange={(e: any) => props.setSize((Size as any)[e.target.value])}>
+                onChange={handleSizeChanged}>
             {sizeOptions}
         </select>
     );

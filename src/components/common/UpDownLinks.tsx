@@ -35,10 +35,10 @@ export class UpDownLinks extends React.Component<Props, State>
         return (
             <span style={arrowParentStyle} className="up-down">
                 <a href="" onClick={this.handleClick(this.props.onDownClicked)}>
-                    <i className="fa fa-caret-down" style={downArrowStyle}></i>
+                    <i className="fa fa-caret-down" style={downArrowStyle} />
                 </a>
                 <a href="" onClick={this.handleClick(this.props.onUpClicked)}>
-                    <i className="fa fa-caret-up" style={upArrowStyle}></i>
+                    <i className="fa fa-caret-up" style={upArrowStyle} />
                 </a>
             </span>
         );

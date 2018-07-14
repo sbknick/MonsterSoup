@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { ClickAEvent } from ".";
+
 interface Props
 {
     legend?: string;
@@ -24,7 +26,7 @@ export interface FieldsetConfigData
 
 export const Fieldset: React.StatelessComponent<Props> = (props) =>
 {
-    const handleToggleCollapse = (e: any) =>
+    const handleToggleCollapse = (e: ClickAEvent) =>
     {
         e.preventDefault();
         // this.setState({isCollapsed: !this.state.isCollapsed});

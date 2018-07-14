@@ -1,22 +1,20 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Util from "util/Mod";
+import * as Util from "src/util/Mod";
 
-import * as Actions from "rdx/actions/monsterBuilder/attributes.actions";
-import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
-import { AttributesState } from "types/monsterBuilder";
-// import { State as AttributesSet } from '../../redux/reducers/monsterBuilder/attributes.reducer';
+import * as Actions from "src/rdx/actions/monsterBuilder/attributes.actions";
+import { getMonsterBuilderData, GlobalState } from "src/rdx/reducers";
+import { AttributesState } from "src/types/monsterBuilder";
+// import { State as AttributesSet } from 'src/rdx/reducers/monsterBuilder/attributes.reducer';
 
-import { HighlightOnChange, NumberInput } from "components/common";
+import { HighlightOnChange, NumberInput } from "src/components/common";
 
 export class Attribute extends React.Component<AttributeProps, {}>
 {
     constructor(props: AttributeProps)
     {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
-        this.valueChanged = this.valueChanged.bind(this);
     }
 
     public render()
@@ -27,16 +25,16 @@ export class Attribute extends React.Component<AttributeProps, {}>
             <div className="attribute">
                 <label>{label}</label>
 
-                <a href="" onClick={e => this.handleClick(e, 1)} className="attr">
-                    <i className="fa fa-plus"></i>
+                <a href="" onClick={this.handleUpClicked} className="attr">
+                    <i className="fa fa-plus" />
                 </a>
                 &nbsp;
 
                 <NumberInput min={1} max={40} value={value} onBlur={this.valueChanged} />
 
                 &nbsp;
-                <a href="" onClick={e => this.handleClick(e, -1)} className="attr">
-                    <i className="fa fa-minus"></i>
+                <a href="" onClick={this.handleDownClicked} className="attr">
+                    <i className="fa fa-minus" />
                 </a>
 
                 <div className="report inline-children">
@@ -46,13 +44,16 @@ export class Attribute extends React.Component<AttributeProps, {}>
         );
     }
 
-    private handleClick(e: any, value: number)
+    private handleUpClicked = (e: any) => this.handleClick(e, 1);
+    private handleDownClicked = (e: any) => this.handleClick(e, -1);
+
+    private handleClick = (e: any, value: number) =>
     {
         e.preventDefault();
         this.props.modifyAttribute(this.props.label, value);
     }
 
-    private valueChanged(e: any)
+    private valueChanged = (e: any) =>
     {
         this.props.setAttribute(this.props.label, parseInt(e.target.value));
     }

@@ -1,5 +1,5 @@
 import { /* ActionTemplate, */ ActionType, /* AttackTemplate, */ AttackType, MonsterActionTemplate,
-         MonsterActionType, TargetType } from "types";
+         MonsterActionType, TargetType } from "src/types";
 
 export const defaultActions: MonsterActionTemplate[] = [
     {

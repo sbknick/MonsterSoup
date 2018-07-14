@@ -1,4 +1,4 @@
-import { Range } from "types";
+import { Range } from "src/types";
 /* IMPORTANT NOTE: ALL CRs are actually INDICES on the CRs array.
 This allows us to Increment or Decrement CR by "1", so that 1 goes down to 1/2,
 1/8 goes up to 1/4, etc... */
