@@ -123,7 +123,6 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
 {
     let input: JSX.Element;
 
-    // // tslint:disable-next-line:no-object-literal-type-assertion
     const arg = props.action.args[props.arg] || {} as ActionArg;
     if (arg && arg.inherited) return null;
 

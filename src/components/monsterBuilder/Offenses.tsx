@@ -47,7 +47,7 @@ const Offenses: React.StatelessComponent<Props> = (props) =>
 
                 <div className="offensive-cr-calculations">
                     <LabelledItem label="Offensive CR Details" labelType="h4">
-                        export <LabelledItem label="Expected CR for Average DPR">
+                        <LabelledItem label="Expected CR for Average DPR">
                             {Calc.getDPR(props.actions, props.offenses, props.attributes)}
                         </LabelledItem>
 
@@ -109,7 +109,7 @@ const StatSelects: React.StatelessComponent<Props> = (props) =>
             </LabelledItem>
 
         </LabelledItem>
-);
+    );
 };
 
 const AttackBonus: React.StatelessComponent<Props> = (props) =>

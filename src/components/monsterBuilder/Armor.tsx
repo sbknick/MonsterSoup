@@ -12,13 +12,15 @@ import * as Enum from "src/util/Enum";
 import { titleize } from "src/util/String";
 
 import { // Fieldset, HighlightBonusOnChange, HighlightOnChange,
-    LabelledItem, NumberInput,
+    LabelledItem, NumberInput, OptionEvent,
     // SelectList, UpDownLinks
 } from "src/components/common";
 
 export const Armor: React.StatelessComponent<Props> = (props) =>
 {
     const armorSplat = getArmorSplat(props);
+
+    const handleFormulaChanged = (e: OptionEvent) => props.setArmorFormula(parseInt(e.target.value) as ArmorFormulaOption);
 
     const formulaOptions = Enum.map(ArmorFormulaOption, opt =>
         <option key={opt} value={opt}>
@@ -27,8 +29,8 @@ export const Armor: React.StatelessComponent<Props> = (props) =>
 
     return (
         <LabelledItem label="Armor Class" labelType="h4" className="armor-formula">
-            <select value={props.defenses.armorFormula} // tslint:disable-next-line
-                    onChange={(e: any) => props.setArmorFormula(parseInt(e.target.value) as ArmorFormulaOption)}>
+            <select value={props.defenses.armorFormula}
+                    onChange={handleFormulaChanged}>
                 {formulaOptions}
             </select>
             {armorSplat}
@@ -113,11 +115,11 @@ const NaturalArmor: React.StatelessComponent<Props> = (props) =>
         <div>
             <p>
                 <input type="checkbox" checked={props.defenses.useShield}
-                    onChange={props.toggleUseShield} /> Include a Shield
+                       onChange={props.toggleUseShield} /> Include a Shield
             </p>
             <label>Bonus</label>
             <NumberInput value={props.defenses.miscACBonus}
-                        onChange={handleMiscACBonusChanged} />
+                         onChange={handleMiscACBonusChanged} />
             <p>
                 <label>AC</label>
                 <br />
@@ -144,11 +146,11 @@ const UnarmoredDefense: React.StatelessComponent<Props> = (props) =>
             </p>
             <p>
                 <input type="checkbox" checked={props.defenses.useShield}
-                    onChange={props.toggleUseShield} /> Include a Shield
+                       onChange={props.toggleUseShield} /> Include a Shield
             </p>
             <label>Bonus</label>
             <NumberInput value={props.defenses.miscACBonus}
-                        onChange={handleMiscACBonusChanged} />
+                         onChange={handleMiscACBonusChanged} />
             <p>
                 <label>AC</label>
                 <br />
