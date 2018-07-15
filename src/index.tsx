@@ -6,18 +6,14 @@ import { Provider } from "react-redux";
 import initStore from "./initStore";
 
 // components
-import MonsterStats from "src/components/monsterBuilder/MonsterStats";
-import Nav from "src/components/Nav";
+import MonsterBuilder from "src/components/monsterBuilder/MonsterBuilder";
 
 const store = initStore();
 
 ReactDOM.render(
     (
         <Provider store={store}>
-            <div>
-                <Nav />
-                <MonsterStats />
-            </div>
+            <MonsterBuilder />
         </Provider>
     ),
     document.getElementById("example"),
