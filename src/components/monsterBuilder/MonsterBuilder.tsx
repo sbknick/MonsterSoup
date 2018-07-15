@@ -80,12 +80,6 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     {
         super(props);
         this.state = DEFAULT_MONSTER_STATS_STATE;
-
-        this.modifyHitDiceCount = this.modifyHitDiceCount.bind(this);
-        this.modifyHitDieSize = this.modifyHitDieSize.bind(this);
-        this.handleChangeACFormulaType = this.handleChangeACFormulaType.bind(this);
-        this.handleChangePrimaryStat = this.handleChangePrimaryStat.bind(this);
-        this.handleChangePrimarySpellStat = this.handleChangePrimarySpellStat.bind(this);
     }
 
     public createFieldsetCollapseData: (key: string) => FieldsetConfigData = (key: string) =>
@@ -302,31 +296,31 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     //     // return (e: any) => this.SetAttribute(attr, e.target.value);
     // }
 
-    private modifyHitDiceCount(e: any)
-    {
-        console.log(e);
-        // const def = this.state.Defenses;
-        // def.hitDiceCount = e.target.value;
-        // this.setState({defenses: def} as MonsterStatsState);
-    }
+    // private modifyHitDiceCount = (e: any) =>
+    // {
+    //     console.log(e);
+    //     // const def = this.state.Defenses;
+    //     // def.hitDiceCount = e.target.value;
+    //     // this.setState({defenses: def} as MonsterStatsState);
+    // }
 
-    private  modifyHitDieSize(e: any)
-    {
-        console.log(e);
-        // const def = this.state.Defenses;
-        // def.hitDieSize = e.target.value;
-        // this.setState({defenses: def} as MonsterStatsState);
-    }
+    // private  modifyHitDieSize = (e: any) =>
+    // {
+    //     console.log(e);
+    //     // const def = this.state.Defenses;
+    //     // def.hitDieSize = e.target.value;
+    //     // this.setState({defenses: def} as MonsterStatsState);
+    // }
 
-    private handleChangeACFormulaType(e: any)
-    {
-        console.log(e);
-        // const def = this.state.Defenses;
-        // def.ACFormulaType = e.target.value;
-        // this.setState({defenses: def} as MonsterStatsState);
-    }
+    // private handleChangeACFormulaType = (e: any) =>
+    // {
+    //     console.log(e);
+    //     // const def = this.state.Defenses;
+    //     // def.ACFormulaType = e.target.value;
+    //     // this.setState({defenses: def} as MonsterStatsState);
+    // }
 
-    private handleChangePrimaryStat(e: any)
+    private handleChangePrimaryStat = (e: any) =>
     {
         console.log(e);
         // const off = this.state.Offenses;
@@ -334,7 +328,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
         // this.setState({offenses: off} as MonsterStatsState);
     }
 
-    private handleChangePrimarySpellStat(e: any)
+    private handleChangePrimarySpellStat = (e: any) =>
     {
         console.log(e);
         // const off = this.state.Offenses;
