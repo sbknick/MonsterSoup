@@ -70,7 +70,7 @@ const DEFAULT_MONSTER_STATS_STATE: MonsterStatsState = {
     isProficiencyChanged: false,
 };
 
-class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsState>
+class MonsterStats extends React.Component<MonsterStatsProps, MonsterStatsState>
 {
     constructor(props: MonsterStatsProps)
     {
@@ -281,7 +281,7 @@ class MonsterBuilder extends React.Component<MonsterStatsProps, MonsterStatsStat
     {
         return this.state.offenses.averageDPR;
     }
-    
+
     private handleChangePrimaryStat = (e: any) =>
     {
         console.log(e);
@@ -389,4 +389,4 @@ function mapDispatchToProps(dispatch: any): MonsterStatsProps
     } as MonsterStatsProps;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MonsterBuilder);
+export default connect(mapStateToProps, mapDispatchToProps)(MonsterStats);

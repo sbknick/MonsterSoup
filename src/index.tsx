@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import initStore from "./initStore";
 
 // components
-import MonsterBuilder from "src/components/monsterBuilder/MonsterBuilder";
+import MonsterStats from "src/components/monsterBuilder/MonsterStats";
 import Nav from "src/components/Nav";
 
 const store = initStore();
@@ -16,7 +16,7 @@ ReactDOM.render(
         <Provider store={store}>
             <div>
                 <Nav />
-                <MonsterBuilder />
+                <MonsterStats />
             </div>
         </Provider>
     ),
