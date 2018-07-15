@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 
 // internal functions
 import initStore from "./initStore";
@@ -13,7 +14,9 @@ const store = initStore();
 ReactDOM.render(
     (
         <Provider store={store}>
-            <MonsterBuilder />
+            <BrowserRouter>
+                <MonsterBuilder />
+            </BrowserRouter>
         </Provider>
     ),
     document.getElementById("example"),
