@@ -1,6 +1,7 @@
-import * as Actions from "rdx/actions/monsterBuilder/proficiency.actions";
-import * as types from "rdx/types/monsterBuilder/proficiency.types";
 import * as Redux from "redux";
+
+import * as Actions from "src/rdx/actions/monsterBuilder/proficiency.actions";
+import * as types from "src/rdx/types/monsterBuilder/proficiency.types";
 
 
 const proficiencyReducer: Redux.Reducer<{ proficiencyBonus: number }> =

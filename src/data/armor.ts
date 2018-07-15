@@ -1,4 +1,4 @@
-import { ArmorData, ArmorType } from "types/monsterBuilder";
+import { ArmorData, ArmorType } from "src/types/monsterBuilder";
 
 export const armors: ArmorData[] = [
     {

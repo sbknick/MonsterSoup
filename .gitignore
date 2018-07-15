@@ -24,3 +24,4 @@ yarn-error.log*
 # mine
 /.chrome
 /dist
+package-lock.json

@@ -1,6 +1,7 @@
 import * as Redux from "redux";
 
-import { ActionTemplate, TraitTemplate } from "types";
+import { ActionTemplate, TraitTemplate } from "src/types";
+import { MonsterAction } from "src/types/monsterBuilder";
 
 import entitiesReducer, * as fromEntities from "./entities.reducer";
 import uiReducer, * as fromUI from "./ui.reducer";
@@ -74,3 +75,14 @@ export const getActionsForMonster = (state: GlobalState) =>
 
 export const getActionArgs = (state: GlobalState, action: ActionTemplate) =>
     fromEntities.getActionArgs(state.entities, action);
+
+export const getCollatedMonsterActions = (state: GlobalState) =>
+{
+    const actions = getActionsForMonster(state);
+    const withArgs: MonsterAction[] = actions.map(act => ({
+        template: act,
+        args: getActionArgs(state, act),
+    }));
+
+    return withArgs;
+};

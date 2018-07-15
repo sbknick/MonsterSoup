@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 
-import rootReducer from "rdx/reducers";
+import rootReducer from "src/rdx/reducers";
 
 function initStore()
 {

@@ -1,4 +1,5 @@
-import * as Data from "data/cr";
+import * as Data from "src/data/cr";
+import { Range } from "src/types";
 
 /* tslint:disable:no-bitwise */
 
@@ -18,7 +19,7 @@ export function getCRForHP(average: number): string
     return Data.CRs[idx];
 }
 
-function getCRIdxRangeForAC(effectiveAC: number): Data.Range
+function getCRIdxRangeForAC(effectiveAC: number): Range
 {
     let range = Data.ACCRRanges.find(r => r.AC === effectiveAC);
 
@@ -126,7 +127,7 @@ export function getExpectedDCForCR(cr: number | string): number
     return getExpectedDCForCRIdx(idx);
 }
 
-function getCRIdxRangeForAB(effectiveAB: number): Data.Range
+function getCRIdxRangeForAB(effectiveAB: number): Range
 {
     let range = Data.ABCRRanges.find(r => r.AB === effectiveAB);
 
@@ -214,7 +215,7 @@ export function getAverageCR(averageHp: number, effectiveAC: number, averageDPR:
     }
 }
 
-function getCRIdxRangeForProficiency(proficiencyBonus: number): Data.Range
+function getCRIdxRangeForProficiency(proficiencyBonus: number): Range
 {
     const range = Data.ProficiencyCRRanges.find(r => r.proficiency === proficiencyBonus);
     return range || { low: -1, high: -1 };

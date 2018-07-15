@@ -1,10 +1,10 @@
 import * as Redux from "redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/saves.actions";
-import * as types from "rdx/types/monsterBuilder/saves.types";
+import * as Actions from "src/rdx/actions/monsterBuilder/saves.actions";
+import * as types from "src/rdx/types/monsterBuilder/saves.types";
 
-import { getAttributeOrdinal } from "data/attributes";
-import { SavesState, SavesStateSingle } from "types/monsterBuilder";
+import { getAttributeOrdinal } from "src/data/attributes";
+import { SavesState, SavesStateSingle } from "src/types/monsterBuilder";
 
 const savesReducer: Redux.Reducer<SavesState> = (state = initialState, action: Actions.SavesAction) =>
 {

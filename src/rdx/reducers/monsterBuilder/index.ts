@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 
-import { ActionTemplate, TraitTemplate } from "types";
+import { ActionTemplate, TraitTemplate } from "src/types";
 
 import actionsReducer, * as fromActions from "./actions.reducer";
 import attributesReducer, * as fromAttributes from "./attributes.reducer";
@@ -12,7 +12,7 @@ import savesReducer, * as fromSaves from "./saves.reducer";
 import traitsReducer, * as fromTraits from "./traits.reducer";
 
 import { ActionsState, AttributesState, DefensesState, OffensesState, SavesState,
-         TraitsState } from "types/monsterBuilder";
+         TraitsState } from "src/types/monsterBuilder";
 
 const monsterBuilderReducer = Redux.combineReducers({
     actions: actionsReducer,

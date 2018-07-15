@@ -1,11 +1,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/traits.actions";
-import { getAllTraits, getAppliedTraitIds, GlobalState } from "rdx/reducers";
-import { getTraitArgs, MonsterBuilderState } from "rdx/reducers/monsterBuilder";
-import { TraitTemplate } from "types";
+import * as Actions from "src/rdx/actions/monsterBuilder/traits.actions";
+import { getAllTraits, getAppliedTraitIds, GlobalState } from "src/rdx/reducers";
+import { getTraitArgs, MonsterBuilderState } from "src/rdx/reducers/monsterBuilder";
+import { TraitTemplate } from "src/types";
 
+import { OptionEvent } from "src/components/common";
 import TraitSplat from "./TraitSplat";
 
 
@@ -35,13 +36,15 @@ class Traits extends React.Component<Props, {selectedTraitId: number}>
             <option key={t.id} value={t.id} title={t.desc}>{t.name}</option>
         ));
 
+        const handleTraitChanged = (e: OptionEvent) => this.setSelectedTraitId(Number(e.currentTarget.value));
+
         return (
             <div>
                 {traitSplats}
                 <div>
                     <select value={this.state.selectedTraitId}
-                            onChange={(e: any) => this.setSelectedTraitId(Number(e.target.value))}>
-                        <option disabled value={0}> -- select an option -- </option>
+                            onChange={handleTraitChanged}>
+                        <option disabled={true} value={0}> -- select an option -- </option>
                         {traitOptions}
                     </select>
                     <button onClick={this.handleAddTrait}

@@ -1,13 +1,7 @@
-
+import { Range } from "src/types";
 /* IMPORTANT NOTE: ALL CRs are actually INDICES on the CRs array.
 This allows us to Increment or Decrement CR by "1", so that 1 goes down to 1/2,
 1/8 goes up to 1/4, etc... */
-
-export interface Range
-{
-    low: number;
-    high: number;
-}
 
 // all CR indices are 3 higher than the CR they represent,
 // (as soon as the index is > 3, at least)

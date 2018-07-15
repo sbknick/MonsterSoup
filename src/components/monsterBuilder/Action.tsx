@@ -1,19 +1,20 @@
 import * as React from "react";
 
-import * as String from "util/String";
-import * as Templates from "util/Templates";
+import * as String from "src/util/String";
+import * as Templates from "src/util/Templates";
 
 // import { getActionArgs, MonsterBuilderState } from "rdx/reducers/monsterBuilder";
 import { /* ActionTemplate, */ AttackTemplate, AttackType, DamageType,
          /* MonsterActionTemplate, */ MonsterActionType,
-         TargetType } from "types";
+         TargetType } from "src/types";
 import { ActionArg, /* ActionArgs, */
-    ActionArgType, AttackArgs, DamageArgs, MonsterAction } from "types/monsterBuilder";
+    ActionArgType, AttackArgs, DamageArgs, MonsterAction } from "src/types/monsterBuilder";
 
-import * as Enum from "util/Enum";
-import { getRequiredArgs } from "util/MonsterActionUtil";
+// import * as Calc from "util/Calc";
+import * as Enum from "src/util/Enum";
+import { getRequiredArgs } from "src/util/MonsterActionUtil";
 
-import { DiceRollInput, NumberInput } from "components/common";
+import { DiceRollInput, NumberInput } from "src/components/common";
 
 interface Props
 {
@@ -76,19 +77,21 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
 
         return (
             <div>
+                {/* Render attack details */}
                 <div>
-                    <i><b>{attack.name}. </b>
+                    <i><b>
+                        {attack.name}{attack.recharge && ` (Recharge ${attack.recharge.low}-${attack.recharge.high})`}.
+                    </b>&nbsp;
                     {String.titleize(AttackType[attack.attackType])}: </i>
-                    {attackArgs.attackBonus.value} to hit,
+                    {attackArgs.attackBonus ? attackArgs.attackBonus.value : 0} to hit,
                     reach {attack.reach || 5} ft.,&nbsp;
                     {String.detitleize(TargetType[attack.targetType])}.&nbsp;
                     <i>Hit:</i> {Templates.parseTemplate(attack.description, args, this.props.statMod)}
                 </div>
+
+                {/* Assign argument values */}
                 <div style={{position: "relative"}}>
-                    <a href="" onClick={e => {
-                        e.preventDefault();
-                        this.setState({ assignOpen: !this.state.assignOpen });
-                    }}>
+                    <a href="" onClick={this.handleAssignArguments}>
                         Assign Arguments
                     </a>
                     <span style={{
@@ -108,13 +111,18 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
             </div>
         );
     }
+    
+    private handleAssignArguments(e: any) : void
+    {
+        e.preventDefault();
+        this.setState({ assignOpen: !this.state.assignOpen });
+    }
 }
 
 const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}> = (props) =>
 {
     let input: JSX.Element;
 
-    // tslint:disable-next-line:no-object-literal-type-assertion
     const arg = props.action.args[props.arg] || {} as ActionArg;
     if (arg && arg.inherited) return null;
 
@@ -127,6 +135,11 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
         const value = {...arg.value as DamageArgs, ...args};
         props.setActionArg(props.arg, argType, value);
     };
+
+    const handleDiceCountChanged = (n: number) => handleChangeDamageRollArgValue({ diceCount: n });
+    const handleDieSizeChanged = (n: number) => handleChangeDamageRollArgValue({ dieSize: n });
+    const handleMiscBonusChanged = (n: number) => handleChangeDamageRollArgValue({ miscBonus: n });
+    const handleUsePrimaryStatBonusToggled = (damArgs: DamageArgs) => () => handleChangeDamageRollArgValue({ usePrimaryStatBonus: !damArgs.usePrimaryStatBonus });
 
     switch (argType)
     {
@@ -155,15 +168,13 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
                     diceCount={diceCount}
                     dieSize={dieSize}
                     miscBonus={miscBonus}
-                    diceCountChanged={n => handleChangeDamageRollArgValue({ diceCount: n })}
-                    dieSizeChanged={n => handleChangeDamageRollArgValue({ dieSize: n })}
-                    miscBonusChanged={n => handleChangeDamageRollArgValue({ miscBonus: n })}
+                    diceCountChanged={handleDiceCountChanged}
+                    dieSizeChanged={handleDieSizeChanged}
+                    miscBonusChanged={handleMiscBonusChanged}
                 >
                     <label>Use Bonus from Primary:</label>
                     <input type="checkbox" checked={usePrimaryStatBonus}
-                        onChange={() => handleChangeDamageRollArgValue({
-                            usePrimaryStatBonus: !damArgs.usePrimaryStatBonus,
-                        })}
+                        onChange={handleUsePrimaryStatBonusToggled(damArgs)}
                     />
                 </DiceRollInput>
             );
@@ -172,7 +183,7 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
         case ActionArgType.DamageType:
             input = (
                 <select value={arg && arg.value as string || ""} onChange={handleChangeArgValue}>
-                    <option value={""} disabled>-- Select One --</option>
+                    <option value={""} disabled={true}>-- Select One --</option>
                     {Enum.map(DamageType, dt =>
                         <option key={dt} value={dt}>{(DamageType as any)[dt]}</option>)
                     }
@@ -187,6 +198,8 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
         marginRight: "5px",
     };
 
+    const handleArgTypeChanged = (e: any) => props.setActionArgType(props.arg, parseInt(e.target.value));
+
     return (
         <ul style={{padding: 0, margin: 0}}>
             <li style={liStyle}>{props.arg}</li>
@@ -194,7 +207,7 @@ const AssignArg: React.StatelessComponent<Props & {arg: string, argType: string}
                 <li style={liStyle}>
                     <select
                         value={argType}
-                        onChange={e => props.setActionArgType(props.arg, parseInt(e.target.value))}
+                        onChange={handleArgTypeChanged}
                     >
                         {Enum.map(ActionArgType, art =>
                             <option key={art} value={art}>{ActionArgType[art]}</option>)}

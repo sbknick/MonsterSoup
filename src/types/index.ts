@@ -1,4 +1,10 @@
 
+export interface Range
+{
+    low: number;
+    high: number;
+}
+
 export enum Condition
 {
     Blinded = 1,
@@ -77,7 +83,7 @@ export interface AttackTemplate extends ActionTemplate
     damageDieSize?: number;
     damageBonus?: number;
     damageType?: string;
-    recharge?: number;
+    recharge?: Range;
 }
 
 export interface ActionTemplate
@@ -110,6 +116,7 @@ export enum TargetType
 {
     OneTarget = 1,
     OneCreature,
+    Area,
 }
 
 export enum AttackType
@@ -118,6 +125,7 @@ export enum AttackType
     RangedWeaponAttack,
     MeleeSpellAttack,
     RangedSpellAttack,
+    Special,
 }
 
 export function isAttack(action: MonsterActionTemplate): boolean

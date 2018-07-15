@@ -1,8 +1,8 @@
 import * as Redux from "redux";
 
-import defaultTraits from "data/traits";
-import { NormalisedData } from "rdx/reducers";
-import { TraitTemplate } from "types";
+import defaultTraits from "src/data/traits";
+import { NormalisedData } from "src/rdx/reducers";
+import { TraitTemplate } from "src/types";
 
 const traitsReducer: Redux.Reducer<TraitsState> =
 (state = initialState, action: {type: string, traits: TraitTemplate[]}) =>

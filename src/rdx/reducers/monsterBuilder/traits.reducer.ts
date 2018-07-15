@@ -1,10 +1,10 @@
 import * as Redux from "redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/traits.actions";
-import * as types from "rdx/types/monsterBuilder/traits.types";
+import * as Actions from "src/rdx/actions/monsterBuilder/traits.actions";
+import * as types from "src/rdx/types/monsterBuilder/traits.types";
 
-import { TraitTemplate } from "types";
-import { TraitsState } from "types/monsterBuilder";
+import { TraitTemplate } from "src/types";
+import { TraitsState } from "src/types/monsterBuilder";
 
 const traitsReducer: Redux.Reducer<TraitsState> = (state = initialState, action: Actions.TraitsAction) =>
 {

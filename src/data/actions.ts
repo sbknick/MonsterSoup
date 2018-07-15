@@ -1,5 +1,5 @@
 import { /* ActionTemplate, */ ActionType, /* AttackTemplate, */ AttackType, MonsterActionTemplate,
-         MonsterActionType, TargetType } from "types";
+         MonsterActionType, TargetType } from "src/types";
 
 export const defaultActions: MonsterActionTemplate[] = [
     {
@@ -17,6 +17,20 @@ export const defaultActions: MonsterActionTemplate[] = [
         actionType: ActionType.Action,
         attackType: AttackType.MeleeWeaponAttack,
         targetType: TargetType.OneTarget,
+    },
+    {
+        id: 3,
+        type: MonsterActionType.Attack,
+        name: "Lightning Breath",
+        description: "The {shortName} can exhale lightning in a 30-foot \
+                      line that is 5 feet wide. Each creature in that line \
+                      must make a DC {saveDC} Dexterity saving throw, taking \
+                      {damage:DiceRoll:usePrimaryStatBonus=false} lightning \
+                      damage on a failed save, or half as much damage on a successful one.",
+        actionType: ActionType.Action,
+        attackType: AttackType.Special,
+        targetType: TargetType.Area,
+        recharge: { low: 5, high: 6 },
     },
 ];
 

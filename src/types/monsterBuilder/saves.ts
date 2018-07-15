@@ -2,7 +2,7 @@
 export interface SavesState
 {
     saves: SavesStateSingle[];
-};
+}
 
 export interface SavesStateSingle
 {

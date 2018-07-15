@@ -19,7 +19,7 @@ const descriptionReducer: Redux.Reducer<State> = (state = initialState, action: 
     }
 
     return newState;
-}
+};
 
 export default descriptionReducer;
 

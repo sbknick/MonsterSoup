@@ -1,7 +1,7 @@
 
-// import { getActionArgs, MonsterBuilderState } from "rdx/reducers/monsterBuilder";
-import { ActionTemplate, AttackTemplate, MonsterActionType } from "types";
-// import { ActionArgs } from "types/monsterBuilder";
+// import { getActionArgs, MonsterBuilderState } from "src/rdx/reducers/monsterBuilder";
+import { ActionTemplate, AttackTemplate, MonsterActionType } from "src/types";
+// import { ActionArgs } from "src/types/monsterBuilder";
 
 export function getRequiredArgs(action: ActionTemplate)
 {

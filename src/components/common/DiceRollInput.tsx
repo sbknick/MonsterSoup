@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { InputEvent } from ".";
 import NumberInput from "./NumberInput";
 
 interface Props
@@ -30,6 +31,16 @@ interface Props
 export const DiceRollInput: React.StatelessComponent<Props> = (props) =>
 {
     const Container = props.containerType || "div";
+    
+    const handleEvent = (raiseEvent: (n: number) => void) => (e: InputEvent) =>
+    {
+        const n = parseInt(e.currentTarget.value);
+        if (!Number.isNaN(n))
+        {
+            raiseEvent(n);
+        }
+    };
+
     return (
         <Container className={props.className} style={props.style}>
             <NumberInput
@@ -62,17 +73,5 @@ export const DiceRollInput: React.StatelessComponent<Props> = (props) =>
         </Container>
     );
 };
-
-function handleEvent(raiseEvent: (n: number) => void): (e: any) => void
-{
-    return (e: any) =>
-    {
-        const n = parseInt(e.target.value);
-        if (!Number.isNaN(n))
-        {
-            raiseEvent(n);
-        }
-    };
-}
 
 export default DiceRollInput;

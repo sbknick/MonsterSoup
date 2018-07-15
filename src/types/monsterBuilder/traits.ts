@@ -1,4 +1,4 @@
-import { TraitTemplate } from "types";
+import { TraitTemplate } from "src/types";
 
 export interface TraitsState
 {
@@ -9,7 +9,7 @@ export interface TraitsState
 interface TraitArgsMap
 {
     [key: number]: TraitArgs;
-};
+}
 
 export interface TraitArgs
 {

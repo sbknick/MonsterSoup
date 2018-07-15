@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 
-import * as types from "rdx/types/ui";
+import * as types from "src/rdx/types/ui";
 
 export interface MonsterBuilderFieldsetCollapseToggleAction extends Redux.Action
 {

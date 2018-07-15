@@ -1,6 +1,6 @@
-import * as Redux from 'redux';
+import * as Redux from "redux";
 
-import * as types from '../../types/monsterBuilder/proficiency.types';
+import * as types from "../../types/monsterBuilder/proficiency.types";
 
 interface ProficiencyActionPayload
 {
@@ -8,6 +8,6 @@ interface ProficiencyActionPayload
 }
 
 export const modifyProficiency: Redux.ActionCreator<ProficiencyActionPayload> =
-    (amount: number) => ({ type: types.PROFICIENCY_MODIFY, amount: amount });
+    (amount: number) => ({ type: types.PROFICIENCY_MODIFY, amount });
 
 export type ProficiencyAction = Redux.Action & ProficiencyActionPayload;

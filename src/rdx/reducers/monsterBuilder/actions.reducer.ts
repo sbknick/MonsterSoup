@@ -1,14 +1,44 @@
 import * as Redux from "redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/actions.actions";
-import * as types from "rdx/types/monsterBuilder/actions.types";
+import * as Actions from "src/rdx/actions/monsterBuilder/actions.actions";
+import * as types from "src/rdx/types/monsterBuilder/actions.types";
 
-import { ActionTemplate } from "types";
-import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "types/monsterBuilder";
+import { ActionTemplate } from "src/types";
+import { ActionArgs, ActionArgsMap, ActionArgType, ActionsState, AttackArgs } from "src/types/monsterBuilder";
+
+const t1 = {
+    type: types.ACTION_APPLY,
+    action: (newState: ActionsState, action: Actions.ActionApplyRemoveAction) =>
+    {
+        const { actionTemplateId } = action;
+        newState.appliedActionTemplateIds.push(actionTemplateId);
+        if (!newState.actionArgs[actionTemplateId])
+        {
+            newState.actionArgs[actionTemplateId] = {};
+        }
+    },
+};
+// tslint:disable-next-line:no-unused-expression
+t1;
+
+// const lookup: {[key: string]: (newState: ActionsState, action: Actions.ActionsAction) => void} = {
+//     [types.ACTION_APPLY]:
+//     (newState: ActionsState, action: Actions.ActionApplyRemoveAction) =>
+//     {
+//         const { actionTemplateId } = action;
+//         newState.appliedActionTemplateIds.push(actionTemplateId);
+//         if (!newState.actionArgs[actionTemplateId])
+//         {
+//             newState.actionArgs[actionTemplateId] = {};
+//         }
+//     },
+// };
 
 const monsterActionsReducer: Redux.Reducer<ActionsState> = (state = initialState, action: Actions.ActionsAction) =>
 {
     const newState = {...state};
+
+    // lookup[action.type](newState, action);
 
     switch (action.type)
     {

@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 
-import * as types from "rdx/types/monsterBuilder/traits.types";
+import * as types from "src/rdx/types/monsterBuilder/traits.types";
 
 interface TraitsActionPayload
 {

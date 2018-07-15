@@ -1,6 +1,15 @@
 {
-    /* Extend the default ruleset */
-    "extends": "tslint:latest",
+    "extends": [
+        "tslint:recommended",
+        "tslint-react",
+        "tslint-config-prettier"
+    ],
+    "linterOptions": {
+        "exclude": [
+            "config/**/*.js",
+            "node_modules/**/*.ts"
+        ]
+    },
     "rules": {
         "one-line": [false, "check-open-brace"],
         "semicolon": true,

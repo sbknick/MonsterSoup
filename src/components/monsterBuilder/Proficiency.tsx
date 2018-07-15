@@ -1,23 +1,27 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Actions from "rdx/actions/monsterBuilder/proficiency.actions";
-import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
-import * as CRUtil from "util/CRUtil";
+import * as Actions from "src/rdx/actions/monsterBuilder/proficiency.actions";
+import { getMonsterBuilderData, GlobalState } from "src/rdx/reducers";
+import * as CRUtil from "src/util/CRUtil";
 
-import { HighlightBonusOnChange, LabelledItem, UpDownLinks } from "components/common";
+import { HighlightBonusOnChange, LabelledItem, UpDownLinks } from "src/components/common";
 
 const Proficiency: React.StatelessComponent<Props> = (props: Props) =>
-(
-    <LabelledItem label="Proficiency Bonus" labelType="h4" className="inline-child-divs">
-        <HighlightBonusOnChange value={props.proficiency} />
-        <UpDownLinks onUpClicked={() => props.modifyProficiency(1)}
-                     onDownClicked={() => props.modifyProficiency(-1)} />
-        <span style={{marginLeft: "20px"}}>Expected CR Range: {
-            [CRUtil.getCRRangeForProficiency(props.proficiency)].map(r => r.Low + "-" + r.High)
-        }</span>
-    </LabelledItem>
-);
+{
+    const handleModifyProciency = (amount: number) => () => props.modifyProficiency(amount);
+
+    return (
+        <LabelledItem label="Proficiency Bonus" labelType="h4" className="inline-child-divs">
+            <HighlightBonusOnChange value={props.proficiency} />
+            <UpDownLinks onUpClicked={handleModifyProciency(1)}
+                        onDownClicked={handleModifyProciency(-1)} />
+            <span style={{marginLeft: "20px"}}>Expected CR Range: {
+                [CRUtil.getCRRangeForProficiency(props.proficiency)].map(r => r.Low + "-" + r.High)
+            }</span>
+        </LabelledItem>
+    );
+};
 
 interface Props
 {

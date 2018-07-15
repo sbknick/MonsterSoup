@@ -1,16 +1,16 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import * as Attr from "data/attributes";
-import * as Util from "util/Mod";
+import * as Attr from "src/data/attributes";
+import * as Util from "src/util/Mod";
 
-import { getMonsterBuilderData, GlobalState } from "rdx/reducers";
-import { getAttributeScore, getSaveState } from "rdx/reducers/monsterBuilder";
-import { SavesStateSingle } from "types/monsterBuilder";
+import { getMonsterBuilderData, GlobalState } from "src/rdx/reducers";
+import { getAttributeScore, getSaveState } from "src/rdx/reducers/monsterBuilder";
+import { SavesStateSingle } from "src/types/monsterBuilder";
 
-import { Fieldset, HighlightBonusOnChange, LabelledItem } from "components/common";
-import * as Actions from "rdx/actions/monsterBuilder/saves.actions";
-import * as UIActions from "rdx/actions/ui.actions";
+import { Fieldset, HighlightBonusOnChange, LabelledItem } from "src/components/common";
+import * as Actions from "src/rdx/actions/monsterBuilder/saves.actions";
+import * as UIActions from "src/rdx/actions/ui.actions";
 
 export const SaveSplat: React.StatelessComponent<SaveSplatProps> = (props) =>
 (
