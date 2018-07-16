@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
 
-import LoadMonsterSRD from "src/components/loadMonster/LoadMonsterSRD";
+import LoadMonster from "src/components/loadMonster/LoadMonster";
 import MonsterStats from "src/components/monsterStats/MonsterStats";
 import Nav from "./Nav";
 
@@ -12,7 +12,7 @@ export const MonsterBuilder: React.StatelessComponent<{}> = () =>
         <Nav />
         {/* <Route path="" component={} /> */}
         <Route path="/edit" component={MonsterStats} />
-        <Route path="/load/srd" component={LoadMonsterSRD} />
+        <Route path="/load/:sourceType" component={LoadMonster} />
     </div>
 );
 
