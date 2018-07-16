@@ -1,7 +1,7 @@
 import * as Redux from "redux";
 
 import { ActionTemplate, TraitTemplate } from "src/types";
-import { MonsterAction } from "src/types/monsterBuilder";
+import { MonsterAction } from "src/types/monsterStats";
 
 import entitiesReducer, * as fromEntities from "./entities.reducer";
 import uiReducer, * as fromUI from "./ui.reducer";

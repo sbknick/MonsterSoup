@@ -1,8 +1,8 @@
 import { DamageType /*, Range */ } from "src/types";
-import { ActionArgs, ActionArgType, DamageArgs } from "src/types/monsterBuilder";
+import { ActionArgs, ActionArgType, DamageArgs } from "src/types/monsterStats";
 
-import * as Calc from "src/util/Calc";
-import * as String from "src/util/String";
+import * as Calc from "./Calc";
+import * as String from "./String";
 
 export function parseTemplate(input: string, args: ActionArgs, statMod: number): string
 {

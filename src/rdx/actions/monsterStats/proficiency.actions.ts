@@ -1,0 +1,13 @@
+import * as Redux from "redux";
+
+import * as types from "src/rdx/types/monsterStats/proficiency.types";
+
+interface ProficiencyActionPayload
+{
+    amount: number;
+}
+
+export const modifyProficiency: Redux.ActionCreator<ProficiencyActionPayload> =
+    (amount: number) => ({ type: types.PROFICIENCY_MODIFY, amount });
+
+export type ProficiencyAction = Redux.Action & ProficiencyActionPayload;

@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import initStore from "./initStore";
 
 // components
-import MonsterBuilder from "src/components/monsterBuilder/MonsterBuilder";
+import MonsterBuilder from "src/components/MonsterBuilder";
 
 const store = initStore();
 

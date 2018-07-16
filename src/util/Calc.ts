@@ -1,13 +1,13 @@
 import { asBonus, mod } from "./Mod";
 
-// import { MonsterBuilderState } from "rdx/reducers/monsterBuilder";
+// import { MonsterBuilderState } from "src/rdx/reducers/monsterStats";
 import { AttackTemplate, MonsterActionType } from "src/types";
 import {
     ActionArgs, /* ActionsState, */ ArmorFormulaOption, ArmorType, AttributesState, DamageArgs, DefensesState,
     HitDice, MonsterAction, MonsterTrait, OffensesState,
-} from "src/types/monsterBuilder";
+} from "src/types/monsterStats";
 
-// import { getTraitArgs, getTraitsForMonster } from "rdx/reducers";
+// import { getTraitArgs, getTraitsForMonster } from "src/rdx/reducers";
 
 export function averageHitDice(hitDice: HitDice[], conMod: number): number
 {

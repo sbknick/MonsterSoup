@@ -1,7 +1,7 @@
 // import { Memoize } from "typescript-memoize";
 
 // import { DamageType } from "types";
-// import { ActionArgs, ActionArgType } from "types/monsterBuilder";
+// import { ActionArgs, ActionArgType } from "types/monsterStats";
 
 // camel-case conversion code found here:
 // http://stackoverflow.com/a/34680912

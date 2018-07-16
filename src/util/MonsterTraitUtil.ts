@@ -1,6 +1,6 @@
-import { getDescription, getTraitArgs, MonsterBuilderState } from "src/rdx/reducers/monsterBuilder";
+import { getDescription, getTraitArgs, MonsterBuilderState } from "src/rdx/reducers/monsterStats";
 import { TraitTemplate } from "src/types";
-import { TraitArgs } from "src/types/monsterBuilder";
+import { TraitArgs } from "src/types/monsterStats";
 
 export const displayTraitDesc = (trait: TraitTemplate, monster: MonsterBuilderState, traitArgs?: TraitArgs) =>
 {
