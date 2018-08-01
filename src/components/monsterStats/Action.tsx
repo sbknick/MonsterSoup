@@ -112,7 +112,7 @@ class Attack extends React.Component<Props, {assignOpen: boolean}>
         );
     }
     
-    private handleAssignArguments(e: any) : void
+    private handleAssignArguments = (e: any) =>
     {
         e.preventDefault();
         this.setState({ assignOpen: !this.state.assignOpen });
