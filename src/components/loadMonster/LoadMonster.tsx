@@ -11,7 +11,7 @@ class LoadMonster extends React.Component<LoadMonsterProps, {}>
     {
         switch (this.props.match.params.sourceType.toLowerCase())
         {
-            case "srd": return "SRD";
+            case "srd":  return "SRD";
             case "mine": return "My";
             default: return "";
         }
